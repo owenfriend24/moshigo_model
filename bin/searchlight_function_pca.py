@@ -16,7 +16,7 @@ from sklearn.decomposition import PCA
 
 
 class searchlight_function_pca(Measure):
-    def __init__(self, n_components=3):
+    def __init__(self, n_components=4):
         Measure.__init__(self)
         self.n_components = n_components
 
