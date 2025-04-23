@@ -79,7 +79,7 @@ if __name__ == "__main__":
         masks = ['brainmask_func_dilated']
 
     phase, run, triad, item = np.loadtxt(
-        f'/home1/09123/ofriend/moshigo_model/bin/phase_1_items.txt',
+        f'/home1/09123/ofriend/analysis/moshigo_model/bin/phase_1_items.txt',
         unpack=True
     )
 
