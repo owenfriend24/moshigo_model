@@ -33,7 +33,7 @@ class searchlight_function_pca(Measure):
         pca = PCA(n_components=self.n_components)
         pca.fit(data)
         print("Explained variance:", pca.explained_variance_ratio_)
-        return np.sum(pca.explained_variance_ratio_)
+        return np.sum(pca.explained_variance_ratio_[:2])
 
 
         # # Defensive check: we expect 4 samples (items)
