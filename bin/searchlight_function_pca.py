@@ -21,26 +21,36 @@ class searchlight_function_pca(Measure):
         self.n_components = n_components
 
     def __call__(self, dataset):
-        """
-        dataset: PyMVPA dataset. Expected shape = (4, voxels) for 4 items in the sphere.
-        Returns:
-            Sum of variance explained by top n_components.
-        """
-        # Defensive check: we expect 4 samples (items)
-        if dataset.nsamples < self.n_components:
-            return np.nan
-
-        # Shape: samples (items) × features (voxels in sphere)
         data = dataset.samples
+        print("X shape:", data.shape)
+        print("X variance per voxel:", np.var(data, axis=0)[:5])
+        print("Correlation matrix:")
+        print(np.round(np.corrcoef(data), 2))
 
-        if np.any(np.isnan(data)) or np.all(data == 0):
+        if data.shape[1] < 10 or np.any(np.isnan(data)):
             return np.nan
 
-        try:
-            pca = PCA(n_components=self.n_components)
-            pca.fit(data)
-            var_expl = np.sum(pca.explained_variance_ratio_)
-        except:
-            var_expl = np.nan
+        pca = PCA(n_components=self.n_components)
+        pca.fit(data)
+        print("Explained variance:", pca.explained_variance_ratio_)
+        return np.sum(pca.explained_variance_ratio_)
 
-        return var_expl
+
+        # # Defensive check: we expect 4 samples (items)
+        # if dataset.nsamples < self.n_components:
+        #     return np.nan
+        #
+        # # Shape: samples (items) × features (voxels in sphere)
+        # data = dataset.samples
+        #
+        # if np.any(np.isnan(data)) or np.all(data == 0):
+        #     return np.nan
+        #
+        # try:
+        #     pca = PCA(n_components=self.n_components)
+        #     pca.fit(data)
+        #     var_expl = np.sum(pca.explained_variance_ratio_)
+        # except:
+        #     var_expl = np.nan
+        #
+        # return var_expl
