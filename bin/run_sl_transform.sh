@@ -30,7 +30,7 @@ for run in 1 2 3; do
   -t /corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt
 
   fslmaths /scratch/09123/ofriend/moshi/pca_sl/results/${sub}/${sub}_run-${run}_pca12_varExpl_MNI.nii.gz -mas \
-  mask /corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/b_gray.nii.gz \
+  /corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/b_gray.nii.gz \
   /scratch/09123/ofriend/moshi/pca_sl/results/${sub}/${sub}_run-${run}_pca12_varExpl_MNI.nii.gz
 done
 echo "transformed searchlight images to MNI"
