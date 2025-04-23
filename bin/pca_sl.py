@@ -92,7 +92,7 @@ if __name__ == "__main__":
             slmask = f'{expdir}/freesurfer/sub-{sbj}/mri/out/brainmask_func_dilated.nii.gz'
 
         #load in data
-        ds = fmri_dataset(os.path.join(betadir, 'phase_1'), mask=slmask)
+        ds = fmri_dataset(os.path.join(betadir, 'phase_1.nii.gz'), mask=slmask)
 
         ds.sa['run'] = run[:]
         ds.sa['item'] = item[:]
