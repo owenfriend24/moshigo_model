@@ -12,7 +12,7 @@ mask=$2
 
 source /home1/09123/ofriend/analysis/temple/profile_rsa
 
-beta_dir=/corral-repl/utexas/prestonlab/moshiGO1/moshiGO_201/RSAmodel/betaseries
+beta_dir=/corral-repl/utexas/prestonlab/moshiGO1/${sub}/RSAmodel/betaseries
 
 fslmerge -t ${beta_dir}/phase_1.nii.gz ${beta_dir}/moshiGO_1_all.nii.gz ${beta_dir}/moshiGO_2_all.nii.gz ${beta_dir}/moshiGO_3_all.nii.gz
 echo "merged betaseries"
