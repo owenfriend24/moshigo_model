@@ -9,6 +9,8 @@ fi
 
 source /home1/09123/ofriend/analysis/temple/bin/profile
 
+rsa
+
 sub=$1
 mask=$2
 
