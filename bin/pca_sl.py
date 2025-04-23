@@ -67,7 +67,7 @@ if __name__ == "__main__":
     subjdir = os.path.join(expdir, f'{sbj}')
     betadir = f'{expdir}/{sbj}/RSAmodel/betaseries/'
     resultdir = f'/scratch/09123/ofriend/moshi/pca_sl/results/'
-    out_dir = os.path.join(resultdir, f'sub-{sbj}')
+    out_dir = os.path.join(resultdir, f'{sbj}')
     os.makedirs(out_dir, exist_ok=True)
     #expdir = '/scratch/09123/ofriend/temple/new_prepro/derivatives/fmriprep'
     niter= 1000
@@ -105,4 +105,4 @@ if __name__ == "__main__":
             #run the searchlight
             sl_result = sphere_searchlight(searchlight_function_pca(n_components=4), radius=3)(ds_run)
             sl_img = map2nifti(ds_run, sl_result)
-            sl_img.to_filename(f"{resultdir}/{sbj}_run-{run_id}_pca_varExpl.nii.gz")
+            sl_img.to_filename(f"{out_dir}/{sbj}_run-{run_id}_pca12_varExpl.nii.gz")
