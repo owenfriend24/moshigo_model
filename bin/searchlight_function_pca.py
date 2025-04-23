@@ -22,17 +22,17 @@ class searchlight_function_pca(Measure):
 
     def __call__(self, dataset):
         data = dataset.samples
-        print("X shape:", data.shape)
-        print("X variance per voxel:", np.var(data, axis=0)[:5])
-        print("Correlation matrix:")
-        print(np.round(np.corrcoef(data), 2))
+        #print("X shape:", data.shape)
+        #print("X variance per voxel:", np.var(data, axis=0)[:5])
+        #print("Correlation matrix:")
+        #print(np.round(np.corrcoef(data), 2))
 
         if data.shape[1] < 10 or np.any(np.isnan(data)):
             return np.nan
 
         pca = PCA(n_components=self.n_components)
         pca.fit(data)
-        print("Explained variance:", pca.explained_variance_ratio_)
+        #print("Explained variance:", pca.explained_variance_ratio_)
         return np.sum(pca.explained_variance_ratio_[:2])
 
 
