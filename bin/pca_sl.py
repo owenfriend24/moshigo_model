@@ -103,6 +103,6 @@ if __name__ == "__main__":
             ds_run = ds[ds.sa.run == run_id]
 
             #run the searchlight
-            sl_result = sphere_searchlight(searchlight_function_pca(n_components=3), radius=3)(ds_run)
+            sl_result = sphere_searchlight(searchlight_function_pca(n_components=4), radius=3)(ds_run)
             sl_img = map2nifti(ds_run, sl_result)
             sl_img.to_filename(f"{resultdir}/{sbj}_run-{run_id}_pca_varExpl.nii.gz")
