@@ -7,7 +7,7 @@ if [[ $# -lt 2 ]]; then
     exit 1
 fi
 
-source /home1/09123/ofriend/analysis/temple/bin/profile
+source /home1/09123/ofriend/analysis/temple/profile_rsa
 
 rsa
 
