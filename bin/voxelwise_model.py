@@ -56,12 +56,13 @@ for v in range(voxel_array.shape[1]):
         fit = model.fit(reml=False)
         pvals = fit.pvalues
         for key, term in all_terms.items():
-            results_dict[key].append(pvals.get(term, np.nan))
+            pval = pvals.get(term, np.nan)
+            results_dict[key].append(1 - pval if not np.isnan(pval) else np.nan)
     except:
         for key in results_dict:
             results_dict[key].append(np.nan)
 
-# Save p-value maps
-for key, p_vals in results_dict.items():
-    img = unmask(np.array(p_vals, dtype=np.float32), mask_img)
-    img.to_filename(f"/scratch/09123/ofriend/moshi/pca_sl/results/group_{key}_pmap.nii.gz")
+# Save (1 - p) maps
+for key, inv_p_vals in results_dict.items():
+    img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
+    img.to_filename(f"/scratch/09123/ofriend/moshi/pca_sl/results/group_{key}_1minuspmap.nii.gz")
