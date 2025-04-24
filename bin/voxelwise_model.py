@@ -5,7 +5,7 @@ from nilearn.masking import apply_mask, unmask
 import statsmodels.formula.api as smf
 
 # Load metadata
-df = pd.read_csv('/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv')
+df = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv")
 
 # Set '6-9yo' as reference level for age_group
 df['age_group'] = pd.Categorical(
