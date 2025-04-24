@@ -3,7 +3,11 @@ import numpy as np
 import nibabel as nib
 from nilearn.masking import apply_mask, unmask
 import statsmodels.formula.api as smf
-
+import warnings
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 # Load metadata
 df = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv")
 
