@@ -6,12 +6,19 @@ import statsmodels.formula.api as smf
 import warnings
 import time
 from joblib import Parallel, delayed
+import argparse
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
 # Suppress annoying warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
+
+# Parse chunk ID
+parser = argparse.ArgumentParser()
+parser.add_argument("--chunk", type=int, default=0, help="Chunk ID (0, 1, 2, 3)")
+args = parser.parse_args()
+chunk_id = args.chunk
 
 # Load metadata
 df = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv")
@@ -24,7 +31,7 @@ df['age_group'] = pd.Categorical(
 )
 
 # Load brain mask
-mask_img = nib.load('/home1/09123/ofriend/analysis/moshigo_model/mni_gm_mask.nii.gz')
+mask_img = nib.load('/scratch/09123/ofriend/moshi/pca_sl/results/group_50_mask.nii.gz')
 mask = mask_img.get_fdata() != 0
 mask_img = nib.Nifti1Image(mask.astype(np.uint8), affine=mask_img.affine)
 
@@ -36,6 +43,18 @@ for _, row in df.iterrows():
     voxel_data.append(data)
 
 voxel_array = np.array(voxel_data)  # shape: (n_obs, n_voxels)
+
+# Split voxels into chunks
+n_voxels = voxel_array.shape[1]
+n_chunks = 4
+chunk_size = n_voxels // n_chunks
+
+start_idx = chunk_id * chunk_size
+end_idx = (chunk_id + 1) * chunk_size if chunk_id < n_chunks - 1 else n_voxels
+
+print(f"Running chunk {chunk_id}: voxels {start_idx} to {end_idx} out of {n_voxels}")
+
+voxel_subset = voxel_array[:, start_idx:end_idx]
 
 # Define interaction and main effect terms
 interaction_terms = {
@@ -62,7 +81,7 @@ start_time = time.time()
 # Define a function to fit one voxel
 def fit_voxel(v):
     df_model = df.copy()
-    df_model['var_expl'] = voxel_array[:, v]
+    df_model['var_expl'] = voxel_subset[:, v]
     try:
         model = smf.mixedlm("var_expl ~ C(age_group) * C(run)", df_model, groups=df_model["subject"])
         fit = model.fit(reml=False)
@@ -75,12 +94,10 @@ def fit_voxel(v):
     progress_counter[0] += 1
     if progress_counter[0] % 5000 == 0:
         elapsed = (time.time() - start_time) / 60  # minutes
-        pct_done = 100 * progress_counter[0] / voxel_array.shape[1]
+        pct_done = 100 * progress_counter[0] / voxel_subset.shape[1]
         print()
         print("PROGRESS CHECK")
-        print()
         print(f"Processed {progress_counter[0]} voxels ({pct_done:.1f}% done) - Elapsed time: {elapsed:.1f} min")
-        print()
         print()
 
     return result
@@ -88,7 +105,7 @@ def fit_voxel(v):
 # Run in parallel
 n_jobs = 12  # Adjust based on your HPC node
 results = Parallel(n_jobs=n_jobs, verbose=10)(
-    delayed(fit_voxel)(v) for v in range(voxel_array.shape[1])
+    delayed(fit_voxel)(v) for v in range(voxel_subset.shape[1])
 )
 
 # Reformat results
@@ -102,4 +119,4 @@ output_dir = "/scratch/09123/ofriend/moshi/pca_sl/results/"
 
 for key, inv_p_vals in results_dict.items():
     img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
-    img.to_filename(f"{output_dir}/group_{key}_1minuspmap.nii.gz")
+    img.to_filename(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.nii.gz")
