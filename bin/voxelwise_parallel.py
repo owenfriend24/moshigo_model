@@ -4,8 +4,9 @@ import nibabel as nib
 from nilearn.masking import apply_mask, unmask
 import statsmodels.formula.api as smf
 import warnings
+import time
+from joblib import Parallel, delayed
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
-from joblib import Parallel, delayed  # <-- NEW
 
 # Suppress annoying warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -54,6 +55,10 @@ main_effects = {
 # Combine all terms
 all_terms = {**interaction_terms, **main_effects}
 
+# Progress tracking setup
+progress_counter = [0]
+start_time = time.time()
+
 # Define a function to fit one voxel
 def fit_voxel(v):
     df_model = df.copy()
@@ -62,12 +67,26 @@ def fit_voxel(v):
         model = smf.mixedlm("var_expl ~ C(age_group) * C(run)", df_model, groups=df_model["subject"])
         fit = model.fit(reml=False)
         pvals = fit.pvalues
-        return {key: 1 - pvals.get(term, np.nan) for key, term in all_terms.items()}
+        result = {key: 1 - pvals.get(term, np.nan) for key, term in all_terms.items()}
     except:
-        return {key: np.nan for key in all_terms}
+        result = {key: np.nan for key in all_terms}
+
+    # Update and print progress
+    progress_counter[0] += 1
+    if progress_counter[0] % 5000 == 0:
+        elapsed = (time.time() - start_time) / 60  # minutes
+        pct_done = 100 * progress_counter[0] / voxel_array.shape[1]
+        print()
+        print("PROGRESS CHECK")
+        print()
+        print(f"Processed {progress_counter[0]} voxels ({pct_done:.1f}% done) - Elapsed time: {elapsed:.1f} min")
+        print()
+        print()
+
+    return result
 
 # Run in parallel
-n_jobs = 12  # <-- Adjust based on your HPC node
+n_jobs = 12  # Adjust based on your HPC node
 results = Parallel(n_jobs=n_jobs, verbose=10)(
     delayed(fit_voxel)(v) for v in range(voxel_array.shape[1])
 )
