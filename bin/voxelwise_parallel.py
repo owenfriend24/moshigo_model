@@ -120,6 +120,22 @@ output_dir = "/scratch/09123/ofriend/moshi/pca_sl/results/"
 for key, inv_p_vals in results_dict.items():
     np.save(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.npy", np.array(inv_p_vals, dtype=np.float32))
 
+
+
+terms = [
+    "10-12yo:run2", "10-12yo:run3",
+    "Adults:run2", "Adults:run3",
+    "10-12yo_main", "Adults_main", "run2_main", "run3_main"
+]
+
+for term in terms:
+    chunks = []
+    for chunk_id in range(4):
+        chunk = np.load(f"{output_dir}/group_{term}_chunk{chunk_id}_1minuspmap.npy")
+        chunks.append(chunk)
+    full_data = np.concatenate(chunks)
+    final_img = unmask(full_data, mask_img)
+    final_img.to_filename(f"{output_dir}/group_{term}_1minuspmap_FULL.nii.gz")
 # for key, inv_p_vals in results_dict.items():
 #     img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
 #     img.to_filename(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.nii.gz")
