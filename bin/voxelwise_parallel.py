@@ -118,5 +118,8 @@ for res in results:
 output_dir = "/scratch/09123/ofriend/moshi/pca_sl/results/"
 
 for key, inv_p_vals in results_dict.items():
-    img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
-    img.to_filename(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.nii.gz")
+    np.save(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.npy", np.array(inv_p_vals, dtype=np.float32))
+
+# for key, inv_p_vals in results_dict.items():
+#     img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
+#     img.to_filename(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.nii.gz")
