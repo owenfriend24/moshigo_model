@@ -87,7 +87,7 @@ if __name__ == "__main__":
     ###
     for mask in masks:
         if masktype == 'gm':
-            slmask = f'{expdir}/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
+            slmask = f'{expdir}/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}_dilated.nii.gz'
         elif masktype == 'whole_brain':
             slmask = f'{expdir}/freesurfer/sub-{sbj}/mri/out/brainmask_func_dilated.nii.gz'
 
