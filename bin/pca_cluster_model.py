@@ -21,7 +21,9 @@ for cluster_mask in [cluster_1]: #, cluster_2, cluster_3, cluster_4, cluster_5]:
     means = []
     for i, path in enumerate(subject_maps):
         img = nib.load(path).get_fdata()
-        mean_val = np.nanmean(img[cluster_mask])
+        masked_vals = img[cluster_mask]
+        masked_vals = masked_vals[masked_vals > 0]
+        mean_val = np.nanmean(masked_vals)
         means.append(mean_val)
 
     df[f'cluster_{cluster_index}_mean'] = means
