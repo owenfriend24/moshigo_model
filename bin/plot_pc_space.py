@@ -31,7 +31,7 @@ for idx, row in meta_df.iterrows():
 
     for run in [1, 2, 3]:
         # Build the betaseries filepath
-        betaseries_path = f'{expdir}/{subject_id}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
+        betaseries_path = f'{expdir}/moshiGO_{subject_id}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
 
         if not os.path.exists(betaseries_path):
             print(f"Missing: {betaseries_path}")
