@@ -75,8 +75,8 @@ if __name__ == "__main__":
     ### masks for data to analyze ###
     if masktype == 'gm':
         masks = ['b_gray']
-    elif masktype == 'whole_brain':
-        masks = ['brainmask_func_dilated']
+    elif masktype == 'brain_mask':
+        masks = ['brain_mask']
 
     run, item = np.loadtxt(
         f'/home1/09123/ofriend/analysis/moshigo_model/bin/phase_1_items.txt',
@@ -89,7 +89,7 @@ if __name__ == "__main__":
         if masktype == 'gm':
             slmask = f'{expdir}/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}_dilated.nii.gz'
         elif masktype == 'whole_brain':
-            slmask = f'{expdir}/freesurfer/sub-{sbj}/mri/out/brainmask_func_dilated.nii.gz'
+            slmask = f'{expdir}/{sbj}/anatomy/antsreg/data/funcunwarpspace/{mask}.nii.gz'
 
         #load in data
         ds = fmri_dataset(os.path.join(betadir, 'phase_1.nii.gz'), mask=slmask)
@@ -105,4 +105,4 @@ if __name__ == "__main__":
             #run the searchlight
             sl_result = sphere_searchlight(searchlight_function_pca(n_components=4), radius=3)(ds_run)
             sl_img = map2nifti(ds_run, sl_result)
-            sl_img.to_filename(f"{out_dir}/{sbj}_run-{run_id}_pca12_varExpl.nii.gz")
+            sl_img.to_filename(f"{out_dir}/{sbj}_run-{run_id}_pca12_varExpl_{mask}.nii.gz")
