@@ -9,14 +9,8 @@ from nilearn.masking import apply_mask
 
 # Set your paths
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
-cluster_mask_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/ifg_mask.nii.gz'
 subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
 output_plot = "/path/to/save_pca_plot.png"
-
-# Load cluster mask
-cluster_img = nib.load(cluster_mask_path)
-cluster_mask_data = cluster_img.get_fdata() > 0
-mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
 
 # Load subject metadata
 meta_df = pd.read_csv(subject_metadata_csv)
@@ -29,6 +23,10 @@ for idx, row in meta_df.iterrows():
     subject_id = row['subject']
     age_group = row['age_group']
 
+    cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_cluster-1.nii.gz'
+    cluster_img = nib.load(cluster_mask_path)
+    cluster_mask_data = cluster_img.get_fdata() > 0
+    mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
     for run in [1, 2, 3]:
         # Build the betaseries filepath
         betaseries_path = f'{expdir}/moshiGO_{subject_id}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
