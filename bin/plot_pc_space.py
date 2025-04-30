@@ -10,7 +10,7 @@ from nilearn.masking import apply_mask
 # Set your paths
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
-output_plot = "/path/to/save_pca_plot.png"
+output_plot = '/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot.png'
 
 # Load subject metadata
 meta_df = pd.read_csv(subject_metadata_csv)
