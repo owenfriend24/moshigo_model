@@ -11,7 +11,7 @@ moshiGO_208 moshiGO_249 moshiGO_313 moshiGO_315 moshiGO_333 moshiGO_201 moshiGO_
 moshiGO_304 moshiGO_259 moshiGO_261 moshiGO_284 moshiGO_305 moshiGO_312 moshiGO_224 moshiGO_291 moshiGO_223 moshiGO_235 \
 moshiGO_202 moshiGO_306 moshiGO_293 moshiGO_260 moshiGO_292 moshiGO_203 moshiGO_271 moshiGO_252 moshiGO_270 moshiGO_228 \
 moshiGO_232 moshiGO_302; do
-  $HOME/analysis/moshigo_model/bin/run_sl_transform456.sh ${sub} gm
+  $HOME/analysis/moshigo_model/bin/run_sl_transform_456.sh ${sub} gm
 done
 
 
