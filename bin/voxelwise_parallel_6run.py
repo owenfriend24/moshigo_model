@@ -9,7 +9,7 @@ from joblib import Parallel, delayed
 import argparse
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
-# Suppress annoying warnings
+# Suppress excessive warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
@@ -21,7 +21,7 @@ args = parser.parse_args()
 chunk_id = args.chunk
 
 # Load metadata
-df = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv")
+df = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv")
 
 # Set '6-9yo' as reference level for age_group
 df['age_group'] = pd.Categorical(
@@ -58,19 +58,15 @@ voxel_subset = voxel_array[:, start_idx:end_idx]
 
 # Define interaction and main effect terms
 interaction_terms = {
-    "10-12yo:run2": "C(age_group)[T.10-12yo]:C(run)[T.2]",
-    "10-12yo:run3": "C(age_group)[T.10-12yo]:C(run)[T.3]",
-    "Adults:run2": "C(age_group)[T.Adults]:C(run)[T.2]",
-    "Adults:run3": "C(age_group)[T.Adults]:C(run)[T.3]",
+    "10-12yo:run6": "C(age_group)[T.10-12yo]:C(run)[T.6]",
+    "Adults:run6": "C(age_group)[T.Adults]:C(run)[T.6]",
 }
 
 main_effects = {
     "10-12yo_main": "C(age_group)[T.10-12yo]",
     "Adults_main": "C(age_group)[T.Adults]",
-    "run2_main": "C(run)[T.2]",
-    "run3_main": "C(run)[T.3]",
+    "run6_main": "C(run)[T.6]",
 }
-
 # Combine all terms
 all_terms = {**interaction_terms, **main_effects}
 
@@ -112,9 +108,8 @@ for key, inv_p_vals in results_dict.items():
 
 
 terms = [
-    "10-12yo:run2", "10-12yo:run3",
-    "Adults:run2", "Adults:run3",
-    "10-12yo_main", "Adults_main", "run2_main", "run3_main"
+    "10-12yo:run6", "Adults:run6",
+    "10-12yo_main", "Adults_main", "run6_main"
 ]
 
 for term in terms:
