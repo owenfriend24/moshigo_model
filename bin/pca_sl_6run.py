@@ -79,7 +79,7 @@ if __name__ == "__main__":
         masks = ['brainmask_func_dilated']
 
     run, item = np.loadtxt(
-        f'/home1/09123/ofriend/analysis/moshigo_model/bin/6run_items.txt',
+        f'/home1/09123/ofriend/analysis/moshigo_model/bin/phase_2_items.txt',
         unpack=True
     )
 
@@ -92,17 +92,17 @@ if __name__ == "__main__":
             slmask = f'{expdir}/freesurfer/sub-{sbj}/mri/out/brainmask_func_dilated.nii.gz'
 
         #load in data
-        ds = fmri_dataset(os.path.join(betadir, 'moshiGO_allruns.nii.gz'), mask=slmask)
+        ds = fmri_dataset(os.path.join(betadir, 'phase_2.nii.gz'), mask=slmask)
 
         ds.sa['run'] = run[:]
         ds.sa['item'] = item[:]
 
 # choose the function based on the comparison as some sl logic changes by comparison
 
-        for run_id in [1, 2, 3, 4, 5, 6]:
+        for run_id in [4, 5, 6]:
             ds_run = ds[ds.sa.run == run_id]
 
             #run the searchlight
             sl_result = sphere_searchlight(searchlight_function_pca(n_components=4), radius=3)(ds_run)
             sl_img = map2nifti(ds_run, sl_result)
-            sl_img.to_filename(f"{out_dir}/{sbj}_run-{run_id}_pca12_varExpl_6run.nii.gz")
+            sl_img.to_filename(f"{out_dir}/{sbj}_run-{run_id}_pca12_varExpl.nii.gz")
