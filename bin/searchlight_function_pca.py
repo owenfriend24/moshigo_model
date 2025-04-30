@@ -27,8 +27,9 @@ class searchlight_function_pca(Measure):
         #print("Correlation matrix:")
         #print(np.round(np.corrcoef(data), 2))
 
-        if data.shape[1] < 10 or np.any(np.isnan(data)):
-            return np.nan
+        # # don't run if contains nans? or will pymvpa automatically deal with this?
+        # if data.shape[1] < 10 or np.any(np.isnan(data)):
+        #     return np.nan
 
         pca = PCA(n_components=self.n_components)
         pca.fit(data)
@@ -36,21 +37,4 @@ class searchlight_function_pca(Measure):
         return np.sum(pca.explained_variance_ratio_[:2])
 
 
-        # # Defensive check: we expect 4 samples (items)
-        # if dataset.nsamples < self.n_components:
-        #     return np.nan
-        #
-        # # Shape: samples (items) × features (voxels in sphere)
-        # data = dataset.samples
-        #
-        # if np.any(np.isnan(data)) or np.all(data == 0):
-        #     return np.nan
-        #
-        # try:
-        #     pca = PCA(n_components=self.n_components)
-        #     pca.fit(data)
-        #     var_expl = np.sum(pca.explained_variance_ratio_)
-        # except:
-        #     var_expl = np.nan
-        #
-        # return var_expl
+
