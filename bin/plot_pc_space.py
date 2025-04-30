@@ -66,13 +66,19 @@ plot_df = pd.DataFrame(all_rows)
 # Average across subjects
 avg_df = plot_df.groupby(['AgeGroup', 'Run', 'Item']).mean().reset_index()
 
-# Plot: Facet by AgeGroup, color by Item, style by Run
-g = sns.FacetGrid(avg_df, col="AgeGroup", hue="Item", height=5, aspect=1)
-g.map_dataframe(sns.scatterplot, x="PC1", y="PC2", s=100, style="Run")
-g.add_legend(title="Item / Run")
-g.set_titles(col_template="Age Group: {col_name}")
+g = sns.relplot(
+    data=avg_df,
+    x="PC1", y="PC2",
+    col="AgeGroup",
+    hue="Item",
+    style="Run",
+    kind="scatter",
+    height=5, aspect=1,
+    s=100
+)
 
-plt.subplots_adjust(top=0.85)
+g.set_titles(col_template="Age Group: {col_name}")
+g.fig.subplots_adjust(top=0.85)
 g.fig.suptitle("PCA Space: Item Representations by Run (Averaged by Age Group)")
 g.savefig(output_plot)
 plt.show()
