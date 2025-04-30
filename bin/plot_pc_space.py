@@ -67,8 +67,8 @@ plot_df = pd.DataFrame(all_rows)
 avg_df = plot_df.groupby(['AgeGroup', 'Run', 'Item']).mean().reset_index()
 
 # Plot: Facet by AgeGroup, color by Item, style by Run
-g = sns.FacetGrid(avg_df, col="AgeGroup", hue="Item", style="Run", height=5, aspect=1)
-g.map_dataframe(sns.scatterplot, x="PC1", y="PC2", s=100)
+g = sns.FacetGrid(avg_df, col="AgeGroup", hue="Item", height=5, aspect=1)
+g.map_dataframe(sns.scatterplot, x="PC1", y="PC2", s=100, style="Run")
 g.add_legend(title="Item / Run")
 g.set_titles(col_template="Age Group: {col_name}")
 
