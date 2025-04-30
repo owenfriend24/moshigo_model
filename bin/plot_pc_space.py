@@ -7,7 +7,6 @@ import seaborn as sns
 import os
 from nilearn.masking import apply_mask
 
-# Set your paths
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
 output_plot = '/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot.png'
@@ -27,6 +26,7 @@ for idx, row in meta_df.iterrows():
     cluster_img = nib.load(cluster_mask_path)
     cluster_mask_data = cluster_img.get_fdata() > 0
     mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
+
     for run in [1, 2, 3]:
         # Build the betaseries filepath
         betaseries_path = f'{expdir}/moshiGO_{subject_id}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
@@ -53,7 +53,6 @@ for idx, row in meta_df.iterrows():
         # Store results
         for item_idx in range(4):
             all_rows.append({
-                'Subject': subject_id,
                 'AgeGroup': age_group,
                 'Run': run,
                 'Item': item_idx + 1,
@@ -64,17 +63,16 @@ for idx, row in meta_df.iterrows():
 # Build full DataFrame
 plot_df = pd.DataFrame(all_rows)
 
-# Plot
-plt.figure(figsize=(10, 8))
-sns.scatterplot(
-    data=plot_df,
-    x='PC1', y='PC2',
-    hue='AgeGroup',
-    style='Run',
-    s=100
-)
-plt.title("PCA Space: Four Items by Age Group and Run")
-plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-plt.tight_layout()
-plt.savefig(output_plot)
+# Average across subjects
+avg_df = plot_df.groupby(['AgeGroup', 'Run', 'Item']).mean().reset_index()
+
+# Plot: Facet by AgeGroup, color by Item
+g = sns.FacetGrid(avg_df, col="AgeGroup", hue="Item", height=5, aspect=1)
+g.map_dataframe(sns.scatterplot, x="PC1", y="PC2", s=100)
+g.add_legend(title="Item")
+g.set_titles(col_template="Age Group: {col_name}")
+
+plt.subplots_adjust(top=0.85)
+g.fig.suptitle("PCA Space: Item Representations by Run (Averaged by Age Group)")
+g.savefig(output_plot)
 plt.show()
