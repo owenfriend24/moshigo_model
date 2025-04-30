@@ -22,7 +22,7 @@ fslmaths /corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/data/fun
 #echo "merged betaseries"
 #
 
-python pca_sl.py ${sub} ${mask}
+python /home1/09123/ofriend/analysis/moshigo_model/bin/pca_sl.py ${sub} ${mask}
 echo "ran pca searchlight"
 
 for run in 1 2 3; do
