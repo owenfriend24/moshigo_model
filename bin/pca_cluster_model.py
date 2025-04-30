@@ -37,7 +37,7 @@ for cluster_path in [cluster_1_path]: #, cluster_2, cluster_3, cluster_4, cluste
             '-o', out_path,
             '-r', path,
             '-n', 'NearestNeighbor',
-            '-t', f'[affine_path,1]',
+            '-t', f'[{affine_path},1]',
             '-t', warp_path
         ]
         subprocess.run(cmd, check = True)
