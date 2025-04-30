@@ -88,7 +88,7 @@ if __name__ == "__main__":
     for mask in masks:
         if masktype == 'gm':
             slmask = f'{expdir}/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}_dilated.nii.gz'
-        elif masktype == 'whole_brain':
+        elif masktype == 'brain_mask':
             slmask = f'{expdir}/{sbj}/anatomy/antsreg/data/funcunwarpspace/{mask}.nii.gz'
 
         #load in data
