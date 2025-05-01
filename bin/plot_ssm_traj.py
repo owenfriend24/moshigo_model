@@ -20,7 +20,7 @@ saved_df_path = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_la
 # Check if the dataframe already exists
 if os.path.exists(saved_df_path):
     print("Loading existing latent trajectory dataframe...")
-    #traj_df = pd.read_csv(saved_df_path)
+    traj_df = pd.read_csv(saved_df_path)
 else:
     print("Extracting neural data and computing latent trajectories...")
 
