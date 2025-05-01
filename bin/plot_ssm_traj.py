@@ -8,7 +8,7 @@ from sklearn.decomposition import PCA
 from pykalman import KalmanFilter
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from matplotlib.lines import Line2D
 
 
 # --- USER INPUTS ---
