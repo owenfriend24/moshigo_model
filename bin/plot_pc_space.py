@@ -20,7 +20,6 @@ if os.path.exists(saved_df_path):
     traj_df = pd.read_csv(saved_df_path)
 else:
     print("Extracting neural data and computing latent trajectories...")
-
     # Load metadata
     meta_df = pd.read_csv(meta_csv)
 
