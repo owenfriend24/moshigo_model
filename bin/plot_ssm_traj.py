@@ -100,28 +100,76 @@ sns.set(style="white", context="talk")
 fig, axes = plt.subplots(1, 3, figsize=(18, 6), sharex=True, sharey=True)
 age_groups = ['6-9yo', '10-12yo', 'Adults']
 palette = sns.color_palette("tab10", n_colors=4)
+markers = ['o', 's', 'D']  # run 1, 2, 3
 
 for ax, age_group in zip(axes, age_groups):
     sub_df = avg_df[avg_df['AgeGroup'] == age_group]
     for item in [1, 2, 3, 4]:
         segment = sub_df[sub_df['Item'] == item].sort_values('Run')
         if not segment.empty:
+            # Plot line connecting the 3 runs for this item
             ax.plot(segment['PC1'], segment['PC2'],
-                    label=f'Item {item}',
                     color=palette[item - 1],
-                    marker='o', linestyle='-',
-                    markersize=7)
+                    linestyle='-', linewidth=2, alpha=0.9)
+
+            # Plot individual run points with different shapes
+            for _, row in segment.iterrows():
+                ax.plot(row['PC1'], row['PC2'],
+                        marker=markers[row['Run'] - 1],
+                        color=palette[item - 1],
+                        markersize=8,
+                        linestyle='None')
 
     ax.set_title(f"Age Group: {age_group}")
     ax.set_xlabel("PC1")
     ax.set_ylabel("PC2")
 
-# Global legend
-handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc='center right', title='Item', fontsize=10)
+# Create custom legends
+item_legend = [Line2D([0], [0], color=palette[i], lw=3, label=f'Item {i+1}') for i in range(4)]
+run_legend = [Line2D([0], [0], color='gray', marker=markers[i], linestyle='None', markersize=8, label=f'Run {i+1}') for i in range(3)]
+
+fig.legend(item_legend + run_legend,
+           [leg.get_label() for leg in item_legend + run_legend],
+           loc='center right', title='Item / Run', fontsize=10)
 fig.subplots_adjust(right=0.85)
 
-plt.suptitle("Average Smoothed PCA Trajectories by Age Group\n(Colors = Items, Lines Connect Runs)", fontsize=16)
+plt.suptitle("Average Smoothed PCA Trajectories by Age Group\n(Colors = Items, Shapes = Runs)", fontsize=16)
 plt.tight_layout(rect=[0, 0, 0.85, 0.95])
 plt.savefig(output_fig)
+plt.show()
+
+
+
+
+
+# === PLOT: Run 3 Only (Item Endpoints) ===
+run3_df = avg_df[avg_df['Run'] == 3].copy()
+
+fig, axes = plt.subplots(1, 3, figsize=(18, 6), sharex=True, sharey=True)
+
+for ax, age_group in zip(axes, age_groups):
+    sub_df = run3_df[run3_df['AgeGroup'] == age_group]
+    for item in [1, 2, 3, 4]:
+        point = sub_df[sub_df['Item'] == item]
+        if not point.empty:
+            ax.scatter(point['PC1'], point['PC2'],
+                       color=palette[item - 1],
+                       marker=markers[2],  # Run 3 marker: 'D'
+                       s=100,
+                       label=f'Item {item}')
+    ax.set_title(f"Run 3 - Age Group: {age_group}")
+    ax.set_xlabel("PC1")
+    ax.set_ylabel("PC2")
+
+# Clean up legend
+handles = [Line2D([0], [0], marker='D', color='w',
+                  label=f'Item {i+1}', markerfacecolor=palette[i], markersize=10)
+           for i in range(4)]
+fig.legend(handles, [f'Item {i+1}' for i in range(4)],
+           loc='center right', title='Item', fontsize=10)
+fig.subplots_adjust(right=0.85)
+
+plt.suptitle("Smoothed PCA Positions (Run 3 Only)", fontsize=16)
+plt.tight_layout(rect=[0, 0, 0.85, 0.95])
+plt.savefig('/home1/09123/ofriend/analysis/moshigo_model/pca_run3_points_by_agegroup.png')
 plt.show()
