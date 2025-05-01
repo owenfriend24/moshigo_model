@@ -1,0 +1,20 @@
+ Starting at Wed Apr 30 16:12:23 CDT 2025
+ WORKING DIR: /home1/09123/ofriend/analysis/moshigo_model/
+ JOB ID:      2350620
+ JOB NAME:    clust
+ NODES:       c303-005
+ N NODES:     1
+ N TASKS:     1
++ /home1/09123/ofriend/analysis/moshigo_model/bin/pca_cluster_model.py
+import: unable to open X server `' @ error/import.c/ImportImageCommand/347.
+import: unable to open X server `' @ error/import.c/ImportImageCommand/347.
+import: unable to open X server `' @ error/import.c/ImportImageCommand/347.
+import: unable to open X server `' @ error/import.c/ImportImageCommand/347.
+import: unable to open X server `' @ error/import.c/ImportImageCommand/347.
+/home1/09123/ofriend/analysis/moshigo_model/bin/pca_cluster_model.py: line 8: syntax error near unexpected token `('
+/home1/09123/ofriend/analysis/moshigo_model/bin/pca_cluster_model.py: line 8: `ref = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv")'
++ set +x
+ 
+ Job complete at Wed Apr 30 16:12:23 CDT 2025
+ 
+Job duration: 00:00:00 (0 s)
