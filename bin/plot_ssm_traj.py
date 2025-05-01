@@ -1,3 +1,16 @@
+
+import numpy as np
+import pandas as pd
+import nibabel as nib
+import os
+from nilearn.masking import apply_mask
+from sklearn.decomposition import PCA
+from pykalman import KalmanFilter
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+
 # --- USER INPUTS ---
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
