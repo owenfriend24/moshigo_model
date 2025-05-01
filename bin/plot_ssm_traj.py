@@ -1,13 +1,3 @@
-import numpy as np
-import pandas as pd
-import nibabel as nib
-import os
-from nilearn.masking import apply_mask
-from sklearn.decomposition import PCA
-from pykalman import KalmanFilter
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 # --- USER INPUTS ---
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
@@ -20,6 +10,7 @@ if os.path.exists(saved_df_path):
     traj_df = pd.read_csv(saved_df_path)
 else:
     print("Extracting neural data and computing latent trajectories...")
+
     # Load metadata
     meta_df = pd.read_csv(meta_csv)
 
@@ -37,6 +28,9 @@ else:
         mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_mask.affine)
 
         all_items = []
+        run_labels = []
+        item_labels = []
+
         for run in [1, 2, 3]:
             func_path = f'{expdir}/moshiGO_{sub}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
             if not os.path.exists(func_path):
@@ -50,6 +44,8 @@ else:
             pca = PCA(n_components=2)
             pcs = pca.fit_transform(data)  # shape (4, 2)
             all_items.append(pcs)
+            run_labels.extend([run] * 4)
+            item_labels.extend([1, 2, 3, 4])
 
         if len(all_items) != 3:
             continue
@@ -69,6 +65,8 @@ else:
                 'Subject': sub,
                 'AgeGroup': age,
                 'Timepoint': i + 1,
+                'Run': run_labels[i],
+                'Item': item_labels[i],
                 'PC1': pc1,
                 'PC2': pc2
             })
@@ -78,14 +76,13 @@ else:
     traj_df.to_csv(saved_df_path, index=False)
     print(f"Saved latent trajectory dataframe to: {saved_df_path}")
 
-# Average per group
-avg_traj = traj_df.groupby(['AgeGroup', 'Timepoint']).mean().reset_index()
-
-# Plot
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=avg_traj, x='PC1', y='PC2', hue='AgeGroup', style='AgeGroup', markers=True)
-plt.title("Smoothed PCA Trajectories by Age Group")
-plt.xlabel("PC1")
-plt.ylabel("PC2")
+# Plot with three panels (facets), color by item, shape by run
+sns.set(style="white", context="talk")
+g = sns.FacetGrid(traj_df, col="AgeGroup", hue="Item", height=5, aspect=1.1)
+g.map_dataframe(sns.scatterplot, x="PC1", y="PC2", style="Run", s=100)
+g.add_legend()
+g.set_titles(col_template="Age Group: {col_name}")
+plt.subplots_adjust(top=0.85)
+g.fig.suptitle("Kalman-smoothed PCA Trajectories by Age Group, Item, and Run")
 plt.savefig(output_fig)
 plt.show()
