@@ -4,7 +4,7 @@ import nibabel as nib
 import os
 from nilearn.masking import apply_mask
 from sklearn.decomposition import PCA
-from ssm import HMM
+from pykalman import KalmanFilter
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -20,8 +20,7 @@ if os.path.exists(saved_df_path):
     traj_df = pd.read_csv(saved_df_path)
 else:
     print("Extracting neural data and computing latent trajectories...")
-
-    # Load metadata and mask
+    # Load metadata
     meta_df = pd.read_csv(meta_csv)
 
     # Collect latent trajectories
@@ -57,14 +56,15 @@ else:
 
         seq = np.concatenate(all_items, axis=0)  # shape (12, 2)
 
-        # Fit simple linear-Gaussian state space model
-        model = HMM(K=3, D=2, observations="gaussian")
-        model.fit(seq, method="em", num_iters=50, initialize=True)
-        z, x = model.sample(len(seq))
-        inferred_states = model.most_likely_states(seq)
-        smoothed_means = model.observations.mus[inferred_states]  # (T, 2)
+        # Kalman smoothing
+        kf = KalmanFilter(transition_matrices=np.eye(2),
+                         observation_matrices=np.eye(2),
+                         initial_state_mean=seq[0],
+                         n_dim_obs=2, n_dim_state=2)
 
-        for i, (pc1, pc2) in enumerate(smoothed_means):
+        smoothed_state_means, _ = kf.smooth(seq)
+
+        for i, (pc1, pc2) in enumerate(smoothed_state_means):
             trajectories.append({
                 'Subject': sub,
                 'AgeGroup': age,

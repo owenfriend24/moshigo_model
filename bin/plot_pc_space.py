@@ -1,91 +1,84 @@
 import numpy as np
 import pandas as pd
 import nibabel as nib
-import os
-from nilearn.masking import apply_mask
 from sklearn.decomposition import PCA
-from pykalman import KalmanFilter
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
+from nilearn.masking import apply_mask
 
-# --- USER INPUTS ---
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
-meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
-output_fig = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_by_agegroup.png'
-saved_df_path = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents.csv'
+subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
+output_plot = '/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot.png'
 
-# Check if the dataframe already exists
-if os.path.exists(saved_df_path):
-    print("Loading existing latent trajectory dataframe...")
-    traj_df = pd.read_csv(saved_df_path)
-else:
-    print("Extracting neural data and computing latent trajectories...")
-    # Load metadata
-    meta_df = pd.read_csv(meta_csv)
+# Load subject metadata
+meta_df = pd.read_csv(subject_metadata_csv)
 
-    # Collect latent trajectories
-    trajectories = []
+# Initialize list to collect data
+all_rows = []
 
-    for idx, row in meta_df.iterrows():
-        sub = row['subject']
-        age = row['age_group']
+# Loop over subjects
+for idx, row in meta_df.iterrows():
+    subject_id = row['subject']
+    age_group = row['age_group']
 
-        # assumes cluster masks already created for now
-        cluster_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/moshiGO_{sub}_run-1_MASK_cluster-1.nii.gz'
-        cluster_mask = nib.load(cluster_path)
-        cluster_mask_data = cluster_mask.get_fdata() > 0
-        mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_mask.affine)
+    cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_cluster-1.nii.gz'
+    cluster_img = nib.load(cluster_mask_path)
+    cluster_mask_data = cluster_img.get_fdata() > 0
+    mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
 
-        all_items = []
-        for run in [1, 2, 3]:
-            func_path = f'{expdir}/moshiGO_{sub}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
-            if not os.path.exists(func_path):
-                continue
+    for run in [1, 2, 3]:
+        # Build the betaseries filepath
+        betaseries_path = f'{expdir}/moshiGO_{subject_id}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
 
-            img = nib.load(func_path)
-            data = apply_mask(img, mask_img)  # shape (4, voxels)
-            if data.shape[0] != 4:
-                continue
-
-            pca = PCA(n_components=2)
-            pcs = pca.fit_transform(data)  # shape (4, 2)
-            all_items.append(pcs)
-
-        if len(all_items) != 3:
+        if not os.path.exists(betaseries_path):
+            print(f"Missing: {betaseries_path}")
             continue
 
-        seq = np.concatenate(all_items, axis=0)  # shape (12, 2)
+        # Load betaseries
+        img = nib.load(betaseries_path)
+        img_data = img.get_fdata()  # Expect shape (x, y, z, 4)
 
-        # Kalman smoothing
-        kf = KalmanFilter(transition_matrices=np.eye(2),
-                         observation_matrices=np.eye(2),
-                         initial_state_mean=seq[0],
-                         n_dim_obs=2, n_dim_state=2)
+        # Apply cluster mask
+        masked_data = apply_mask(img, mask_img)  # Shape: (n_samples=4, n_voxels)
 
-        smoothed_state_means, _ = kf.smooth(seq)
+        if masked_data.shape[0] != 4:
+            print(f"Unexpected shape for {subject_id} run {run}: {masked_data.shape}")
+            continue
 
-        for i, (pc1, pc2) in enumerate(smoothed_state_means):
-            trajectories.append({
-                'Subject': sub,
-                'AgeGroup': age,
-                'Timepoint': i + 1,
-                'PC1': pc1,
-                'PC2': pc2
+        # Perform PCA across items
+        pca = PCA(n_components=2)
+        pcs = pca.fit_transform(masked_data)  # shape (4 items, 2 PCs)
+
+        # Store results
+        for item_idx in range(4):
+            all_rows.append({
+                'AgeGroup': age_group,
+                'Run': run,
+                'Item': item_idx + 1,
+                'PC1': pcs[item_idx, 0],
+                'PC2': pcs[item_idx, 1]
             })
 
-    # Convert to DataFrame
-    traj_df = pd.DataFrame(trajectories)
-    traj_df.to_csv(saved_df_path, index=False)
-    print(f"Saved latent trajectory dataframe to: {saved_df_path}")
+# Build full DataFrame
+plot_df = pd.DataFrame(all_rows)
 
-# Average per group
-avg_traj = traj_df.groupby(['AgeGroup', 'Timepoint']).mean().reset_index()
+# Average across subjects
+avg_df = plot_df.groupby(['AgeGroup', 'Run', 'Item']).mean().reset_index()
 
-# Plot
-plt.figure(figsize=(10, 6))
-sns.lineplot(data=avg_traj, x='PC1', y='PC2', hue='AgeGroup', style='AgeGroup', markers=True)
-plt.title("Smoothed PCA Trajectories by Age Group")
-plt.xlabel("PC1")
-plt.ylabel("PC2")
-plt.savefig(output_fig)
+g = sns.relplot(
+    data=avg_df,
+    x="PC1", y="PC2",
+    col="AgeGroup",
+    hue="Item",
+    style="Run",
+    kind="scatter",
+    height=5, aspect=1,
+    s=100
+)
+
+g.set_titles(col_template="Age Group: {col_name}")
+g.fig.subplots_adjust(top=0.85)
+g.fig.suptitle("PCA Space: Item Representations by Run (Averaged by Age Group)")
+g.savefig(output_plot)
 plt.show()
