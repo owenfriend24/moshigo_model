@@ -91,13 +91,29 @@ else:
 # Average across subjects within age group, run, and item
 avg_df = traj_df.groupby(['AgeGroup', 'Run', 'Item']).mean(numeric_only=True).reset_index()
 
+# Create a unique label for legend clarity
+avg_df['Label'] = avg_df['Item'].astype(str) + '_item_run' + avg_df['Run'].astype(str)
+
 # Plot
 sns.set(style="white", context="talk")
-g = sns.FacetGrid(avg_df, col="AgeGroup", height=5, aspect=1.1, sharex=False, sharey=False)
-g.map_dataframe(sns.lineplot, x="PC1", y="PC2", hue="Item", style="Run", markers=True, dashes=False)
-g.add_legend()
-g.set_titles(col_template="Age Group: {col_name}")
-plt.subplots_adjust(top=0.85)
-g.fig.suptitle("Mean Kalman-smoothed PCA Trajectories by Age Group (Color=Item, Shape=Run)")
+fig, axes = plt.subplots(1, 3, figsize=(18, 6), sharex=False, sharey=False)
+age_groups = ['6-9yo', '10-12yo', 'Adults']
+palette = sns.color_palette("tab10", n_colors=4)
+
+for ax, age_group in zip(axes, age_groups):
+    sub_df = avg_df[avg_df['AgeGroup'] == age_group]
+    for item in [1, 2, 3, 4]:
+        for run in [1, 2, 3]:
+            segment = sub_df[(sub_df['Item'] == item) & (sub_df['Run'] == run)]
+            if not segment.empty:
+                ax.plot(segment['PC1'], segment['PC2'], marker='o', label=f'Item {item}, Run {run}',
+                        color=palette[item - 1], linestyle='-', markersize=6)
+    ax.set_title(f"Age Group: {age_group}")
+    ax.set_xlabel("PC1")
+    ax.set_ylabel("PC2")
+    ax.legend(loc='best', fontsize=8, frameon=True)
+
+plt.suptitle("Mean Kalman-smoothed PCA Trajectories by Age Group (Color=Item, Shape=Run)", fontsize=16)
+plt.tight_layout(rect=[0, 0, 1, 0.95])
 plt.savefig(output_fig)
 plt.show()
