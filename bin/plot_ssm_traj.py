@@ -26,11 +26,10 @@ else:
 
     # Load metadata
     meta_df = pd.read_csv(meta_csv)
-
+    meta_df = meta_df.drop_duplicates(subset='subject')
     trajectories = []
 
     for idx, row in meta_df.iterrows():
-        meta_df = meta_df.drop_duplicates(subset='subject')
         sub = row['subject']
         age = row['age_group']
 
