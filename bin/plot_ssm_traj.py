@@ -41,52 +41,31 @@ else:
         cluster_mask_data = cluster_mask.get_fdata() > 0
         mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_mask.affine)
 
-        all_items = []
-        run_labels = []
-        item_labels = []
+        for item in [1, 2, 3, 4]:
+            for run in [1, 2, 3]:
+                func_path = f'{expdir}/moshiGO_{sub}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
+                if not os.path.exists(func_path):
+                    continue
 
-        for run in [1, 2, 3]:
-            func_path = f'{expdir}/moshiGO_{sub}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
-            if not os.path.exists(func_path):
-                continue
+                img = nib.load(func_path)
+                data = apply_mask(img, mask_img)  # shape: (4 items, voxels)
+                if data.shape[0] != 4:
+                    continue
 
-            img = nib.load(func_path)
-            data = apply_mask(img, mask_img)  # shape: (4, voxels)
-            if data.shape[0] != 4:
-                continue
+                pca = PCA(n_components=2)
+                pcs = pca.fit_transform(data)
+                pc1, pc2 = pcs[item - 1]  # Get this specific item's projection
 
-            pca = PCA(n_components=2)
-            pcs = pca.fit_transform(data)  # shape: (4 items, 2 PCs)
+                trajectories.append({
+                    'Subject': sub,
+                    'AgeGroup': age,
+                    'Run': run,
+                    'Item': item,
+                    'PC1': pc1,
+                    'PC2': pc2
+                })
 
-            all_items.append(pcs)
-            run_labels.extend([run] * 4)
-            item_labels.extend([1, 2, 3, 4])
-
-        if len(all_items) != 3:
-            continue
-
-        seq = np.concatenate(all_items, axis=0)  # shape (12, 2)
-
-        kf = KalmanFilter(
-            transition_matrices=np.eye(2),
-            observation_matrices=np.eye(2),
-            initial_state_mean=seq[0],
-            n_dim_obs=2,
-            n_dim_state=2
-        )
-        smoothed_state_means, _ = kf.smooth(seq)
-
-        for i in range(len(smoothed_state_means)):
-            trajectories.append({
-                'Subject': sub,
-                'AgeGroup': age,
-                'Timepoint': i + 1,
-                'Run': run_labels[i],
-                'Item': item_labels[i],
-                'PC1': smoothed_state_means[i, 0],
-                'PC2': smoothed_state_means[i, 1]
-            })
-
+    # Save all trajectories
     traj_df = pd.DataFrame(trajectories)
     traj_df.to_csv(saved_df_path, index=False)
     print(f"Saved latent trajectory dataframe to: {saved_df_path}")
@@ -175,4 +154,56 @@ fig.subplots_adjust(right=0.85)
 plt.suptitle("Smoothed PCA Positions (Run 3 Only)", fontsize=16)
 plt.tight_layout(rect=[0, 0, 0.85, 0.95])
 plt.savefig('/home1/09123/ofriend/analysis/moshigo_model/pca_run3_points_by_agegroup.png')
+plt.show()
+
+
+by_age_item = defaultdict(lambda: defaultdict(list))
+
+grouped = traj_df.groupby(['Subject', 'AgeGroup'])
+for (sub, age), g in grouped:
+    for item in [1, 2, 3, 4]:
+        item_df = g[g['Item'] == item].sort_values('Run')
+        if item_df.shape[0] == 3:
+            traj = item_df[['PC1', 'PC2']].values
+            by_age_item[age][item].append(traj)
+
+# Step 2: for each age and item, compute mean Procrustes disparity for runs 1-2, 2-3, 1-3
+alignment_summary = {}
+
+for age in by_age_item:
+    run12_dists, run23_dists, run13_dists = [], [], []
+    for item in [1, 2, 3, 4]:
+        item_trajs = by_age_item[age][item]
+        for a, b in combinations(item_trajs, 2):
+            for run_pair, dist_list in zip([(0, 1), (1, 2), (0, 2)], [run12_dists, run23_dists, run13_dists]):
+                A = a[list(run_pair), :]
+                B = b[list(run_pair), :]
+                _, _, disparity = procrustes(A, B)
+                dist_list.append(disparity)
+    alignment_summary[age] = {
+        'run1-2': np.mean(run12_dists) if run12_dists else np.nan,
+        'run2-3': np.mean(run23_dists) if run23_dists else np.nan,
+        'run1-3': np.mean(run13_dists) if run13_dists else np.nan
+    }
+
+# Print results
+print("\nAverage Procrustes Disparities (lower = more similar):")
+for age, vals in alignment_summary.items():
+    print(f"\n{age}")
+    for k, v in vals.items():
+        print(f"  {k}: {v:.4f}")
+
+# Plotting
+plot_df = pd.DataFrame.from_dict(alignment_summary, orient='index')
+plot_df = plot_df.reset_index().rename(columns={'index': 'AgeGroup'})
+plot_df = plot_df.melt(id_vars='AgeGroup', var_name='Transition', value_name='ProcrustesDistance')
+
+plt.figure(figsize=(8, 6))
+sns.barplot(data=plot_df, x='Transition', y='ProcrustesDistance', hue='AgeGroup')
+plt.title("Average Pairwise Procrustes Distances (by Transition & Age Group)")
+plt.ylabel("Disparity (lower = more aligned)")
+plt.xlabel("Run-to-Run Transition")
+plt.legend(title="Age Group")
+plt.tight_layout()
+plt.savefig('/home1/09123/ofriend/analysis/moshigo_model/pca_procrustes_alignment_summary.png')
 plt.show()
