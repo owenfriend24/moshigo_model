@@ -30,6 +30,7 @@ else:
     trajectories = []
 
     for idx, row in meta_df.iterrows():
+        meta_df = meta_df.drop_duplicates(subset='subject')
         sub = row['subject']
         age = row['age_group']
 
