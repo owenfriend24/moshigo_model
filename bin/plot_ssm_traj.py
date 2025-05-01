@@ -94,31 +94,34 @@ avg_df = traj_df.groupby(['AgeGroup', 'Run', 'Item']).mean(numeric_only=True).re
 # Create a unique label for legend clarity
 avg_df['Label'] = avg_df['Item'].astype(str) + '_item_run' + avg_df['Run'].astype(str)
 
-# Plot
+
+# Set up plot
 sns.set(style="white", context="talk")
 fig, axes = plt.subplots(1, 3, figsize=(18, 6), sharex=True, sharey=True)
 age_groups = ['6-9yo', '10-12yo', 'Adults']
 palette = sns.color_palette("tab10", n_colors=4)
-markers = ['o', 's', 'D']
 
 for ax, age_group in zip(axes, age_groups):
     sub_df = avg_df[avg_df['AgeGroup'] == age_group]
     for item in [1, 2, 3, 4]:
-        for run in [1, 2, 3]:
-            segment = sub_df[(sub_df['Item'] == item) & (sub_df['Run'] == run)]
-            if not segment.empty:
-                ax.plot(segment['PC1'], segment['PC2'], label=f'Item {item}, Run {run}',
-                        color=palette[item - 1], marker=markers[run - 1], linestyle='-', markersize=6)
+        segment = sub_df[sub_df['Item'] == item].sort_values('Run')
+        if not segment.empty:
+            ax.plot(segment['PC1'], segment['PC2'],
+                    label=f'Item {item}',
+                    color=palette[item - 1],
+                    marker='o', linestyle='-',
+                    markersize=7)
+
     ax.set_title(f"Age Group: {age_group}")
     ax.set_xlabel("PC1")
     ax.set_ylabel("PC2")
 
 # Global legend
 handles, labels = axes[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc='center right', title='Item & Run', fontsize=9)
+fig.legend(handles, labels, loc='center right', title='Item', fontsize=10)
 fig.subplots_adjust(right=0.85)
 
-plt.suptitle("Mean Kalman-smoothed PCA Trajectories by Age Group (Color=Item, Marker=Run)", fontsize=16)
+plt.suptitle("Average Smoothed PCA Trajectories by Age Group\n(Colors = Items, Lines Connect Runs)", fontsize=16)
 plt.tight_layout(rect=[0, 0, 0.85, 0.95])
 plt.savefig(output_fig)
 plt.show()
