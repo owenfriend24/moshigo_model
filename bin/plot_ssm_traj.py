@@ -173,3 +173,35 @@ plt.suptitle("Smoothed PCA Positions (Run 3 Only)", fontsize=16)
 plt.tight_layout(rect=[0, 0, 0.85, 0.95])
 plt.savefig('/home1/09123/ofriend/analysis/moshigo_model/pca_run3_points_by_agegroup.png')
 plt.show()
+
+
+from scipy.spatial import procrustes
+from itertools import combinations
+from collections import defaultdict
+
+# Group trajectories by subject
+grouped = traj_df.groupby(['Subject', 'AgeGroup'])
+
+# Collect subject trajectories
+trajectories_by_group = defaultdict(list)
+
+for (sub, age), group in grouped:
+    subj_traj = group.sort_values('Timepoint')[['PC1', 'PC2']].values
+    if subj_traj.shape == (12, 2):  # ensure full length
+        trajectories_by_group[age].append(subj_traj)
+
+# Measure average Procrustes distance within each age group
+from scipy.spatial.distance import euclidean
+
+group_scores = {}
+for age, traj_list in trajectories_by_group.items():
+    dists = []
+    for a, b in combinations(traj_list, 2):
+        _, _, disparity = procrustes(a, b)
+        dists.append(disparity)
+    group_scores[age] = np.mean(dists) if dists else np.nan
+
+# Print scores (lower = more coherent)
+print("\nAverage within-group trajectory distances (Procrustes):")
+for age, score in group_scores.items():
+    print(f"{age}: {score:.4f}")
