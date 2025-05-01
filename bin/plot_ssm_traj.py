@@ -89,13 +89,16 @@ else:
     traj_df.to_csv(saved_df_path, index=False)
     print(f"Saved latent trajectory dataframe to: {saved_df_path}")
 
+# Average across subjects within age group, timepoint, run, and item
+avg_df = traj_df.groupby(['AgeGroup', 'Timepoint', 'Run', 'Item']).mean(numeric_only=True).reset_index()
+
 # Plot with three panels (facets), color by item, shape by run
 sns.set(style="white", context="talk")
-g = sns.FacetGrid(traj_df, col="AgeGroup", hue="Item", height=5, aspect=1.1)
+g = sns.FacetGrid(avg_df, col="AgeGroup", hue="Item", height=5, aspect=1.1)
 g.map_dataframe(sns.scatterplot, x="PC1", y="PC2", style="Run", s=100)
 g.add_legend()
 g.set_titles(col_template="Age Group: {col_name}")
 plt.subplots_adjust(top=0.85)
-g.fig.suptitle("Kalman-smoothed PCA Trajectories by Age Group, Item, and Run")
+g.fig.suptitle("Mean Kalman-smoothed PCA Trajectories by Age Group, Item, and Run")
 plt.savefig(output_fig)
 plt.show()
