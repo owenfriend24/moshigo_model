@@ -34,8 +34,10 @@ else:
         sub = row['subject']
         age = row['age_group']
 
-        # assumes cluster masks already created for now
         cluster_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/moshiGO_{sub}_run-1_MASK_cluster-1.nii.gz'
+        if not os.path.exists(cluster_path):
+            continue
+
         cluster_mask = nib.load(cluster_path)
         cluster_mask_data = cluster_mask.get_fdata() > 0
         mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_mask.affine)
@@ -50,12 +52,12 @@ else:
                 continue
 
             img = nib.load(func_path)
-            data = apply_mask(img, mask_img)  # shape (4, voxels)
+            data = apply_mask(img, mask_img)
             if data.shape[0] != 4:
                 continue
 
             pca = PCA(n_components=2)
-            pcs = pca.fit_transform(data)  # shape (4, 2)
+            pcs = pca.fit_transform(data)
             all_items.append(pcs)
             run_labels.extend([run] * 4)
             item_labels.extend([1, 2, 3, 4])
@@ -63,44 +65,39 @@ else:
         if len(all_items) != 3:
             continue
 
-        seq = np.concatenate(all_items, axis=0)  # shape (12, 2)
+        seq = np.concatenate(all_items, axis=0)
 
-        # Kalman smoothing
         kf = KalmanFilter(transition_matrices=np.eye(2),
-                         observation_matrices=np.eye(2),
-                         initial_state_mean=seq[0],
-                         n_dim_obs=2, n_dim_state=2)
-
+                          observation_matrices=np.eye(2),
+                          initial_state_mean=seq[0],
+                          n_dim_obs=2, n_dim_state=2)
         smoothed_state_means, _ = kf.smooth(seq)
 
-        for i, (pc1, pc2) in enumerate(smoothed_state_means):
+        for i in range(len(smoothed_state_means)):
             trajectories.append({
                 'Subject': sub,
                 'AgeGroup': age,
                 'Timepoint': i + 1,
                 'Run': run_labels[i],
                 'Item': item_labels[i],
-                'PC1': pc1,
-                'PC2': pc2
+                'PC1': smoothed_state_means[i, 0],
+                'PC2': smoothed_state_means[i, 1]
             })
 
-    # Convert to DataFrame
     traj_df = pd.DataFrame(trajectories)
     traj_df.to_csv(saved_df_path, index=False)
     print(f"Saved latent trajectory dataframe to: {saved_df_path}")
 
+# Average across subjects within age group, run, and item
+avg_df = traj_df.groupby(['AgeGroup', 'Run', 'Item']).mean(numeric_only=True).reset_index()
 
-# Average across subjects within age group, timepoint, run, and item
-avg_df = traj_df.groupby(['AgeGroup', 'Timepoint', 'Run', 'Item']).mean(numeric_only=True).reset_index()
-
-# Plot with three panels (facets), color by item, shape by run, and connect with lines
+# Plot
 sns.set(style="white", context="talk")
-g = sns.FacetGrid(avg_df, col="AgeGroup", hue="Item", height=5, aspect=1.1)
-g.map_dataframe(sns.lineplot, x="PC1", y="PC2", units="Timepoint", estimator=None, style="Run", markers=True, dashes=False)
-g.map_dataframe(sns.scatterplot, x="PC1", y="PC2", style="Run", s=100)
+g = sns.FacetGrid(avg_df, col="AgeGroup", height=5, aspect=1.1, sharex=False, sharey=False)
+g.map_dataframe(sns.lineplot, x="PC1", y="PC2", hue="Item", style="Run", markers=True, dashes=False)
 g.add_legend()
 g.set_titles(col_template="Age Group: {col_name}")
 plt.subplots_adjust(top=0.85)
-g.fig.suptitle("Mean Kalman-smoothed PCA Trajectories by Age Group, Item, and Run")
+g.fig.suptitle("Mean Kalman-smoothed PCA Trajectories by Age Group (Color=Item, Shape=Run)")
 plt.savefig(output_fig)
 plt.show()
