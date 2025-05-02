@@ -64,11 +64,11 @@ for cluster_path in [cluster_1_path, cluster_2_path, cluster_3_path]: #, cluster
     print("transformed clusters")
     df[f'cluster_{cluster_index}_mean'] = means
     print("running model ...")
-    model = smf.mixedlm(f"cluster_{cluster_index}_mean ~ C(age_group) * C(run)", df, groups=df["subject"])
+    model = smf.mixedlm(f"cluster_{cluster_index}_mean ~ C(age_group) * run", df, groups=df["subject"])
     result = model.fit()
     print(f'RAN MODEL FOR VARIANCE EXPLAINED BY PC1 AND PC2 IN CLUSTER {cluster_index}:')
     print()
     print(result.summary())
     print()
     cluster_index +=1
-df.to_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_hip6_model_results.csv")
+df.to_csv(f"/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_hip_{cluster_index}_model_results.csv")
