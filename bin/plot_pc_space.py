@@ -24,6 +24,7 @@ for idx, row in meta_df.iterrows():
     subject_id = row['subject']
     age_group = row['age_group']
 
+    # assumes you've already back-projected clusters into subject space
     cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_{cluster_name}.nii.gz'
     cluster_img = nib.load(cluster_mask_path)
     cluster_mask_data = cluster_img.get_fdata() > 0
