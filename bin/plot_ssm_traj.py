@@ -17,9 +17,9 @@ import matplotlib.pyplot as plt
 
 # --- USER INPUTS ---
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
-meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
+meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
 output_fig = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_by_agegroup.png'
-saved_df_path = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents.csv'
+saved_df_path = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents_hip6run.csv'
 
 # Check if the dataframe already exists
 if os.path.exists(saved_df_path):
@@ -46,7 +46,7 @@ else:
         mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_mask.affine)
 
         for item in [1, 2, 3, 4]:
-            for run in [1, 2, 3]:
+            for run in [1, 2, 3, 4, 5, 6]:
                 func_path = f'{expdir}/moshiGO_{sub}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
                 if not os.path.exists(func_path):
                     continue
@@ -128,76 +128,82 @@ plt.show()
 
 
 
-# === PLOT: Run 3 Only (Item Endpoints) ===
-run3_df = avg_df[avg_df['Run'] == 3].copy()
+# === PLOT: Run 6 Only (Item Endpoints) ===
+run6_df = avg_df[avg_df['Run'] == 6].copy()
 
 fig, axes = plt.subplots(1, 3, figsize=(18, 6), sharex=True, sharey=True)
+markers = ['o', 's', 'D', '^', 'v', 'P']  # update if needed
+age_groups = ['6-9yo', '10-12yo', 'Adults']
+palette = sns.color_palette("tab10", n_colors=4)
 
 for ax, age_group in zip(axes, age_groups):
-    sub_df = run3_df[run3_df['AgeGroup'] == age_group]
+    sub_df = run6_df[run6_df['AgeGroup'] == age_group]
     for item in [1, 2, 3, 4]:
         point = sub_df[sub_df['Item'] == item]
         if not point.empty:
             ax.scatter(point['PC1'], point['PC2'],
                        color=palette[item - 1],
-                       marker=markers[2],  # Run 3 marker: 'D'
+                       marker=markers[5],  # marker for Run 6
                        s=100,
                        label=f'Item {item}')
-    ax.set_title(f"Run 3 - Age Group: {age_group}")
+    ax.set_title(f"Run 6 - Age Group: {age_group}")
     ax.set_xlabel("PC1")
     ax.set_ylabel("PC2")
 
-# Clean up legend
-handles = [Line2D([0], [0], marker='D', color='w',
+handles = [Line2D([0], [0], marker=markers[5], color='w',
                   label=f'Item {i+1}', markerfacecolor=palette[i], markersize=10)
            for i in range(4)]
 fig.legend(handles, [f'Item {i+1}' for i in range(4)],
            loc='center right', title='Item', fontsize=10)
 fig.subplots_adjust(right=0.85)
 
-plt.suptitle("Smoothed PCA Positions (Run 3 Only)", fontsize=16)
+plt.suptitle("Smoothed PCA Positions (Run 6 Only)", fontsize=16)
 plt.tight_layout(rect=[0, 0, 0.85, 0.95])
-plt.savefig('/home1/09123/ofriend/analysis/moshigo_model/pca_run3_points_by_agegroup.png')
+plt.savefig('/home1/09123/ofriend/analysis/moshigo_model/pca_run6_points_by_agegroup.png')
 plt.show()
 
 
+# === Procrustes Alignment Comparison Across Runs 1–6 ===
 by_age_item = defaultdict(lambda: defaultdict(list))
-
 grouped = traj_df.groupby(['Subject', 'AgeGroup'])
+
 for (sub, age), g in grouped:
     for item in [1, 2, 3, 4]:
         item_df = g[g['Item'] == item].sort_values('Run')
-        if item_df.shape[0] == 3:
+        if item_df.shape[0] == 6:
             traj = item_df[['PC1', 'PC2']].values
             by_age_item[age][item].append(traj)
 
-# Step 2: for each age and item, compute mean Procrustes disparity for runs 1-2, 2-3, 1-3
+# Step 2: Compare pairwise similarity across time windows
 alignment_summary = {}
 
+# Define run pairs to assess short-term alignment across runs
+run_pairs = {
+    'run1-2': (0, 1),
+    'run3-4': (2, 3),
+    'run5-6': (4, 5)
+}
+
 for age in by_age_item:
-    run12_dists, run23_dists, run13_dists = [], [], []
+    pairwise_dists = {k: [] for k in run_pairs}
     for item in [1, 2, 3, 4]:
         item_trajs = by_age_item[age][item]
         for a, b in combinations(item_trajs, 2):
-            for run_pair, dist_list in zip([(0, 1), (1, 2), (0, 2)], [run12_dists, run23_dists, run13_dists]):
-                A = a[list(run_pair), :]
-                B = b[list(run_pair), :]
+            for k, (i1, i2) in run_pairs.items():
+                A = a[[i1, i2], :]
+                B = b[[i1, i2], :]
                 _, _, disparity = procrustes(A, B)
-                dist_list.append(disparity)
-    alignment_summary[age] = {
-        'run1-2': np.mean(run12_dists) if run12_dists else np.nan,
-        'run2-3': np.mean(run23_dists) if run23_dists else np.nan,
-        'run1-3': np.mean(run13_dists) if run13_dists else np.nan
-    }
+                pairwise_dists[k].append(disparity)
+    alignment_summary[age] = {k: np.mean(v) if v else np.nan for k, v in pairwise_dists.items()}
 
-# Print results
+# === Output results ===
 print("\nAverage Procrustes Disparities (lower = more similar):")
 for age, vals in alignment_summary.items():
     print(f"\n{age}")
     for k, v in vals.items():
         print(f"  {k}: {v:.4f}")
 
-# Plotting
+# === Plotting summary ===
 plot_df = pd.DataFrame.from_dict(alignment_summary, orient='index')
 plot_df = plot_df.reset_index().rename(columns={'index': 'AgeGroup'})
 plot_df = plot_df.melt(id_vars='AgeGroup', var_name='Transition', value_name='ProcrustesDistance')
