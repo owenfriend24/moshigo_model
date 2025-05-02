@@ -5,7 +5,7 @@ import pandas as pd
 import subprocess
 
 
-ref = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv")
+ref = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv")
 
 df = ref.copy()
 subject_maps = df['func_path'] # PCA variance maps
