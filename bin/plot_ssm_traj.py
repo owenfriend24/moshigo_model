@@ -86,7 +86,7 @@ sns.set(style="white", context="talk")
 fig, axes = plt.subplots(1, 3, figsize=(18, 6), sharex=True, sharey=True)
 age_groups = ['6-9yo', '10-12yo', 'Adults']
 palette = sns.color_palette("tab10", n_colors=4)
-markers = ['o', 's', 'D']  # run 1, 2, 3
+markers = ['o', 's', 'D', '^', 'v', 'P']  # run 1, 2, 3
 
 for ax, age_group in zip(axes, age_groups):
     sub_df = avg_df[avg_df['AgeGroup'] == age_group]
