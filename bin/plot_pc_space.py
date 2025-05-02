@@ -7,6 +7,8 @@ import seaborn as sns
 import os
 from nilearn.masking import apply_mask
 
+cluster_name = input("cluster name: ")
+
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
 output_plot = '/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot.png'
@@ -22,7 +24,7 @@ for idx, row in meta_df.iterrows():
     subject_id = row['subject']
     age_group = row['age_group']
 
-    cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_cluster-1.nii.gz'
+    cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_{cluster_name}.nii.gz'
     cluster_img = nib.load(cluster_mask_path)
     cluster_mask_data = cluster_img.get_fdata() > 0
     mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
