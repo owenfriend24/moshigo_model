@@ -11,7 +11,7 @@ df = ref.copy()
 subject_maps = df['func_path'] # PCA variance maps
 
 cluster_dir='/scratch/09123/ofriend/moshi/pca_sl/results'
-cluster_1_path = f"{cluster_dir}/ifg_mask.nii.gz"
+cluster_1_path = f"{cluster_dir}/new_hip_mask.nii.gz"
 cluster_1 = nib.load(cluster_1_path).get_fdata().astype(bool)
 # cluster_2 = nib.load(f"{cluster_dir}/cluster_l_ifg.nii.gz").get_fdata().astype(bool)
 # cluster_3 = nib.load(f"{cluster_dir}/cluster_r_ifg.nii.gz").get_fdata().astype(bool)
@@ -61,4 +61,4 @@ for cluster_path in [cluster_1_path]: #, cluster_2, cluster_3, cluster_4, cluste
     print(result.summary())
     print()
     cluster_index +=1
-df.to_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_ifg_model_results.csv")
+df.to_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_hip6_model_results.csv")
