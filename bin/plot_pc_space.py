@@ -10,7 +10,7 @@ from nilearn.masking import apply_mask
 cluster_name = input("cluster name: ")
 
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
-subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta.csv'
+subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
 output_plot = '/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot.png'
 
 # Load subject metadata
@@ -30,7 +30,7 @@ for idx, row in meta_df.iterrows():
     cluster_mask_data = cluster_img.get_fdata() > 0
     mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
 
-    for run in [1, 2, 3]:
+    for run in [1, 2, 3, 4, 5, 6]:
         # Build the betaseries filepath
         betaseries_path = f'{expdir}/moshiGO_{subject_id}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
 
