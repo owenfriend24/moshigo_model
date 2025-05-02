@@ -53,9 +53,9 @@ for cluster_path in [cluster_1_path]: #, cluster_2, cluster_3, cluster_4, cluste
         masked_vals = masked_vals[masked_vals > 0]
         mean_val = np.nanmean(masked_vals)
         means.append(mean_val)
-
+    print("transformed clusters")
     df[f'cluster_{cluster_index}_mean'] = means
-
+    print("running model ...")
     model = smf.mixedlm(f"cluster_{cluster_index}_mean ~ C(age_group) * C(run)", df, groups=df["subject"])
     result = model.fit()
     print(f'RAN MODEL FOR VARIANCE EXPLAINED BY PC1 AND PC2 IN CLUSTER {cluster_index}:')
