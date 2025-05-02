@@ -70,5 +70,6 @@ for cluster_path in [cluster_1_path, cluster_2_path, cluster_3_path]: #, cluster
     print()
     print(result.summary())
     print()
-    cluster_index +=1
     df.to_csv(f"/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_hip_{cluster_index}_model_results.csv")
+    cluster_index +=1
+
