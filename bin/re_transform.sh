@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $# -lt 2 ]]; then
+if [[ $# -lt 1 ]]; then
     echo "Usage: manual_ashs_transforms.sh subject ashs_dir"
 
     exit 1
