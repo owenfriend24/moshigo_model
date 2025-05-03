@@ -33,7 +33,7 @@ df['run'] = pd.to_numeric(df['run'])
 
 
 # Load brain mask
-mask_img = nib.load('/scratch/09123/ofriend/moshi/pca_sl/results/group_50_mask.nii.gz')
+mask_img = nib.load('/scratch/09123/ofriend/moshi/pca_sl/results/group_75_mask.nii.gz')
 mask = mask_img.get_fdata() != 0
 mask_img = nib.Nifti1Image(mask.astype(np.uint8), affine=mask_img.affine)
 
@@ -100,7 +100,7 @@ for res in results:
 output_dir = "/scratch/09123/ofriend/moshi/pca_sl/results/"
 
 for key, inv_p_vals in results_dict.items():
-    np.save(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap_6r_cont.npy", np.array(inv_p_vals, dtype=np.float32))
+    np.save(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap_6r_cont_final.npy", np.array(inv_p_vals, dtype=np.float32))
 
 
 terms = ["10-12yo_main", "Adults_main", "run_slope", "10-12yo_by_run", "Adults_by_run"]
@@ -109,11 +109,11 @@ terms = ["10-12yo_main", "Adults_main", "run_slope", "10-12yo_by_run", "Adults_b
 for term in terms:
     chunks = []
     for chunk_id in range(4):
-        chunk = np.load(f"{output_dir}/group_{term}_chunk{chunk_id}_1minuspmap_6r_cont.npy")
+        chunk = np.load(f"{output_dir}/group_{term}_chunk{chunk_id}_1minuspmap_6r_cont_final.npy")
         chunks.append(chunk)
     full_data = np.concatenate(chunks)
     final_img = unmask(full_data, mask_img)
-    final_img.to_filename(f"{output_dir}/group_{term}_1minuspmap_FULL_6r_cont.nii.gz")
+    final_img.to_filename(f"{output_dir}/group_{term}_1minuspmap_FULL_6r_cont_final.nii.gz")
 # for key, inv_p_vals in results_dict.items():
 #     img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
 #     img.to_filename(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.nii.gz")
