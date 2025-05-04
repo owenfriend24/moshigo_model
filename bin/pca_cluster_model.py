@@ -13,13 +13,13 @@ df = ref.copy()
 subject_maps = df['func_path'] # PCA variance maps
 
 cluster_dir='/scratch/09123/ofriend/moshi/pca_sl/results'
-cluster_1_path = f"{cluster_dir}/hip_7_mask.nii.gz"
+cluster_1_path = f"{cluster_dir}/cluster_4.nii.gz"
 # cluster_1 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
-cluster_2_path = f"{cluster_dir}/hip_13_mask.nii.gz"
+cluster_2_path = f"{cluster_dir}/cluster_10.nii.gz"
 # cluster_2 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
-cluster_3_path = f"{cluster_dir}/hip_5_mask.nii.gz"
+cluster_3_path = f"{cluster_dir}/cluster_15.nii.gz"
 # cluster_3 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
 
@@ -34,10 +34,13 @@ for cluster_path in [cluster_1_path, cluster_2_path, cluster_3_path]: #, cluster
     for i, path in enumerate(subject_maps):
         sub = df.loc[i, 'subject']
         run = df.loc[i, 'run']
-
+        if sub in ["moshiGO_250", "moshiGO_230", "moshiGO_285", "moshiGO_334", "moshiGO_277"]:
+            warp_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/test_new_func_to_mni1mm_InverseWarp.nii.gz'
+            affine_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/test_new_func_to_mni1mm_Affine.txt'
+        else:
         #back project the cluster mask into functional space for each subject
-        warp_path = f'/corral-repl/utexas/prestonlab/moshiGO1/moshiGO_{sub}/anatomy/antsreg/transforms/brain2MNI_1mm_InverseWarp.nii.gz'
-        affine_path = f'/corral-repl/utexas/prestonlab/moshiGO1/moshiGO_{sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt'
+            warp_path = f'/corral-repl/utexas/prestonlab/moshiGO1/moshiGO_{sub}/anatomy/antsreg/transforms/brain2MNI_1mm_InverseWarp.nii.gz'
+            affine_path = f'/corral-repl/utexas/prestonlab/moshiGO1/moshiGO_{sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt'
         # affine followed by ,1 for inverse
         out_path = f"{cluster_dir}/moshiGO_{sub}/moshiGO_{sub}_run-{run}_MASK_cluster-{cluster_index}.nii.gz"
 
