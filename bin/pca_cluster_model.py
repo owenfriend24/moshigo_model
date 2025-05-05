@@ -16,7 +16,7 @@ cluster_dir='/scratch/09123/ofriend/moshi/pca_sl/results'
 cluster_1_path = f"{cluster_dir}/cluster_4.nii.gz"
 # cluster_1 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
-cluster_2_path = f"{cluster_dir}/cluster_10.nii.gz"
+cluster_2_path = f"{cluster_dir}/corrected_clust.nii.gz" #f"{cluster_dir}/cluster_10.nii.gz"
 # cluster_2 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
 cluster_3_path = f"{cluster_dir}/cluster_15.nii.gz"
@@ -29,7 +29,7 @@ cluster_3_path = f"{cluster_dir}/cluster_15.nii.gz"
 # cluster_5 = nib.load(f"{cluster_dir}/cluster_postcentral.nii.gz").get_fdata().astype(bool)
 
 cluster_index = 1
-for cluster_path in [cluster_2_path, cluster_3_path]: #, cluster_2, cluster_3, cluster_4, cluster_5]:
+for cluster_path in [cluster_2_path]:  #, cluster_3_path]: #, cluster_2, cluster_3, cluster_4, cluster_5]:
     means = []
     for i, path in enumerate(subject_maps):
         sub = df.loc[i, 'subject']
@@ -73,6 +73,6 @@ for cluster_path in [cluster_2_path, cluster_3_path]: #, cluster_2, cluster_3, c
     print()
     print(result.summary())
     print()
-    df.to_csv(f"/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_hip_{cluster_index}_model_results.csv")
+    df.to_csv(f"/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_hip_{cluster_index}_model_results_new.csv")
     cluster_index +=1
 
