@@ -181,7 +181,8 @@ alignment_summary = {}
 run_pairs = {
     'run1-2': (0, 1),
     'run3-4': (2, 3),
-    'run5-6': (4, 5)
+   # 'run5-6': (4, 5),
+    'run1-6': (0,5)
 }
 
 for age in by_age_item:
