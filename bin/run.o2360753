@@ -1,0 +1,13 @@
+ Starting at Mon May  5 12:25:32 CDT 2025
+ WORKING DIR: /home1/09123/ofriend/analysis/moshigo_model/bin/
+ JOB ID:      2360753
+ JOB NAME:    run
+ NODES:       c306-005
+ N NODES:     1
+ N TASKS:     1
++ python /home1/09123/ofriend/analysis/moshigo_model/bin/plot_pc_space.py
++ set +x
+ 
+ Job complete at Mon May  5 12:33:44 CDT 2025
+ 
+Job duration: 00:08:12 (492 s)

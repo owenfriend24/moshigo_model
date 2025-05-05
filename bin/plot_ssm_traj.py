@@ -18,8 +18,8 @@ import matplotlib.pyplot as plt
 # --- USER INPUTS ---
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
-output_fig = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_by_agegroup.png'
-saved_df_path = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents_hip6run.csv'
+output_fig = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_by_agegrou2.png'
+saved_df_path = '/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents_hip6run2.csv'
 
 # Check if the dataframe already exists
 if os.path.exists(saved_df_path):
@@ -37,7 +37,7 @@ else:
         sub = row['subject']
         age = row['age_group']
 
-        cluster_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/moshiGO_{sub}_run-1_MASK_cluster-1.nii.gz'
+        cluster_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/moshiGO_{sub}_run-1_MASK_cluster-2.nii.gz'
         if not os.path.exists(cluster_path):
             continue
 
