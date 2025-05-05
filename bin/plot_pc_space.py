@@ -7,7 +7,7 @@ import seaborn as sns
 import os
 from nilearn.masking import apply_mask
 
-cluster_name = input("cluster name: ")
+cluster_name = 'cluster-1'
 
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
