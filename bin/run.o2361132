@@ -1,0 +1,32 @@
+ Starting at Mon May  5 15:02:06 CDT 2025
+ WORKING DIR: /home1/09123/ofriend/analysis/moshigo_model/bin/
+ JOB ID:      2361132
+ JOB NAME:    run
+ NODES:       c302-006
+ N NODES:     1
+ N TASKS:     1
++ python /home1/09123/ofriend/analysis/moshigo_model/bin/plot_ssm_traj.py
+Extracting neural data and computing latent trajectories...
+Saved latent trajectory dataframe to: /home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents_hip6run2.csv
+
+Average Procrustes Disparities (lower = more similar):
+
+Adults
+  run1-2: 0.0000
+  run3-4: 0.0000
+  run5-6: 0.0000
+
+10-12yo
+  run1-2: 0.0000
+  run3-4: 0.0000
+  run5-6: 0.0000
+
+6-9yo
+  run1-2: 0.0000
+  run3-4: 0.0000
+  run5-6: 0.0000
++ set +x
+ 
+ Job complete at Mon May  5 15:07:07 CDT 2025
+ 
+Job duration: 00:05:01 (301 s)
