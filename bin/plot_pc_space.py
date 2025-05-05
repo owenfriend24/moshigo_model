@@ -7,11 +7,11 @@ import seaborn as sns
 import os
 from nilearn.masking import apply_mask
 
-cluster_name = 'cluster-1'
+cluster_name = 'cluster-4'
 
 expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
-output_plot = '/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot.png'
+output_plot = '/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot4.png'
 
 # Load subject metadata
 meta_df = pd.read_csv(subject_metadata_csv)

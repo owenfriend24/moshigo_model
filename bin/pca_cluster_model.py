@@ -28,7 +28,7 @@ cluster_3_path = f"{cluster_dir}/cluster_15.nii.gz"
 # cluster_4 = nib.load(f"{cluster_dir}/cluster_lpfc.nii.gz").get_fdata().astype(bool)
 # cluster_5 = nib.load(f"{cluster_dir}/cluster_postcentral.nii.gz").get_fdata().astype(bool)
 
-cluster_index = 1
+cluster_index = 4
 for cluster_path in [cluster_2_path]:  #, cluster_3_path]: #, cluster_2, cluster_3, cluster_4, cluster_5]:
     means = []
     for i, path in enumerate(subject_maps):
