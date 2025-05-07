@@ -20,7 +20,7 @@ expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
 
 
-for cluster_name in ['masked_hip_acc_clust', 'unmasked_hip_acc_clust', 'ifg_acc_clust']:
+for cluster_name in ['masked_hip', 'unmasked_hip', 'ifg']:
     output_fig = f'/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_by_agegroup_{cluster_name}.png'
     saved_df_path = f'/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents_{cluster_name}.csv'
     # Check if the dataframe already exists
@@ -39,7 +39,7 @@ for cluster_name in ['masked_hip_acc_clust', 'unmasked_hip_acc_clust', 'ifg_acc_
             sub = row['subject']
             age = row['age_group']
 
-            cluster_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/moshiGO_{sub}_run-1_MASK_{cluster_name}.nii.gz'
+            cluster_path = f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{sub}/moshiGO_{sub}_run-1_MASK_cluster-{cluster_name}.nii.gz'
             if not os.path.exists(cluster_path):
                 continue
 
