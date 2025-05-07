@@ -9,7 +9,6 @@ from nilearn.masking import apply_mask
 
 for cluster_name in ['masked_hip_acc_clust', 'unmasked_hip_acc_clust', 'ifg_acc_clust']:
 
-
     expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
     subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
     output_plot = f'/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot_{cluster_name}.png'
