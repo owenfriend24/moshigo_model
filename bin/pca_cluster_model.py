@@ -6,7 +6,6 @@ import statsmodels.formula.api as smf
 import pandas as pd
 import subprocess
 
-
 ref = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv")
 
 df = ref.copy()
@@ -76,4 +75,3 @@ for cluster_path in [cluster_1_path, cluster_2_path, cluster_3_path]:  #, cluste
     print()
     df.to_csv(f"/home1/09123/ofriend/analysis/moshigo_model/pca_cluster_{cluster_names[cluster_index]}_model_results_new.csv")
     cluster_index +=1
-
