@@ -18,7 +18,7 @@ cluster_1_path = f"{cluster_dir}/masked_hip_acc_clust.nii.gz"
 cluster_2_path = f"{cluster_dir}/unmasked_hip_acc_clust.nii.gz" #f"{cluster_dir}/cluster_10.nii.gz"
 # cluster_2 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
-cluster_3_path = f"{cluster_dir}/ifg_acc_clust.nii.gz.nii.gz"
+cluster_3_path = f"{cluster_dir}/ifg_acc_clust.nii.gz"
 # cluster_3 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
 
@@ -28,7 +28,7 @@ cluster_3_path = f"{cluster_dir}/ifg_acc_clust.nii.gz.nii.gz"
 # cluster_5 = nib.load(f"{cluster_dir}/cluster_postcentral.nii.gz").get_fdata().astype(bool)
 
 cluster_index = 0
-cluster_names = ['masked_hip', 'unmasked_hip', 'ifg']
+cluster_names = ['ifg']# ['masked_hip', 'unmasked_hip', 'ifg']
 for cluster_path in [cluster_1_path, cluster_2_path, cluster_3_path]:  #, cluster_3_path]: #, cluster_2, cluster_3, cluster_4, cluster_5]:
     means = []
     for i, path in enumerate(subject_maps):
