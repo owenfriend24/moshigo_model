@@ -13,13 +13,13 @@ df = ref.copy()
 subject_maps = df['func_path'] # PCA variance maps
 
 cluster_dir='/scratch/09123/ofriend/moshi/pca_sl/results'
-cluster_1_path = f"{cluster_dir}/cluster_4.nii.gz"
+cluster_1_path = f"{cluster_dir}/masked_hip_acc_clust.nii.gz"
 # cluster_1 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
-cluster_2_path = f"{cluster_dir}/corrected_clust.nii.gz" #f"{cluster_dir}/cluster_10.nii.gz"
+cluster_2_path = f"{cluster_dir}/unmasked_hip_acc_clust.nii.gz" #f"{cluster_dir}/cluster_10.nii.gz"
 # cluster_2 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
-cluster_3_path = f"{cluster_dir}/cluster_15.nii.gz"
+cluster_3_path = f"{cluster_dir}/ifg_acc_clust.nii.gz.nii.gz"
 # cluster_3 = nib.load(cluster_1_path).get_fdata().astype(bool)
 
 
@@ -28,8 +28,8 @@ cluster_3_path = f"{cluster_dir}/cluster_15.nii.gz"
 # cluster_4 = nib.load(f"{cluster_dir}/cluster_lpfc.nii.gz").get_fdata().astype(bool)
 # cluster_5 = nib.load(f"{cluster_dir}/cluster_postcentral.nii.gz").get_fdata().astype(bool)
 
-cluster_index = 4
-for cluster_path in [cluster_2_path]:  #, cluster_3_path]: #, cluster_2, cluster_3, cluster_4, cluster_5]:
+cluster_index = 10
+for cluster_path in [cluster_1_path, cluster_2_path, cluster_3_path]:  #, cluster_3_path]: #, cluster_2, cluster_3, cluster_4, cluster_5]:
     means = []
     for i, path in enumerate(subject_maps):
         sub = df.loc[i, 'subject']
