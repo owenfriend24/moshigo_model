@@ -25,7 +25,7 @@ for cluster_name in ['masked_hip', 'unmasked_hip', 'ifg']:
         age_group = row['age_group']
 
         # assumes you've already back-projected clusters into subject space
-        cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_{cluster_name}.nii.gz'
+        cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_cluster-{cluster_name}.nii.gz'
         cluster_img = nib.load(cluster_mask_path)
         cluster_mask_data = cluster_img.get_fdata() > 0
         mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
