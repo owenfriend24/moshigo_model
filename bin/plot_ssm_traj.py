@@ -58,9 +58,9 @@ for cluster_name in ['masked_hip', 'unmasked_hip', 'ifg']:
                     if data.shape[0] != 4:
                         continue
 
-                    pca = PCA(n_components=2)
+                    pca = PCA(n_components=3)
                     pcs = pca.fit_transform(data)
-                    pc1, pc2 = pcs[item - 1]  # Get this specific item's projection
+                    pc1, pc2, pc3 = pcs[item - 1]  # Get this specific item's projection
 
                     trajectories.append({
                         'Subject': sub,
@@ -68,7 +68,8 @@ for cluster_name in ['masked_hip', 'unmasked_hip', 'ifg']:
                         'Run': run,
                         'Item': item,
                         'PC1': pc1,
-                        'PC2': pc2
+                        'PC2': pc2,
+                        'PC3': pc3
                     })
 
         # Save all trajectories
@@ -165,58 +166,3 @@ for cluster_name in ['masked_hip', 'unmasked_hip', 'ifg']:
     plt.show()
 
 
-    # === Procrustes Alignment Comparison Across Runs 1–6 ===
-    by_age_item = defaultdict(lambda: defaultdict(list))
-    grouped = traj_df.groupby(['Subject', 'AgeGroup'])
-
-    for (sub, age), g in grouped:
-        for item in [1, 2, 3, 4]:
-            item_df = g[g['Item'] == item].sort_values('Run')
-            if item_df.shape[0] == 6:
-                traj = item_df[['PC1', 'PC2']].values
-                by_age_item[age][item].append(traj)
-
-    # Step 2: Compare pairwise similarity across time windows
-    alignment_summary = {}
-
-    # Define run pairs to assess short-term alignment across runs
-    run_pairs = {
-        'run1-2': (0, 1),
-        'run3-4': (2, 3),
-       # 'run5-6': (4, 5),
-        'run1-6': (0,5)
-    }
-
-    for age in by_age_item:
-        pairwise_dists = {k: [] for k in run_pairs}
-        for item in [1, 2, 3, 4]:
-            item_trajs = by_age_item[age][item]
-            for a, b in combinations(item_trajs, 2):
-                for k, (i1, i2) in run_pairs.items():
-                    A = a[[i1, i2], :]
-                    B = b[[i1, i2], :]
-                    _, _, disparity = procrustes(A, B)
-                    pairwise_dists[k].append(disparity)
-        alignment_summary[age] = {k: np.mean(v) if v else np.nan for k, v in pairwise_dists.items()}
-
-    # === Output results ===
-    print("\nAverage Procrustes Disparities (lower = more similar):")
-    for age, vals in alignment_summary.items():
-        print(f"\n{age}")
-        for k, v in vals.items():
-            print(f"  {k}: {v:.4f}")
-
-    # === Plotting summary ===
-    plot_df = pd.DataFrame.from_dict(alignment_summary, orient='index')
-    plot_df = plot_df.reset_index().rename(columns={'index': 'AgeGroup'})
-    plot_df = plot_df.melt(id_vars='AgeGroup', var_name='Transition', value_name='ProcrustesDistance')
-
-    plt.figure(figsize=(8, 6))
-    sns.barplot(data=plot_df, x='Transition', y='ProcrustesDistance', hue='AgeGroup')
-    plt.title("Average Pairwise Procrustes Distances (by Transition & Age Group)")
-    plt.ylabel("Disparity (lower = more aligned)")
-    plt.xlabel("Run-to-Run Transition")
-    plt.legend(title="Age Group")
-    plt.tight_layout()
-    plt.savefig(f'/home1/09123/ofriend/analysis/moshigo_model/pca_procrustes_alignment_summary_{cluster_name}.png')
-    plt.show()
