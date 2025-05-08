@@ -7,53 +7,44 @@ import seaborn as sns
 import os
 from nilearn.masking import apply_mask
 
-for cluster_name in ['hip_cluster_no_acc_mask', 'hip_cluster_no_acc_unmasked']:
+for cluster_name in ['masked_hip_acc_clust']:
 
     expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
     subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
     output_plot = f'/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot_{cluster_name}.png'
+    output_plot_avg = f'/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot_average_{cluster_name}.png'
 
-    # Load subject metadata
     meta_df = pd.read_csv(subject_metadata_csv)
-
-    # Initialize list to collect data
     all_rows = []
 
-    # Loop over subjects
     for idx, row in meta_df.iterrows():
         subject_id = row['subject']
         age_group = row['age_group']
 
-        # assumes you've already back-projected clusters into subject space
         cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_cluster-{cluster_name}.nii.gz'
+        if not os.path.exists(cluster_mask_path):
+            continue
+
         cluster_img = nib.load(cluster_mask_path)
         cluster_mask_data = cluster_img.get_fdata() > 0
         mask_img = nib.Nifti1Image(cluster_mask_data.astype(np.uint8), affine=cluster_img.affine)
 
         for run in [1, 2, 3, 4, 5, 6]:
-            # Build the betaseries filepath
             betaseries_path = f'{expdir}/moshiGO_{subject_id}/RSAmodel/betaseries/moshiGO_{run}_all.nii.gz'
-
             if not os.path.exists(betaseries_path):
                 print(f"Missing: {betaseries_path}")
                 continue
 
-            # Load betaseries
             img = nib.load(betaseries_path)
-            img_data = img.get_fdata()  # Expect shape (x, y, z, 4)
-
-            # Apply cluster mask
-            masked_data = apply_mask(img, mask_img)  # Shape: (n_samples=4, n_voxels)
+            masked_data = apply_mask(img, mask_img)
 
             if masked_data.shape[0] != 4:
                 print(f"Unexpected shape for {subject_id} run {run}: {masked_data.shape}")
                 continue
 
-            # Perform PCA across items
             pca = PCA(n_components=2)
-            pcs = pca.fit_transform(masked_data)  # shape (4 items, 2 PCs)
+            pcs = pca.fit_transform(masked_data)
 
-            # Store results
             for item_idx in range(4):
                 all_rows.append({
                     'AgeGroup': age_group,
@@ -63,12 +54,10 @@ for cluster_name in ['hip_cluster_no_acc_mask', 'hip_cluster_no_acc_unmasked']:
                     'PC2': pcs[item_idx, 1]
                 })
 
-    # Build full DataFrame
     plot_df = pd.DataFrame(all_rows)
-
-    # Average across subjects
     avg_df = plot_df.groupby(['AgeGroup', 'Run', 'Item']).mean().reset_index()
 
+    # === Plot by Age Group ===
     g = sns.relplot(
         data=avg_df,
         x="PC1", y="PC2",
@@ -79,9 +68,27 @@ for cluster_name in ['hip_cluster_no_acc_mask', 'hip_cluster_no_acc_unmasked']:
         height=5, aspect=1,
         s=100
     )
-
     g.set_titles(col_template="Age Group: {col_name}")
     g.fig.subplots_adjust(top=0.85)
     g.fig.suptitle("PCA Space: Item Representations by Run (Averaged by Age Group)")
     g.savefig(output_plot)
+    plt.close()
+
+    # === Grand Average Across Age Groups ===
+    grand_avg_df = plot_df.groupby(['Run', 'Item']).mean().reset_index()
+
+    plt.figure(figsize=(6, 6))
+    sns.scatterplot(
+        data=grand_avg_df,
+        x="PC1", y="PC2",
+        hue="Item",
+        style="Run",
+        s=100
+    )
+    plt.title("PCA Space: Item Representations by Run (Averaged Across All Groups)")
+    plt.xlabel("PC1")
+    plt.ylabel("PC2")
+    plt.legend(title="Item / Run")
+    plt.tight_layout()
+    plt.savefig(output_plot_avg)
     plt.show()
