@@ -20,7 +20,7 @@ expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
 meta_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
 
 
-for cluster_name in ['masked_hip', 'unmasked_hip', 'ifg']:
+for cluster_name in ['hip_cluster_no_acc_mask', 'hip_cluster_no_acc_unmasked']:
     output_fig = f'/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_by_agegroup_{cluster_name}.png'
     saved_df_path = f'/home1/09123/ofriend/analysis/moshigo_model/pca_trajectories_latents_{cluster_name}.csv'
     # Check if the dataframe already exists
