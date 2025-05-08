@@ -10,7 +10,7 @@ from nilearn.masking import apply_mask
 for cluster_name in ['masked_hip_acc_clust']:
 
     expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
-    subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run.csv'
+    subject_metadata_csv = '/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run_acc.csv'
     output_plot = f'/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot_{cluster_name}.png'
     output_plot_avg = f'/home1/09123/ofriend/analysis/moshigo_model/test_pca_plot_average_{cluster_name}.png'
 
@@ -61,7 +61,7 @@ for cluster_name in ['masked_hip_acc_clust']:
     g = sns.relplot(
         data=avg_df,
         x="PC1", y="PC2",
-        col="age_group",
+        col="AgeGroup",
         hue="Item",
         style="Run",
         kind="scatter",
