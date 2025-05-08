@@ -22,8 +22,6 @@ for cluster_name in ['masked_hip_acc_clust']:
         age_group = row['age_group']
 
         cluster_mask_path =  f'/scratch/09123/ofriend/moshi/pca_sl/results/moshiGO_{subject_id}/moshiGO_{subject_id}_run-1_MASK_cluster-{cluster_name}.nii.gz'
-        if not os.path.exists(cluster_mask_path):
-            continue
 
         cluster_img = nib.load(cluster_mask_path)
         cluster_mask_data = cluster_img.get_fdata() > 0
