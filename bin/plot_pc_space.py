@@ -61,7 +61,7 @@ for cluster_name in ['masked_hip_acc_clust']:
     g = sns.relplot(
         data=avg_df,
         x="PC1", y="PC2",
-        col="AgeGroup",
+        col="age_group",
         hue="Item",
         style="Run",
         kind="scatter",
