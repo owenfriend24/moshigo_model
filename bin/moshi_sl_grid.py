@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     masks = ['b_gray_dilated']
 
-    meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/{sbj}/grid_data/all_runs_meta.txt',
+    meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
                        sep='\t', header=None, names=["run", "img", "trial_angle"])
 
     run = meta["run"].to_numpy()
