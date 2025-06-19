@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     behav_master = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/onsets_and_grid_angles.csv")
     sub_id = sub[-3:]
-    trial_data = behav_master[behav_master['subject'] == sub_id].copy().reset_index(drop=True)
+    trial_data = behav_master[behav_master['subject'] == int(sub_id)].copy().reset_index(drop=True)
 
     # Load gray matter mask
     gm_path = f'{subjdir}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/b_gray_dilated.nii.gz'
