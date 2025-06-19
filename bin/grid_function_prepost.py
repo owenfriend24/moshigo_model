@@ -25,9 +25,9 @@ class grid_function_modulo60(Measure):
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
         dsm_matrix = np.arctanh(dsm_matrix)
-        print(f"len dsm_matrix - {len(dsm_matrix)}")
+        # print(f"len dsm_matrix - {len(dsm_matrix)}")
         angles = dataset.sa['trial_angle']
-        print(f"trial angles: {angles}")
+        # print(f"trial angles: {angles}")
         runs = dataset.sa['run']
         n = len(dataset)
 
@@ -65,9 +65,6 @@ class grid_function_modulo60(Measure):
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
 
-        print(f"sim_mod0: {sim_mod0}")
-        print(f"sim_mod30: {sim_mod30}")
-
         if len(sim_mod0) < 2 or len(sim_mod30) < 2:
             return np.nan
 
@@ -87,4 +84,5 @@ class grid_function_modulo60(Measure):
         randstat = np.array(randstat)
         z_stat_60_ovr_30 = (obsstat - np.mean(randstat)) / np.std(randstat)
         z_stat_30_ovr_60 = - z_stat_60_ovr_30
+
         return z_stat_60_ovr_30, z_stat_30_ovr_60
