@@ -38,32 +38,35 @@ class grid_function_modulo60(Measure):
             for j in range(i + 1, n):
                 if runs[i] != runs[j]:
                     diff = abs(angles[i] - angles[j]) % 360
-                    print(f"diff between {angles[i]} - {angles[j]}; mod 360 = {diff}")
+                    # print(f"diff between {angles[i]} - {angles[j]}; mod 360 = {diff}")
                     diff = min(diff, 360 - diff)  # wrap to [0, 180]
-                    print(f"wrapped diff: {diff}")
+                    # print(f"wrapped diff: {diff}")
                     remainder = diff % 60
-                    print(f"remainder diff % 60 = {remainder}")
+                    # print(f"remainder diff % 60 = {remainder}")
 
                     sim = dsm_matrix[i, j]
 
                     if is_modulo_match(remainder, 0, self.tolerance):
                         sim_mod0.append(sim)
-                        print(f"match for 0/60 condition")
-                        print()
-                        print()
+                        # print(f"match for 0/60 condition")
+                        # print()
+                        # print()
                     elif is_modulo_match(remainder, 30, self.tolerance):
                         sim_mod30.append(sim)
-                        print(f"match for 30 condition")
-                        print()
-                        print()
+                        # print(f"match for 30 condition")
+                        # print()
+                        # print()
 
-                    else:
-                        print("no comparison conditions met")
-                        print()
-                        print()
+                    # else:
+                        # print("no comparison conditions met")
+                        # print()
+                        # print()
 
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
+
+        print(f"sim_mod0: {sim_mod0}")
+        print(f"sim_mod30: {sim_mod30}")
 
         if len(sim_mod0) < 2 or len(sim_mod30) < 2:
             return np.nan
