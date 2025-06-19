@@ -75,7 +75,7 @@ if __name__ == "__main__":
     img = meta["img"].to_numpy()
 
     for mask in masks:
-        slmask = f'{subjdir}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
+        slmask = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
 
         ds = fmri_dataset(os.path.join(funcdir, f'grid_trials.nii.gz'), mask=slmask)
 
