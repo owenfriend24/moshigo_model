@@ -42,6 +42,7 @@ if __name__ == "__main__":
     all_metas = []
 
     for run in range(1, 7):
+        print(f"processing run {run}")
         if drop_run is not None and run == drop_run:
             print(f"Skipping run {run}")
             continue
@@ -65,6 +66,7 @@ if __name__ == "__main__":
         model = FirstLevelModel(t_r=TR, noise_model='ols', standardize=False, minimize_memory=False)
         model = model.fit(func_img, design_matrices=motion_confounds)
         residuals_img = model.residuals[0]
+        print("created residuals image")
 
         # Convert movement start time to TR indices
         onset_TRs = (np.array(run_data['mvmt_start']) / TR).astype(int)
@@ -73,6 +75,7 @@ if __name__ == "__main__":
 
         # Mask residuals once
         masked_data = apply_mask(residuals_img, gray_matter_mask)
+        print("masked residuals to gray matter")
 
         # Compute trial-wise averaged patterns
         trial_patterns = []
@@ -82,6 +85,7 @@ if __name__ == "__main__":
             trial_patterns.append(pattern)
 
         trial_patterns = np.vstack(trial_patterns)
+        print("extracted navigation TRs")
 
         # Save each trial as a NIfTI file and record metadata
         img_names = []
