@@ -86,15 +86,14 @@ if __name__ == "__main__":
         sl = sphere_searchlight(sl_func, radius=3)
 
         sl_result = sl(ds)
-        print(sl_result.shape)
 
-        sl_map_60_ovr_30 = sl_result[:, 0]
-        sl_map_30_ovr_60 = sl_result[:, 1]
+        sl_map_60_ovr_30 = sl_result
+        #sl_map_30_ovr_60 = sl_result[:, 1]
 
 
         outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_{mask}_z.nii.gz'
-        outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
+        #outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
 
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
-        map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
+        #map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
 

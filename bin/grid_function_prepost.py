@@ -83,6 +83,6 @@ class grid_function_modulo60(Measure):
 
         randstat = np.array(randstat)
         z_stat_60_ovr_30 = (obsstat - np.mean(randstat)) / np.std(randstat)
-        z_stat_30_ovr_60 = - z_stat_60_ovr_30
+        #z_stat_30_ovr_60 = - z_stat_60_ovr_30
 
-        return np.array(z_stat_60_ovr_30, z_stat_30_ovr_60)
+        return z_stat_60_ovr_30
