@@ -4,6 +4,7 @@ import subprocess
 subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/rsa/bin/activate'])
 ### import python libraries needed for the analysis ###
 import numpy as np
+import pandas as pd
 import nibabel
 import scipy.stats
 from scipy.stats.mstats import zscore
@@ -66,9 +67,12 @@ if __name__ == "__main__":
 
     masks = ['b_gray_dilated']
 
-    run, img, trial_angle = np.loadtxt(f'/scratch/09123/ofriend/moshi/{sbj}/grid_data/all_runs_meta.txt',
-        unpack=True
-    )
+    meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/{sbj}/grid_data/all_runs_meta.txt',
+                       sep='\t', header=None, names=["run", "img", "trial_angle"])
+
+    run = meta["run"].to_numpy()
+    trial_angle = meta["trial_angle"].to_numpy()
+    img = meta["img"].to_numpy()
 
     for mask in masks:
         slmask = f'{subjdir}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
