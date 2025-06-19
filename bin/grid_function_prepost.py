@@ -49,12 +49,18 @@ class grid_function_modulo60(Measure):
                     if is_modulo_match(remainder, 0, self.tolerance):
                         sim_mod0.append(sim)
                         print(f"match for 0/60 condition")
+                        print()
+                        print()
                     elif is_modulo_match(remainder, 30, self.tolerance):
                         sim_mod30.append(sim)
                         print(f"match for 30 condition")
+                        print()
+                        print()
 
                     else:
                         print("no comparison conditions met")
+                        print()
+                        print()
 
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
