@@ -62,7 +62,6 @@ if __name__ == "__main__":
     subjdir = f'/scratch/09123/ofriend/moshi/{sbj}/'
     funcdir = f'/scratch/09123/ofriend/moshi/{sbj}/grid_data/'
     out_dir = funcdir
-
     niter= 1000
 
     masks = ['b_gray_dilated']
