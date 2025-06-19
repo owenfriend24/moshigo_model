@@ -14,7 +14,7 @@ subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/
 
 def get_args():
     parser = argparse.ArgumentParser(description="Process fMRI data for grid analysis.")
-    parser.add_argument("subject_id", help="Subject identifier (e.g., temple016)")
+    parser.add_argument("subject_id", help="Subject identifier (e.g., moshiGO_202)")
     parser.add_argument("--drop_run", type=int, choices=[1, 2, 3, 4, 5, 6], default=None,
                         help="Run number to drop (1–6). Default: keep all runs.")
     return parser.parse_args()
