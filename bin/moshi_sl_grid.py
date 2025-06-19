@@ -56,8 +56,6 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
     sbj = args.subject_id
-    comparison = args.comparison
-    masktype = args.masktype
     drop_run = args.drop_run
 
     expdir = f'/scratch/09123/ofriend/moshi/'
