@@ -16,7 +16,7 @@ for sub in moshiGO*; do
         "${sub}" \
          "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
         4 \
-        "smoothed_${sub}.nii.gz""
+        "smoothed_${sub}.nii.gz"
 
     echo "Finished smoothing run ${sub}!"
 
