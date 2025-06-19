@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # Store metadata across runs
     all_metas = []
 
-    for run in range(1, 7):
+    for run in range(1, 4):
         print(f"processing run {run}")
         if drop_run is not None and run == drop_run:
             print(f"Skipping run {run}")
