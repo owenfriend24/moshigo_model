@@ -2,7 +2,7 @@
 #
 # grid transform
 
-if [[ $# -lt 2 ]]; then
+if [[ $# -lt 1 ]]; then
     echo "Usage: run_sl_transform.sh sub run"
     exit 1
 fi
