@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # Define paths
     expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
     subjdir = f'{expdir}/{sub}'
-    outdir = f'/scratch/09123/ofriend/moshi/{sub}/grid_data/'
+    outdir = f'/scratch/09123/ofriend/moshi/grid_coding/{sub}/grid_data/'
     os.makedirs(outdir, exist_ok=True)
     TR = 2.0
 

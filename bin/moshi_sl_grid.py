@@ -59,9 +59,9 @@ if __name__ == "__main__":
     sbj = args.subject_id
     drop_run = args.drop_run
 
-    expdir = f'/scratch/09123/ofriend/moshi/'
-    subjdir = f'/scratch/09123/ofriend/moshi/{sbj}/'
-    funcdir = f'/scratch/09123/ofriend/moshi/{sbj}/grid_data/'
+    expdir = f'/scratch/09123/ofriend/moshi/grid_coding'
+    subjdir = f'{expdir}/{sbj}/'
+    funcdir = f'/{subjdir}/grid_data/'
     out_dir = funcdir
     niter= 1000
 

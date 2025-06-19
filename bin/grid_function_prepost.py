@@ -25,8 +25,9 @@ class grid_function_modulo60(Measure):
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
         dsm_matrix = np.arctanh(dsm_matrix)
-
+        print(f"len dsm_matrix - {len(dsm_matrix)}")
         angles = dataset.sa['trial_angle']
+        print(f"trial angles: {angles}")
         runs = dataset.sa['run']
         n = len(dataset)
 
@@ -37,15 +38,23 @@ class grid_function_modulo60(Measure):
             for j in range(i + 1, n):
                 if runs[i] != runs[j]:
                     diff = abs(angles[i] - angles[j]) % 360
+                    print(f"diff between {angles[i]} - {angles[j]}; mod 360 = {diff}")
                     diff = min(diff, 360 - diff)  # wrap to [0, 180]
+                    print(f"wrapped diff: {diff}")
                     remainder = diff % 60
+                    print(f"remainder diff % 60 = {remainder}")
 
                     sim = dsm_matrix[i, j]
 
                     if is_modulo_match(remainder, 0, self.tolerance):
                         sim_mod0.append(sim)
+                        print(f"match for 0/60 condition")
                     elif is_modulo_match(remainder, 30, self.tolerance):
                         sim_mod30.append(sim)
+                        print(f"match for 30 condition")
+
+                    else:
+                        print("no comparison conditions met")
 
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
