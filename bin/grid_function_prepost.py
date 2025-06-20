@@ -24,8 +24,16 @@ class grid_function_modulo60(Measure):
         # Compute similarity matrix (Fisher z-transformed)
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
+
+        # Prevent arctanh blowup: clip values strictly below ±1
+        dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
+
         dsm_matrix = np.arctanh(dsm_matrix)
-        print("Any NaNs in dsm_matrix?", np.isnan(dsm_matrix).any())
+        # Skip if any invalid values remain
+        if np.isnan(dsm_matrix).any() or np.isinf(dsm_matrix).any():
+            return np.nan
+
+        #print("Any NaNs in dsm_matrix?", np.isnan(dsm_matrix).any())
         # print(f"len dsm_matrix - {len(dsm_matrix)}")
         angles = dataset.sa['trial_angle']
         # print(f"trial angles: {angles}")
