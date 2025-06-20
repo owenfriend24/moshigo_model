@@ -25,15 +25,8 @@ class grid_function_modulo60(Measure):
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
 
-        # Prevent arctanh blowup: clip values strictly below ±1
-        dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
-
         dsm_matrix = np.arctanh(dsm_matrix)
-        # Skip if any invalid values remain
-        if np.isnan(dsm_matrix).any() or np.isinf(dsm_matrix).any():
-            return np.nan
 
-        #print("Any NaNs in dsm_matrix?", np.isnan(dsm_matrix).any())
         # print(f"len dsm_matrix - {len(dsm_matrix)}")
         angles = dataset.sa['trial_angle']
         # print(f"trial angles: {angles}")
@@ -75,13 +68,6 @@ class grid_function_modulo60(Measure):
 
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
-
-        print("Trial angles:", angles)
-        print("Runs:", runs)
-        print("DSM shape:", dsm_matrix.shape)
-        print("NaNs in DSM after clipping/arctanh:", np.isnan(dsm_matrix).any())
-        print("mod0 pairs:", len(sim_mod0), "mod30 pairs:", len(sim_mod30))
-
         obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
 
         # Permutation test
