@@ -8,16 +8,13 @@ if [[ $# -lt 1 ]]; then
 fi
 
 sl_dir=$1
+sub=$2
 
 cd ${sl_dir}/
 
-for sub in moshiGO*; do
-    smooth_susan \
-        "${sub}" \
-         "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
-        4 \
-        "smoothed_${sub}.nii.gz"
-
-    echo "Finished smoothing run ${sub}!"
-
-done
+smooth_susan \
+    "${sl_dir}/${sub}*" \
+     "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
+    4 \
+    "${sl_dir}/smoothed_${sub}.nii.gz"
+echo "Finished smoothing run ${sub}!"

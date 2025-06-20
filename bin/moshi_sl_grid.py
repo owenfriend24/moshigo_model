@@ -96,6 +96,6 @@ if __name__ == "__main__":
 
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
     subprocess.run(f"transform_sl_to_2mm.sh {sbj}")
-    subprocess.run(f"")
+    subprocess.run(f"smooth_sl.sh {expdir}/mni {sbj}")
         #map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
 
