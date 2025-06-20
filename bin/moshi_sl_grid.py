@@ -84,19 +84,15 @@ if __name__ == "__main__":
 
         sl_func = grid_function_modulo60('correlation', niter=niter)
         sl = sphere_searchlight(sl_func, radius=3)
-
         sl_result = sl(ds)
-
         sl_map_60_ovr_30 = sl_result
         #sl_map_30_ovr_60 = sl_result[:, 1]
-
-
         outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_{mask}_z.nii.gz'
         #outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
 
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
 
-    subprocess.run(f"$HOME/analysis/moshigo_model/bin/transform_sl_to_2mm.sh {sbj}")
-    subprocess.run(f"$HOME/analysis/moshigo_model/bin/smooth_sl.sh {expdir}/mni {sbj}")
+    subprocess.run(f"bash $HOME/analysis/moshigo_model/bin/transform_sl_to_2mm.sh {sbj}")
+    subprocess.run(f"bash $HOME/analysis/moshigo_model/bin/smooth_sl.sh {expdir}/mni {sbj}")
         #map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
 
