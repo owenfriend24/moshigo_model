@@ -41,8 +41,11 @@ if __name__ == "__main__":
 
     # Store metadata across runs
     all_metas = []
-
-    for run in range(1, 7):
+    run_range = 7
+    if sub in ['moshiGO_289','moshiGO_230','moshiGO_285','moshiGO_294','moshiGO_345','moshiGO_241','moshiGO_277','moshiGO_316',
+               'moshiGO_248','moshiGO_213','moshiGO_278','moshiGO_334','moshiGO_321','moshiGO_255']:
+        run_range = 4
+    for run in range(1, run_range):
         print(f"processing run {run}")
         if drop_run is not None and run == drop_run:
             print(f"Skipping run {run}")
