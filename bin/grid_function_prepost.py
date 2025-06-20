@@ -21,11 +21,12 @@ class grid_function_modulo60(Measure):
         def is_modulo_match(remainder, target, tol):
             return min(abs(remainder - target), 60 - abs(remainder - target)) <= tol
 
-        trial_std = np.std(dataset.samples, axis=1)
-        if np.any(trial_std == 0):
-            print("⚠️ Zero-variance trial(s) — skipping")
-            return np.nan
-
+        # trial_std = np.std(dataset.samples, axis=1)
+        # if np.any(trial_std == 0):
+        #     print("⚠️ Zero-variance trial(s) — skipping")
+        #     return np.nan
+        flat_trials = np.where(np.std(dataset.samples, axis=1) == 0)[0]
+        print(f"Flat (zero-variance) trials: {flat_trials}")
 
         # Compute similarity matrix (Fisher z-transformed)
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
@@ -33,10 +34,10 @@ class grid_function_modulo60(Measure):
         dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
         dsm_matrix = np.arctanh(dsm_matrix)
 
-        # Early return if DSM is bad
-        if np.isnan(dsm_matrix).any() or np.isinf(dsm_matrix).any():
-            print("⚠️ NaNs in DSM — skipping voxel")
-            return np.nan
+        # # Early return if DSM is bad
+        # if np.isnan(dsm_matrix).any() or np.isinf(dsm_matrix).any():
+        #     print("⚠️ NaNs in DSM — skipping voxel")
+        #     return np.nan
 
         # dsm_matrix = np.arctanh(dsm_matrix)
 
