@@ -95,7 +95,8 @@ if __name__ == "__main__":
         #outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
 
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
-    subprocess.run(f"transform_sl_to_2mm.sh {sbj}")
-    subprocess.run(f"smooth_sl.sh {expdir}/mni {sbj}")
+
+    subprocess.run(f"$HOME/analysis/moshigo_model/bin/transform_sl_to_2mm.sh {sbj}")
+    subprocess.run(f"$HOME/analysis/moshigo_model/bin/smooth_sl.sh {expdir}/mni {sbj}")
         #map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
 
