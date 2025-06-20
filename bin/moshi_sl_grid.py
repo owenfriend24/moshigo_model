@@ -81,9 +81,6 @@ if __name__ == "__main__":
 
         ds = fmri_dataset(os.path.join(funcdir, f'grid_trials.nii.gz'), mask=slmask)
 
-        print("Searchlight dataset shape:", ds.shape)
-        print("Searchlight voxel count:", np.sum(ds.fa['mask']))
-
         # run across all runs
         sl_func = grid_function_modulo60('correlation', niter=niter)
         sl = sphere_searchlight(sl_func, radius=3)
