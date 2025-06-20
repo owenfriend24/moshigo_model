@@ -25,6 +25,7 @@ class grid_function_modulo60(Measure):
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
         dsm_matrix = np.arctanh(dsm_matrix)
+        print("Any NaNs in dsm_matrix?", np.isnan(dsm_matrix).any())
         # print(f"len dsm_matrix - {len(dsm_matrix)}")
         angles = dataset.sa['trial_angle']
         # print(f"trial angles: {angles}")
@@ -66,8 +67,6 @@ class grid_function_modulo60(Measure):
 
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
-
-        print(f"mod0: {len(sim_mod0)} pairs, mod30: {len(sim_mod30)} pairs")
         obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
 
         # Permutation test
