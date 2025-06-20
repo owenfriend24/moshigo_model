@@ -67,6 +67,7 @@ class grid_function_modulo60(Measure):
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
 
+        print(f"mod0: {len(sim_mod0)} pairs, mod30: {len(sim_mod30)} pairs")
         obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
 
         # Permutation test
