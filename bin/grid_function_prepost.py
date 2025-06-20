@@ -67,9 +67,6 @@ class grid_function_modulo60(Measure):
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
 
-        # if len(sim_mod0) < 2 or len(sim_mod30) < 2:
-        #     return np.nan
-
         obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
 
         # Permutation test
