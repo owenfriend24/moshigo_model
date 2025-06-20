@@ -40,6 +40,7 @@ import argparse
 
 ### import custom searchlight function ###
 from grid_function_prepost import *
+from grid_function_late import *
 
 ### use argument parser to set up experiment/subject info and drop runs if necessary
 def get_args():
@@ -92,7 +93,7 @@ if __name__ == "__main__":
 
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
 
-    subprocess.run(f"bash $HOME/analysis/moshigo_model/bin/transform_sl_to_2mm.sh {sbj}")
-    subprocess.run(f"bash $HOME/analysis/moshigo_model/bin/smooth_sl.sh {expdir}/mni {sbj}")
+    subprocess.run(f"bash /home1/09123/ofriend/analysis/moshigo_model/bin/transform_sl_to_2mm.sh {sbj}")
+    subprocess.run(f"bash /home1/09123/ofriend/analysis/moshigo_model/bin/smooth_sl.sh {expdir}/mni {sbj}")
         #map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
 
