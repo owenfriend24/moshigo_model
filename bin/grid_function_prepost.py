@@ -21,25 +21,11 @@ class grid_function_modulo60(Measure):
         def is_modulo_match(remainder, target, tol):
             return min(abs(remainder - target), 60 - abs(remainder - target)) <= tol
 
-        # trial_std = np.std(dataset.samples, axis=1)
-        # if np.any(trial_std == 0):
-        #     print("⚠️ Zero-variance trial(s) — skipping")
-        #     return np.nan
-        flat_trials = np.where(np.std(dataset.samples, axis=1) == 0)[0]
-        print(f"Flat (zero-variance) trials: {flat_trials}")
-
         # Compute similarity matrix (Fisher z-transformed)
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
-        dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
+        # dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
         dsm_matrix = np.arctanh(dsm_matrix)
-
-        # # Early return if DSM is bad
-        # if np.isnan(dsm_matrix).any() or np.isinf(dsm_matrix).any():
-        #     print("⚠️ NaNs in DSM — skipping voxel")
-        #     return np.nan
-
-        # dsm_matrix = np.arctanh(dsm_matrix)
 
         # print(f"len dsm_matrix - {len(dsm_matrix)}")
         angles = dataset.sa['trial_angle']
@@ -65,20 +51,10 @@ class grid_function_modulo60(Measure):
 
                     if is_modulo_match(remainder, 0, self.tolerance):
                         sim_mod0.append(sim)
-                        # valid_angles.append(int(diff))
-                        # print(f"match for 0/60 condition")
-                        # print()
-                        # print()
+
                     elif is_modulo_match(remainder, 30, self.tolerance):
                         sim_mod30.append(sim)
-                        # print(f"match for 30 condition")
-                        # print()
-                        # print()
 
-                    # else:
-                        # print("no comparison conditions met")
-                        # print()
-                        # print()
 
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
