@@ -51,39 +51,29 @@ class grid_function_modulo60_late(Measure):
 
                         if is_modulo_match(remainder, 0, self.tolerance):
                             sim_mod0.append(sim)
-                            # valid_angles.append(int(diff))
-                            # print(f"match for 0/60 condition")
-                            # print()
-                            # print()
+
                         elif is_modulo_match(remainder, 30, self.tolerance):
                             sim_mod30.append(sim)
-                            # print(f"match for 30 condition")
-                            # print()
-                            # print()
 
-                        # else:
-                            # print("no comparison conditions met")
-                            # print()
-                            # print()
 
-            sim_mod0 = np.array(sim_mod0)
-            sim_mod30 = np.array(sim_mod30)
+        sim_mod0 = np.array(sim_mod0)
+        sim_mod30 = np.array(sim_mod30)
 
-            obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
+        obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
 
-            # Permutation test
-            combined = np.concatenate([sim_mod0, sim_mod30])
-            n_mod0 = len(sim_mod0)
-            randstat = []
+        # Permutation test
+        combined = np.concatenate([sim_mod0, sim_mod30])
+        n_mod0 = len(sim_mod0)
+        randstat = []
 
-            for _ in range(self.niter):
-                np.random.shuffle(combined)
-                rand_0 = combined[:n_mod0]
-                rand_30 = combined[n_mod0:]
-                randstat.append(np.mean(rand_0) - np.mean(rand_30))
+        for _ in range(self.niter):
+            np.random.shuffle(combined)
+            rand_0 = combined[:n_mod0]
+            rand_30 = combined[n_mod0:]
+            randstat.append(np.mean(rand_0) - np.mean(rand_30))
 
-            randstat = np.array(randstat)
-            z_stat_60_ovr_30 = (obsstat - np.mean(randstat)) / np.std(randstat)
-            #z_stat_30_ovr_60 = - z_stat_60_ovr_30
-            # print(f"valid angels: {valid_angles}")
-            return z_stat_60_ovr_30
+        randstat = np.array(randstat)
+        z_stat_60_ovr_30 = (obsstat - np.mean(randstat)) / np.std(randstat)
+        #z_stat_30_ovr_60 = - z_stat_60_ovr_30
+        # print(f"valid angels: {valid_angles}")
+        return z_stat_60_ovr_30
