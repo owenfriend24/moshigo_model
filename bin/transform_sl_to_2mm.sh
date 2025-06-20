@@ -10,7 +10,7 @@ fi
 sub=$1
 
 # Handle special cases for certain subjects
-if [[ "$sub" == "moshiGO_250" || "$sub" == "moshiGO_230" || "$sub" == "moshiGO_285" || "$sub" == "moshiGO_334" || "$sub" == "moshiGO_277" ]]; then
+if [[ "$sub" == "moshiGO_250" || "$sub" == "moshiGO_230" || "$sub" == "moshiGO_285" || "$sub" == "moshiGO_334" || "$sub" == "moshiGO_277" || "$sub" == "moshiGO_240" || "$sub" == "moshiGO_247" || "$sub" == "moshiGO_213" || "$sub" == "moshiGO_350" || "$sub" == "moshiGO_323" ]]; then
     warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/test_new_func_to_mni1mm_Warp.nii.gz"
     affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/test_new_func_to_mni1mm_Affine.txt"
 else
