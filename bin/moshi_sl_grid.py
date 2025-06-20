@@ -79,10 +79,10 @@ if __name__ == "__main__":
         slmask = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
 
         ds = fmri_dataset(os.path.join(funcdir, f'grid_trials.nii.gz'), mask=slmask)
-
         ds.sa['run'] = run[:]
         ds.sa['trial_angle'] = trial_angle[:]
 
+        # run across all runs
         sl_func = grid_function_modulo60('correlation', niter=niter)
         sl = sphere_searchlight(sl_func, radius=3)
         sl_result = sl(ds)
@@ -90,10 +90,21 @@ if __name__ == "__main__":
         #sl_map_30_ovr_60 = sl_result[:, 1]
         outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_{mask}_z.nii.gz'
         #outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
-
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
 
-    subprocess.run(f"bash /home1/09123/ofriend/analysis/moshigo_model/bin/transform_sl_to_2mm.sh {sbj}")
-    subprocess.run(f"bash /home1/09123/ofriend/analysis/moshigo_model/bin/smooth_sl.sh {expdir}/mni {sbj}")
+        # # restrict to second half when they're more trained
+        # sl_func = grid_function_modulo60_late('correlation', niter=niter)
+        # sl = sphere_searchlight(sl_func, radius=3)
+        # sl_result = sl(ds)
+        # sl_map_60_ovr_30 = sl_result
+        # # sl_map_30_ovr_60 = sl_result[:, 1]
+        # outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_LATE_{mask}_z.nii.gz'
+        # # outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
+        # map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
+
+    subprocess.run(["bash", "/home1/09123/ofriend/analysis/moshigo_model/bin/transform_sl_to_2mm.sh", sbj])
+    subprocess.run(["bash", "/home1/09123/ofriend/analysis/moshigo_model/bin/smooth_sl.sh", f"{expdir}/mni", sbj])
+
+
         #map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
 
