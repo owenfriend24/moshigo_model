@@ -78,8 +78,9 @@ if __name__ == "__main__":
     for mask in masks:
         slmask = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
 
-
         ds = fmri_dataset(os.path.join(funcdir, f'grid_trials.nii.gz'), mask=slmask)
+        ds.sa['run'] = run
+        ds.sa['trial_angle'] = trial_angle
 
         # run across all runs
         sl_func = grid_function_modulo60('correlation', niter=niter)

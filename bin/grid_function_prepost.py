@@ -28,7 +28,7 @@ class grid_function_modulo60(Measure):
         dsm_matrix = np.arctanh(dsm_matrix)
 
         # print(f"len dsm_matrix - {len(dsm_matrix)}")
-        # angles = dataset.sa['trial_angle']
+        angles = dataset.sa['trial_angle']
         # print(f"trial angles: {angles}")
         runs = dataset.sa['run']
         n = len(dataset)
