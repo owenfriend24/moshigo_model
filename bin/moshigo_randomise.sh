@@ -7,17 +7,17 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 
-fmdir=$1
+sl_dir=$1
 
-randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/group_z.nii.gz \
--o /scratch/09123/ofriend/moshi/grid_coding/randomise/cont \
+randomise -i ${sl_dir}/group_z.nii.gz \
+-o ${sl_dir}/cont \
 -d /scratch/09123/ofriend/moshi/grid_coding/randomise/int_design.mat \
 -t /scratch/09123/ofriend/moshi/grid_coding/randomise/int_design.con \
 -m /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz \
 -n 5000 -x --uncorrp
 
-randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/group_z.nii.gz \
--o /scratch/09123/ofriend/moshi/grid_coding/randomise/one_sample \
+randomise -i ${sl_dir}/group_z.nii.gz \
+-o ${sl_dir}/one_sample \
 -m /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz \
 -1 \
 -n 5000 -x  --uncorrp
