@@ -83,14 +83,19 @@ if __name__ == "__main__":
 
         # Compute trial-wise averaged patterns
         trial_patterns = []
+        kept_indices = []
+
         for idx, row in run_data.iterrows():
             tr_window = [tr for tr in row["TR_indices"] if tr < masked_data.shape[0]]
             if not tr_window:
-                print(f"no valid TRs in window {idx+1} run {run}")
+                print(f"no valid TRs in window {idx + 1} run {run}")
                 continue
             pattern = masked_data[tr_window].mean(axis=0)
             trial_patterns.append(pattern)
+            kept_indices.append(idx)
 
+        # Align run_data to match kept trials
+        run_data = run_data.loc[kept_indices].reset_index(drop=True)
         trial_patterns = np.vstack(trial_patterns)
         print("extracted navigation TRs")
 
