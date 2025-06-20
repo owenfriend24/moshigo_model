@@ -75,6 +75,13 @@ class grid_function_modulo60(Measure):
 
         sim_mod0 = np.array(sim_mod0)
         sim_mod30 = np.array(sim_mod30)
+
+        print("Trial angles:", angles)
+        print("Runs:", runs)
+        print("DSM shape:", dsm_matrix.shape)
+        print("NaNs in DSM after clipping/arctanh:", np.isnan(dsm_matrix).any())
+        print("mod0 pairs:", len(sim_mod0), "mod30 pairs:", len(sim_mod30))
+
         obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
 
         # Permutation test
