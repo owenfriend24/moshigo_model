@@ -11,8 +11,8 @@ fmdir=$1
 
 randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/group_z.nii.gz \
 -o /scratch/09123/ofriend/moshi/grid_coding/randomise/cont \
--d /scratch/09123/ofriend/moshi/grid_coding/randomise/design.mat \
--t /scratch/09123/ofriend/moshi/grid_coding/randomise/design.con \
+-d /scratch/09123/ofriend/moshi/grid_coding/randomise/int_design.mat \
+-t /scratch/09123/ofriend/moshi/grid_coding/randomise/int_design.con \
 -m /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz \
 -n 5000 -x --uncorrp
 
