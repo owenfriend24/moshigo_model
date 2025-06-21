@@ -18,8 +18,12 @@ def extract_mean_roi_zvals(run_type):
     else:
         raise ValueError("run_type must be 'full' or 'late'")
 
-    rois = ['b_erc', 'l_erc', 'r_erc']
-    roi_paths = {roi: f'{expdir}/mni/mni_masks/{roi}.nii.gz' for roi in rois}
+    rois = ['b_erc', 'l_erc', 'r_erc',
+            'AD_Barron_LERC', 'AD_Barron_RERC', 'b_AD_Barron_ERC',
+            'AD_Olsen_LalERC', 'AD_Olsen_RalERC', 'b_Olsen_alERC',
+            'AD_Olsen_LlRC', 'AD_Olsen_RERC', 'b_Olsen_ERC',
+            'AD_Olsen_LpmERC', 'AD_Olsen_RpmERC', 'b_Olsen_pmERC']
+    roi_paths = {roi: f'{expdir}/mni/mni_masks/func_masks/{roi}.nii.gz' for roi in rois}
 
     z_base = f'{expdir}/mni/late' if run_type == 'late' else f'{expdir}/mni'
 
