@@ -14,7 +14,7 @@ runs = [1, 2, 3, 4, 5, 6]
 TR = 2.0
 
 subject = sys.argv[1]
-print(f"🔄 Processing {subject}")
+print(f"Processing {subject}")
 
 subj_exp_dir = os.path.join(expdir, subject)
 subj_scratch_dir = os.path.join(fmriprep_dir, subject)
