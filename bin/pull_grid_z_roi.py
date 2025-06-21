@@ -24,7 +24,7 @@ def extract_mean_roi_zvals(run_type):
     z_base = f'{expdir}/mni/late' if run_type == 'late' else f'{expdir}/mni'
 
     for sub in subs:
-        zmap_path = os.path.join(z_base, f"{sub}_zmap.nii.gz")
+        zmap_path = os.path.join(z_base, f"smoothed_{sub}.nii.gz")
         zdata = nib.load(zmap_path).get_fdata()
 
         row = {'subject': sub}
