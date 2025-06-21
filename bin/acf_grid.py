@@ -43,7 +43,7 @@ for subject in subject_list:
             func_img = load_img(bold_path)
             motion_df = pd.read_csv(motion_path, delim_whitespace=True, header=None)
 
-            model = FirstLevelModel(t_r=TR, noise_model="ols", standardize=False)
+            model = FirstLevelModel(t_r=TR, noise_model="ols", standardize=False, minimize_memory=False)
             model = model.fit(func_img, design_matrices=motion_df)
             fitted_img = model.predicted[0]
             fitted_img.to_filename(fitted_path)
