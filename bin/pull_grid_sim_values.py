@@ -63,7 +63,7 @@ def back_project_to_func_space(sbj, masks):
     subprocess.run(cmd0, check=True)
 
     for mask in masks: # 222 looks off
-        warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Warp.nii.gz"
+        warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
         affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Affine.txt"
 
         # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new/smoothed/{mask}.nii.gz"
@@ -131,11 +131,6 @@ if __name__ == "__main__":
         slmask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
         ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
-        # REMOVE voxels with any NaNs
-        good_voxels = ~np.any(np.isnan(ds.samples), axis=0)
-        if not np.all(good_voxels):
-            print(f"{sbj} {mask}: Removed {np.sum(~good_voxels)} voxels with NaNs")
-        ds = ds[:, good_voxels]  # Keep all trials, drop bad voxels
 
         ds.sa['run'] = run
         ds.sa['trial_angle'] = trial_angle
@@ -145,4 +140,3 @@ if __name__ == "__main__":
 
         out_path = f'/scratch/09123/ofriend/moshi/grid_coding/csvs/{sbj}_{mask}_similarity_values.csv'
         result_df.to_csv(out_path, index=False)
-
