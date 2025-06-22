@@ -24,7 +24,7 @@ class grid_similarity_function(Measure):
         # Compute similarity matrix (Fisher z-transformed)
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
-        # dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
+        dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
         dsm_matrix = np.arctanh(dsm_matrix)
 
         # print(f"len dsm_matrix - {len(dsm_matrix)}")
