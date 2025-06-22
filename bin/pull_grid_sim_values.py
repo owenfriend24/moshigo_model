@@ -108,8 +108,7 @@ if __name__ == "__main__":
 
         # run across all runs
         sl_func = grid_similarity_function('correlation')
-        sl = sphere_searchlight(sl_func, radius=3)
-        sl_result = sl(ds)
+        result_df = sl_func(ds)
         out_path = f'{expdir}/similarity_values.csv'
-        sl_result.to_csv(out_path)
+        result_df.to_csv(out_path)
 
