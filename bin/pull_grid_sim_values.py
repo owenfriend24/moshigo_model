@@ -78,7 +78,7 @@ def back_project_to_func_space(sbj, masks):
         #     "-n", "NearestNeighbor"
         # ]
 
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new/smoothed/{mask}.nii.gz"
+        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func/{mask}.nii.gz"
         output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
         reference = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
         cmd2 = [
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     funcdir = f'/{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['mpfc_age_inc', 'pmerc_age_dec', 'pmerc_masked_age_dec']
+    masks = ['inter_alerc_masked', 'age_dec_pmerc_masked', 'age_inc_alerc_masked', 'ofc_age_inc']
     back_project_to_func_space(sbj, masks)
 
     meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
