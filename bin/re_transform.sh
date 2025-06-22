@@ -21,7 +21,7 @@ sub=$1
 
 
 ANTS 3 -m CC[/home1/09123/ofriend/analysis/moshigo_model/bin/MNI152_T1_2mm_brain.nii.gz, \
-/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/data/funcunwarpspace/refvol.nii.gz,1,5] \
+/corral-repl/utexas/prestonlab/moshiGO1/${sub}/BOLD/antsreg/data/funcunwarpspace/refvol.nii.gz,1,5] \
 -t SyN[0.25] -r Gauss[3,0] -o /corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_ \
 -i 30x90x20 --use-Histogram-Matching \
 --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000
