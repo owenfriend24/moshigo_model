@@ -63,26 +63,22 @@ def back_project_to_func_space(sbj, masks):
     subprocess.run(cmd0, check=True)
 
     for mask in masks: # 222 looks off
-        if sbj in ["moshiGO_250", "moshiGO_230", "moshiGO_285", "moshiGO_334", "moshiGO_277", "moshiGO_240", "moshiGO_247", "moshiGO_213", "moshiGO_350", "moshiGO_323"]:
-            warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/test_new_func_to_mni1mm_Warp.nii.gz"
-            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/test_new_func_to_mni1mm_Affine.txt"
-        else:
-            warp = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_1mm_Warp.nii.gz"
-            affine = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt"
+        warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Warp.nii.gz"
+        affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Affine.txt"
 
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
-        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
-        reference = f'/home1/09123/ofriend/analysis/temple/bin/templates/MNI152_T1_1mm_brain.nii.gz'
-        cmd1 = [
-            "antsApplyTransforms",
-            "-d", "3",
-            "-i", input_mask,
-            "-o", output_mask,
-            "-r", reference,
-            "-n", "NearestNeighbor"
-        ]
+        # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new/smoothed/{mask}.nii.gz"
+        # output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
+        # reference = f'/home1/09123/ofriend/analysis/temple/bin/templates/MNI152_T1_1mm_brain.nii.gz'
+        # cmd1 = [
+        #     "antsApplyTransforms",
+        #     "-d", "3",
+        #     "-i", input_mask,
+        #     "-o", output_mask,
+        #     "-r", reference,
+        #     "-n", "NearestNeighbor"
+        # ]
 
-        input_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
+        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new/smoothed/{mask}.nii.gz"
         output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
         reference = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
         cmd2 = [
@@ -96,7 +92,7 @@ def back_project_to_func_space(sbj, masks):
             "-n", "NearestNeighbor"
         ]
 
-        subprocess.run(cmd1, check=True)
+        # subprocess.run(cmd1, check=True)
         subprocess.run(cmd2, check=True)
 
         # # # clean mask to make sure no missing voxels
@@ -121,7 +117,7 @@ if __name__ == "__main__":
     funcdir = f'/{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['mpfc_age_inc', 'pm_erc_age_dec', 'pm_erc_age_dec_masked']
+    masks = ['mpfc_age_inc', 'pmerc_age_dec', 'pmerc_masked_age_dec']
     back_project_to_func_space(sbj, masks)
 
     meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
