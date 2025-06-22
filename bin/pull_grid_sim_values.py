@@ -97,7 +97,7 @@ def back_project_to_func_space(sbj, masks):
             f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}_pre.nii.gz',
             "-mas",
             brain_mask,
-            "-o", f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
+            f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
         ]
         subprocess.run(cmd3, check=True)
 
