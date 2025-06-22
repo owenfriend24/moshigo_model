@@ -143,6 +143,6 @@ if __name__ == "__main__":
         sl_func = grid_similarity_function('correlation')
         result_df = sl_func(ds)
 
-        out_path = f'{subjdir}/{mask}_similarity_values.csv'
+        out_path = f'/scratch/09123/ofriend/moshi/grid_coding/csvs/{sbj}_{mask}_similarity_values.csv'
         result_df.to_csv(out_path, index=False)
 
