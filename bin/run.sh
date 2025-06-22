@@ -7,4 +7,4 @@ subject=$1
 
 re_transform.sh ${subject}
 transform_sl_to_2mm.sh ${subject}
-smooth_sl.sh /scratch/09123/ofriend/moshi/grid_coding/mni/new ${subject}
+smooth_sl.sh /scratch/09123/ofriend/moshi/grid_coding/mni/new2 ${subject}
