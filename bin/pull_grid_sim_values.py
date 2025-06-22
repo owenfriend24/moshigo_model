@@ -114,13 +114,20 @@ if __name__ == "__main__":
 
     for mask in masks:
         slmask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
-        ds = fmri_dataset(os.path.join(funcdir, f'grid_trials.nii.gz'), mask=slmask)
+        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
+
+        # REMOVE voxels with any NaNs
+        good_voxels = ~np.any(np.isnan(ds.samples), axis=0)
+        if not np.all(good_voxels):
+            print(f"{sbj} {mask}: Removed {np.sum(~good_voxels)} voxels with NaNs")
+        ds = ds[:, good_voxels]  # Keep all trials, drop bad voxels
+
         ds.sa['run'] = run
         ds.sa['trial_angle'] = trial_angle
 
-        # run across all runs
         sl_func = grid_similarity_function('correlation')
         result_df = sl_func(ds)
+
         out_path = f'{subjdir}/{mask}_similarity_values.csv'
-        result_df.to_csv(out_path)
+        result_df.to_csv(out_path, index=False)
 
