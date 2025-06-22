@@ -74,7 +74,7 @@ def back_project_to_func_space(sbj, masks):
         ]
 
         input_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
-        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}_pre.nii.gz'
+        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
         reference = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_trials.nii.gz'
         cmd2 = [
             "antsApplyTransforms",
