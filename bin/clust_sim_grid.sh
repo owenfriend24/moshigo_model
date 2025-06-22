@@ -15,7 +15,10 @@ export OMP_NUM_THREADS=None
 mkdir -p /scratch/09123/ofriend/moshi/grid_coding/clust_sim
 cd /scratch/09123/ofriend/moshi/grid_coding/clust_sim
 
-3dClustSim -mask /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz -acf 0.35069 4.08259 13.397 -nodec -prefix gm_
-3dClustSim -mask /scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/b_erc.nii.gz -acf 0.35069 4.08259 13.397 -nodec -prefix b_erc_
-3dClustSim -mask /scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/b_Olsen_pmERC.nii.gz -acf 0.35069 4.08259 13.397 -nodec -prefix pm_erc_
+3dClustSim -mask /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz -acf 0.793816 1.126296 8.651422 -nodec -prefix gm_motion_
+3dClustSim -mask /scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/b_erc.nii.gz -acf 0.793816 1.126296 8.651422 -nodec -prefix b_erc_motion_
+3dClustSim -mask /scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/b_Olsen_pmERC.nii.gz -acf 0.793816 1.126296 8.651422 -nodec -prefix pm_erc_motion_
 
+3dClustSim -mask /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz -acf 0.382950 2.805128 10.545258 -nodec -prefix gm_
+3dClustSim -mask /scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/b_erc.nii.gz -acf 0.382950 2.805128 10.545258 -nodec -prefix b_erc_
+3dClustSim -mask /scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/b_Olsen_pmERC.nii.gz -acf 0.382950 2.805128 10.545258 -nodec -prefix pm_erc_
