@@ -62,10 +62,21 @@ def back_project_to_func_space(sbj, masks):
             affine = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt"
 
         input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
-        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
-        reference =  f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/b_gray_dilated.nii.gz'
+        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
+        reference = f'/home1/09123/ofriend/analysis/temple/bin/templates/MNI152_T1_1mm_brain.nii.gz'
+        cmd1 = [
+            "antsApplyTransforms",
+            "-d", "3",
+            "-i", input_mask,
+            "-o", output_mask,
+            "-r", reference,
+            "-n", "NearestNeighbor"
+        ]
 
-        cmd = [
+        input_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
+        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
+        reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/b_gray_dilated.nii.gz'
+        cmd2 = [
             "antsApplyTransforms",
             "-d", "3",
             "-i", input_mask,
@@ -76,7 +87,8 @@ def back_project_to_func_space(sbj, masks):
             "-n", "NearestNeighbor"
         ]
 
-        subprocess.run(cmd, check=True)
+        subprocess.run(cmd1, check=True)
+        subprocess.run(cmd2, check=True)
 
 
 ### Main script execution ###
