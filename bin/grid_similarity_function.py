@@ -57,5 +57,4 @@ class grid_similarity_function(Measure):
                     elif is_modulo_match(remainder, 30, self.tolerance):
                         sim_mod30.append(sim)
                         data.loc[len(data)] = ['30_degree', sim]
-
         return data

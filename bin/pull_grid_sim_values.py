@@ -109,6 +109,6 @@ if __name__ == "__main__":
         # run across all runs
         sl_func = grid_similarity_function('correlation')
         result_df = sl_func(ds)
-        out_path = f'{expdir}/similarity_values.csv'
+        out_path = f'{subjdir}/{mask}_similarity_values.csv'
         result_df.to_csv(out_path)
 
