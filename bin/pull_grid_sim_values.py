@@ -65,7 +65,7 @@ def back_project_to_func_space(sbj, masks):
     for mask in masks:
         if sbj in ["moshiGO_250", "moshiGO_230", "moshiGO_285", "moshiGO_334", "moshiGO_277", "moshiGO_240", "moshiGO_247", "moshiGO_213", "moshiGO_350", "moshiGO_323"]:
             warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/test_new_func_to_mni1mm_Warp.nii.gz"
-            affine  = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/test_new_func_to_mni1mm_Affine.txt"
+            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/test_new_func_to_mni1mm_Affine.txt"
         else:
             warp = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_1mm_Warp.nii.gz"
             affine = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt"
@@ -84,7 +84,7 @@ def back_project_to_func_space(sbj, masks):
 
         input_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
         output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
-        reference = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz',
+        reference = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
         cmd2 = [
             "antsApplyTransforms",
             "-d", "3",
