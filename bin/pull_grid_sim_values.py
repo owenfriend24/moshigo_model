@@ -90,16 +90,16 @@ def back_project_to_func_space(sbj, masks):
         subprocess.run(cmd1, check=True)
         subprocess.run(cmd2, check=True)
 
-        # # clean mask to make sure no missing voxels
-        brain_mask = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain_mask.nii.gz"
-        cmd3 = [
-            "fslmaths",
-            f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}_pre.nii.gz',
-            "-mas",
-            brain_mask,
-            f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
-        ]
-        subprocess.run(cmd3, check=True)
+        # # # clean mask to make sure no missing voxels
+        # brain_mask = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain_mask.nii.gz"
+        # cmd3 = [
+        #     "fslmaths",
+        #     f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}_pre.nii.gz',
+        #     "-mas",
+        #     brain_mask,
+        #     f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
+        # ]
+        # subprocess.run(cmd3, check=True)
 
 ### Main script execution ###
 if __name__ == "__main__":
