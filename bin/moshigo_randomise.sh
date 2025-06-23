@@ -13,7 +13,7 @@ randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/n
 -o /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/age_increasing \
 -d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_increasing.mat \
 -t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_increasing.con \
--m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gzz \
+-m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gz \
 -n 5000 -x --uncorrp
 
 randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/new_group_z.nii.gz \
