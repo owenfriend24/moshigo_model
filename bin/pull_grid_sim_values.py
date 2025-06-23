@@ -133,7 +133,7 @@ if __name__ == "__main__":
     funcdir = f'/{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['mpfc_age_inc_MASKED', 'mpfc_age_inc_UNMASKED', 'pmerc_age_dec_MASKED', 'pmerc_age_dec']
+    masks = ['mpfc_age_inc_MASKED', 'mpfc_age_inc_UNMASKED', 'pmerc_age_dec_MASKED', 'pmerc_age_dec', 'b_Olsen_pmERC']
     back_project_to_func_space(sbj, masks)
 
     meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
