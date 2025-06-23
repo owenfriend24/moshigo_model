@@ -103,7 +103,7 @@ def back_project_to_func_space(sbj, masks):
             "fslmaths",
             output_mask,
             "-mas",
-            reference
+            ref_mask
         ]
 
         # subprocess.run(cmd1, check=True)
