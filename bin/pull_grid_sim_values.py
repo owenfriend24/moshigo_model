@@ -80,7 +80,7 @@ def back_project_to_func_space(sbj, masks):
 
         input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/mni_masks_new/{mask}.nii.gz"
         output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
-        reference = f'/corral-repl/utexas/prestonlab/moshiGO1/${sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
+        reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
 
         cmd2 = [
             "antsApplyTransforms",
