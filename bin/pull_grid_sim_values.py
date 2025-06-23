@@ -78,8 +78,8 @@ def back_project_to_func_space(sbj, masks):
         #     "-n", "NearestNeighbor"
         # ]
 
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
-        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
+        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/mni_masks_new/{mask}.nii.gz"
+        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
         reference = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
         cmd2 = [
             "antsApplyTransforms",
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     funcdir = f'/{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['inter_alerc_masked', 'age_dec_pmerc_masked', 'age_inc_alerc_masked', 'ofc_age_inc']
+    masks = ['mpfc_age_inc_MASKED', 'mpfc_age_inc_UNMASKED', 'pmerc_age_dec_MASKED', 'pmerc_age_dec']
     back_project_to_func_space(sbj, masks)
 
     meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     img = meta["img"].to_numpy()
 
     for mask in masks:
-        slmask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/func_{mask}.nii.gz'
+        slmask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
         ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
 
