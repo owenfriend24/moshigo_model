@@ -78,7 +78,7 @@ def back_project_to_func_space(sbj, masks):
         #     "-n", "NearestNeighbor"
         # ]
 
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/mni_masks_new/{mask}.nii.gz"
+        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/{mask}.nii.gz"
         output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
         reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
 
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     funcdir = f'/{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['mpfc_age_inc_MASKED', 'mpfc_age_inc_UNMASKED', 'pmerc_age_dec_MASKED', 'pmerc_age_dec', 'b_Olsen_pmERC']
+    masks = ['precuneus', 'precuneus2', 'phc', 'dmpfc', 'mpfc1', 'mpfc2']
     back_project_to_func_space(sbj, masks)
 
     meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
