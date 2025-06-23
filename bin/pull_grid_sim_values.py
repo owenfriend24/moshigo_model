@@ -80,7 +80,8 @@ def back_project_to_func_space(sbj, masks):
 
         input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/mni_masks_new/{mask}.nii.gz"
         output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
-        reference = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
+        reference = f'/corral-repl/utexas/prestonlab/moshiGO1/${sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
+
         cmd2 = [
             "antsApplyTransforms",
             "-d", "3",
@@ -91,10 +92,15 @@ def back_project_to_func_space(sbj, masks):
             "-t", f"[{affine},1]",
             "-n", "NearestNeighbor"
         ]
+        cmd3 = ["fslmaths",
+            output_mask,
+            "-mas",
+            reference
+        ]
 
         # subprocess.run(cmd1, check=True)
         subprocess.run(cmd2, check=True)
-
+        subprocess.run(cmd3, check=True)
         # # # clean mask to make sure no missing voxels
         # brain_mask = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain_mask.nii.gz"
         # cmd3 = [
