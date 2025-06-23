@@ -92,7 +92,15 @@ def back_project_to_func_space(sbj, masks):
             "-t", f"[{affine},1]",
             "-n", "NearestNeighbor"
         ]
-        cmd3 = ["fslmaths",
+        ref_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/brain_mask.nii.gz'
+        cmd3 = [
+            "fslmaths",
+            reference,
+            "-bin",
+            ref_mask
+        ]
+        cmd4 = [
+            "fslmaths",
             output_mask,
             "-mas",
             reference
@@ -101,6 +109,7 @@ def back_project_to_func_space(sbj, masks):
         # subprocess.run(cmd1, check=True)
         subprocess.run(cmd2, check=True)
         subprocess.run(cmd3, check=True)
+        subprocess.run(cmd4, check=True)
         # # # clean mask to make sure no missing voxels
         # brain_mask = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain_mask.nii.gz"
         # cmd3 = [
