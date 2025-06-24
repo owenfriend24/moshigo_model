@@ -37,10 +37,17 @@ sl_dir=$1
 #-m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gz \
 #-n 5000 -x --uncorrp
 #
+#randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/new_group_z.nii.gz \
+#-o /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/performance_inverse \
+#-d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/performance.mat \
+#-t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/performance_inverse.con \
+#-m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gz \
+#-n 5000 -x --uncorrp
+#
 randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/new_group_z.nii.gz \
--o /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/performance_inverse \
--d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/performance.mat \
--t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/performance_inverse.con \
+-o /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/imp_score \
+-d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/imp_score.mat \
+-t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/imp_score.con \
 -m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gz \
 -n 5000 -x --uncorrp
 #
