@@ -78,8 +78,8 @@ def back_project_to_func_space(sbj, masks):
         #     "-n", "NearestNeighbor"
         # ]
 
-        #input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/{mask}.nii.gz"
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
+        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/{mask}.nii.gz"
+        #input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
 
         output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
         reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
@@ -135,8 +135,8 @@ if __name__ == "__main__":
     funcdir = f'/{subjdir}/grid_data/'
     out_dir = funcdir
 
-    #masks = ['precuneus', 'precuneus2', 'phc', 'dmpfc', 'mpfc1', 'mpfc2']
-    masks = ['AD_Barron_LERC', 'AD_Barron_RERC', 'AD_Olsen_LalERC', 'AD_Olsen_LERC', 'AD_Olsen_LpmERC', 'AD_Olsen_RalERC', 'AD_Olsen_RERC', 'AD_Olsen_RpmERC', 'b_Barron_ERC', 'b_erc', 'b_Olsen_alERC', 'b_Olsen_ERC', 'b_Olsen_pmERC', 'l_erc', 'r_erc']
+    masks = ['precuneus', 'precuneus2', 'phc', 'dmpfc', 'mpfc1', 'mpfc2', 'ahpc_imp_score', 'phpc_imp_score', 'vlpfc_imp_score', 'dlpfc_imp_score', 'mpfc_imp_score']
+    #masks = ['AD_Barron_LERC', 'AD_Barron_RERC', 'AD_Olsen_LalERC', 'AD_Olsen_LERC', 'AD_Olsen_LpmERC', 'AD_Olsen_RalERC', 'AD_Olsen_RERC', 'AD_Olsen_RpmERC', 'b_Barron_ERC', 'b_erc', 'b_Olsen_alERC', 'b_Olsen_ERC', 'b_Olsen_pmERC', 'l_erc', 'r_erc']
     back_project_to_func_space(sbj, masks)
 
     meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
