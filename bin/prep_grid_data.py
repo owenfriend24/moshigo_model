@@ -60,10 +60,13 @@ if __name__ == "__main__":
             print(f"No trials found for run {run}, skipping.")
             continue
 
+        cond_flag = ''
         if condition == 'cone':
             run_data = run_data[run_data['condition_x'] < 3]
+            cond_flag = '_cone'
         elif condition == 'mountain':
             run_data = run_data[run_data['condition_x'] > 2]
+            cond_flag = '_mountain'
 
         # Load functional data and confounds
         func_path = f'{subjdir}/BOLD/antsreg/data/task_run{run}_bold_mcf_brain.nii.gz'
@@ -121,16 +124,16 @@ if __name__ == "__main__":
             'trial_angle': run_data['trial_angle']
         })
 
-        grid_meta.to_csv(f'{outdir}/run{run}_meta.txt', sep='\t', index=False, header=False)
+        grid_meta.to_csv(f'{outdir}/run{run}_meta{cond_flag}.txt', sep='\t', index=False, header=False)
         all_metas.append(grid_meta)
 
     # Save full combined metadata
     combined_meta = pd.concat(all_metas).reset_index(drop=True)
     combined_meta.to_csv(f'{outdir}/all_runs_meta.txt', sep='\t', index=False, header=False)
-    print(f"Saved combined metadata to {outdir}/all_runs_meta.txt")
+    print(f"Saved combined metadata to {outdir}/all_runs_meta{cond_flag}.txt")
 
     # combine all trials into a single 4d image
-    merged_img_path = os.path.join(outdir, "grid_trials.nii.gz")
+    merged_img_path = os.path.join(outdir, f"grid_trials{cond_flag}.nii.gz")
     img_list = [os.path.join(outdir, fname) for fname in combined_meta["img_name"]]
     fslmerge_cmd = ["fslmerge", "-t", merged_img_path] + img_list
     print("Merging trial images with fslmerge...")
