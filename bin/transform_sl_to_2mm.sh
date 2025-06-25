@@ -15,8 +15,8 @@ affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_fu
 
 
 antsApplyTransforms -d 3 \
-    -i /scratch/09123/ofriend/moshi/grid_coding/${sub}/grid_data/${sub}_60_ovr_30_b_gray_dilated_z.nii.gz \
-    -o /scratch/09123/ofriend/moshi/grid_coding/mni/new2/${sub}_60_ovr_30_mni_2mm_NEW.nii.gz \
+    -i /scratch/09123/ofriend/moshi/grid_coding/${sub}/grid_data/${sub}_60_ovr_30_b_gray_dilated_cone_z.nii.gz \
+    -o /scratch/09123/ofriend/moshi/grid_coding/mni/cond/${sub}_60_ovr_30_mni_2mm_cone.nii.gz \
     -r /home1/09123/ofriend/analysis/moshigo_model/bin/MNI152_T1_2mm_brain.nii.gz \
     -n NearestNeighbor \
     -t ${warp_path} \
