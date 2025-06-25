@@ -61,9 +61,9 @@ if __name__ == "__main__":
             continue
 
         if condition == 'cone':
-            run_data = run_data[run_data['condition'] < 3]
+            run_data = run_data[run_data['condition_x'] < 3]
         elif condition == 'mountain':
-            run_data = run_data[run_data['condition'] > 2]
+            run_data = run_data[run_data['condition_x'] > 2]
 
         # Load functional data and confounds
         func_path = f'{subjdir}/BOLD/antsreg/data/task_run{run}_bold_mcf_brain.nii.gz'
