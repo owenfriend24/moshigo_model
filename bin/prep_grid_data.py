@@ -15,6 +15,8 @@ subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/
 def get_args():
     parser = argparse.ArgumentParser(description="Process fMRI data for grid analysis.")
     parser.add_argument("subject_id", help="Subject identifier (e.g., moshiGO_202)")
+    parser.add_argument("condition", type=str, choices=["both", "cone", "mountain"], default="both",
+                        help="Run number to drop (1–6). Default: keep all runs.")
     parser.add_argument("--drop_run", type=int, choices=[1, 2, 3, 4, 5, 6], default=None,
                         help="Run number to drop (1–6). Default: keep all runs.")
     return parser.parse_args()
@@ -23,6 +25,7 @@ if __name__ == "__main__":
     args = get_args()
     sub = args.subject_id
     drop_run = args.drop_run
+    condition = args.condition
 
     # Define paths
     expdir = '/corral-repl/utexas/prestonlab/moshiGO1'
@@ -56,6 +59,11 @@ if __name__ == "__main__":
         if run_data.empty:
             print(f"No trials found for run {run}, skipping.")
             continue
+
+        if condition == 'cone':
+            run_data = run_data[run_data['condition'] < 3]
+        elif condition == 'mountain':
+            run_data = run_data[run_data['condition'] > 2]
 
         # Load functional data and confounds
         func_path = f'{subjdir}/BOLD/antsreg/data/task_run{run}_bold_mcf_brain.nii.gz'

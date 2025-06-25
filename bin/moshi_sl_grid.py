@@ -40,7 +40,8 @@ import argparse
 
 ### import custom searchlight function ###
 from grid_function_prepost import *
-from grid_function_late import *
+from grid_function_cone import *
+from grid_function_mountain import *
 
 ### use argument parser to set up experiment/subject info and drop runs if necessary
 def get_args():
@@ -51,14 +52,19 @@ def get_args():
     # Optional argument: drop a specific run
     parser.add_argument("--drop_run", type=int, choices=[1, 2, 3, 4, 5, 6], default=None,
                         help="Run number to drop (1 through 6). Default is None (keep all runs).")
-
+    parser.add_argument("condition", type=str, choices=["both", "mountain", "cone"], default="both",
+                        help="both, mountain, or cone")
+    parser.add_argument("mask", type=str, choices=["gm", "erc"], default="gm",
+                        help="gm or erc")
     return parser.parse_args()
 
 ### Main script execution ###
 if __name__ == "__main__":
     args = get_args()
     sbj = args.subject_id
+    condition = args.condition
     drop_run = args.drop_run
+    mask = args.mask
 
     expdir = f'/scratch/09123/ofriend/moshi/grid_coding'
     subjdir = f'{expdir}/{sbj}/'
@@ -66,14 +72,25 @@ if __name__ == "__main__":
     out_dir = funcdir
     niter= 1000
 
-    masks = ['b_gray_dilated']
 
-    meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
-                       sep='\t', header=None, names=["run", "img", "trial_angle"])
+    if condition == 'both':
+        meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
+                           sep='\t', header=None, names=["run", "img", "trial_angle"])
+    elif condition == 'cone':
+        meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/cone_runs_meta.txt',
+                           sep='\t', header=None, names=["run", "img", "trial_angle"])
+    elif condition == 'mountain':
+        meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/mountain_runs_meta.txt',
+                           sep='\t', header=None, names=["run", "img", "trial_angle"])
 
     run = meta["run"].to_numpy()
     trial_angle = meta["trial_angle"].to_numpy()
     img = meta["img"].to_numpy()
+
+    if mask == 'gm':
+        masks = ['b_gray_dilated']
+    elif mask == 'erc':
+        masks = ['erc']
 
     for mask in masks:
         slmask = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
@@ -93,12 +110,22 @@ if __name__ == "__main__":
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
 
         # restrict to second half when they're more trained
-        sl_func = grid_function_modulo60_late('correlation', niter=niter)
+        sl_func = grid_function_mountain('correlation', niter=niter)
         sl = sphere_searchlight(sl_func, radius=3)
         sl_result = sl(ds)
         sl_map_60_ovr_30 = sl_result
         # sl_map_30_ovr_60 = sl_result[:, 1]
-        outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_LATE_{mask}_z.nii.gz'
+        outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_MOUNTAIN_{mask}_z.nii.gz'
+        # outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
+        map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
+
+        # restrict to second half when they're more trained
+        sl_func = grid_function_cone('correlation', niter=niter)
+        sl = sphere_searchlight(sl_func, radius=3)
+        sl_result = sl(ds)
+        sl_map_60_ovr_30 = sl_result
+        # sl_map_30_ovr_60 = sl_result[:, 1]
+        outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_CONE_{mask}_z.nii.gz'
         # outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
 
@@ -107,4 +134,3 @@ if __name__ == "__main__":
 
 
         #map2nifti(ds, sl_map_30_ovr_60.samples).to_filename(outfile_30)
-
