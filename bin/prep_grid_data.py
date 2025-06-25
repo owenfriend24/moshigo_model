@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     # Save full combined metadata
     combined_meta = pd.concat(all_metas).reset_index(drop=True)
-    combined_meta.to_csv(f'{outdir}/all_runs_meta.txt', sep='\t', index=False, header=False)
+    combined_meta.to_csv(f'{outdir}/all_runs_meta{cond_flag}.txt', sep='\t', index=False, header=False)
     print(f"Saved combined metadata to {outdir}/all_runs_meta{cond_flag}.txt")
 
     # combine all trials into a single 4d image
