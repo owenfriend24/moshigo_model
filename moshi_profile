@@ -12,7 +12,7 @@ export PATH=$PATH:$SRCDIR/bin:$HOME/analysis/moshigo_model/bin
 
 export CORR=/corral-repl/utexas/prestonlab/moshiGO1
 export PC=/scratch/09123/ofriend/moshi/pca_sl/results
-
+export GRID=/scratch/09123/ofriend/moshi/grid_coding/
 
 
 export STUDYDIR=$STOCKYARD2/ls6/temple
