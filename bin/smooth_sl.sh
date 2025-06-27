@@ -20,7 +20,7 @@ smooth_susan \
 echo "Finished smoothing run ${sub}!"
 
 smooth_susan \
-    "${sl_dir}/mountain/${sub}_60_ovr_30_mni_2mm_cone.nii.gz" \
+    "${sl_dir}/mountain/${sub}_60_ovr_30_mni_2mm_mountain.nii.gz" \
      "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
     4 \
     "${sl_dir}/mountain/smoothed_${sub}.nii.gz"
