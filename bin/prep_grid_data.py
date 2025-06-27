@@ -106,9 +106,15 @@ if __name__ == "__main__":
             kept_indices.append(idx)
 
         # Align run_data to match kept trials
-        run_data = run_data.loc[kept_indices].reset_index(drop=True)
-        trial_patterns = np.vstack(trial_patterns)
-        print("extracted navigation TRs")
+        if trial_patterns:
+            trial_patterns = np.vstack(trial_patterns)
+        else:
+            print(f"No valid trials for this subject/run — skipping.")
+            continue  # or return, or handle appropriately
+
+        # run_data = run_data.loc[kept_indices].reset_index(drop=True)
+        # trial_patterns = np.vstack(trial_patterns)
+        # print("extracted navigation TRs")
 
         # Save each trial as a NIfTI file and record metadata
         img_names = []
