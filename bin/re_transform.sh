@@ -25,3 +25,8 @@ ANTS 3 -m CC[/home1/09123/ofriend/analysis/moshigo_model/bin/MNI152_T1_2mm_brain
 -t SyN[0.25] -r Gauss[3,0] -o /corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_ \
 -i 30x90x20 --use-Histogram-Matching \
 --number-of-affine-iterations 10000x10000x10000x10000x10000 --MI-option 32x16000
+
+
+#antsApplyTransforms -d 3 -i /corral-repl/utexas/prestonlab/moshiGO1/moshiGO_208/anatomy/L_ERC.nii.gz -o L_ERC_test.nii.gz \
+#-r /corral-repl/utexas/prestonlab/moshiGO1/moshiGO_208/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz \
+#-n NearestNeighbor -t NEW_coronal_to_func_Warp.nii.gz -t NEW_coronal_to_func_Affine.txt
