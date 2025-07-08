@@ -52,6 +52,26 @@ def get_args():
 
     return parser.parse_args()
 
+def combine_lateral_masks(sbj):
+    base = "/scratch/09123/ofriend/moshi/erc_masks/"
+
+    if os.path.exists(f"{base}/{sbj}_R_ERC.nii.gz"):
+        r = f"{base}/{sbj}_R_ERC.nii.gz"
+    else:
+        r = f"{base}/{sbj}_olsen_R_ERC.nii.gz"
+
+    if os.path.exists(f"{base}/{sbj}_L_ERC.nii.gz"):
+        l = f"{base}/{sbj}_L_ERC.nii.gz"
+    else:
+        l = f"{base}/{sbj}_olsen_L_ERC.nii.gz"
+
+    out_dir = f"{base}/b_masks"
+    out_path = f"{out_dir}/{sbj}_b_erc.nii.gz"
+    cmd_merge = ["fslmaths", r, "-add", l, out_path]
+    subprocess.run(cmd_merge, check=True)
+
+
+
 def back_project_to_func_space(sbj, masks):
     ref_func = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
     cmd0 = [
@@ -125,32 +145,36 @@ def back_project_to_func_space(sbj, masks):
         # subprocess.run(cmd3, check=True)
 
 ### Main script execution ###
+
 if __name__ == "__main__":
     args = get_args()
     sbj = args.subject_id
     drop_run = args.drop_run
 
     expdir = f'/scratch/09123/ofriend/moshi/grid_coding'
+    maskdir = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/'
     subjdir = f'{expdir}/{sbj}/'
-    funcdir = f'/{subjdir}/grid_data/'
+    funcdir = f'{subjdir}/grid_data/'
     out_dir = funcdir
 
-    #masks = ['precuneus', 'precuneus2', 'phc', 'dmpfc', 'mpfc1', 'mpfc2', 'ahpc_imp_score', 'phpc_imp_score', 'vlpfc_imp_score', 'dlpfc_imp_score', 'mpfc_imp_score']
-    masks = ['perf_ifg', 'perf_precuneus', 'perf_parietal', 'perf_phc']
-             #masks = ['AD_Barron_LERC', 'AD_Barron_RERC', 'AD_Olsen_LalERC', 'AD_Olsen_LERC', 'AD_Olsen_LpmERC', 'AD_Olsen_RalERC', 'AD_Olsen_RERC', 'AD_Olsen_RpmERC', 'b_Barron_ERC', 'b_erc', 'b_Olsen_alERC', 'b_Olsen_ERC', 'b_Olsen_pmERC', 'l_erc', 'r_erc']
-    back_project_to_func_space(sbj, masks)
+    #masks = ['perf_ifg', 'perf_precuneus', 'perf_parietal', 'perf_phc']
 
-    meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
+    #back_project_to_func_space(sbj, masks)
+    combine_lateral_masks(sbj)
+
+    # Load trial metadata
+    meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
                        sep='\t', header=None, names=["run", "img", "trial_angle"])
 
     run = meta["run"].to_numpy()
     trial_angle = meta["trial_angle"].to_numpy()
     img = meta["img"].to_numpy()
 
-    for mask in masks:
-        slmask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
-        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
+    all_results = []
 
+    for mask in masks:
+        slmask = f'{maskdir}/{sbj}_b_erc.nii.gz'
+        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
         ds.sa['run'] = run
         ds.sa['trial_angle'] = trial_angle
@@ -158,5 +182,23 @@ if __name__ == "__main__":
         sl_func = grid_similarity_function('correlation')
         result_df = sl_func(ds)
 
-        out_path = f'/scratch/09123/ofriend/moshi/grid_coding/csvs/{sbj}_{mask}_similarity_values.csv'
-        result_df.to_csv(out_path, index=False)
+        # Add subject and ROI info to result
+        result_df['subject'] = sbj
+        result_df['roi'] = mask
+
+        all_results.append(result_df)
+
+
+    combined_df = pd.concat(all_results, ignore_index=True)
+    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values.csv'
+    write_header = not os.path.exists(master_csv_path)
+
+    # Append subject to master csv
+    combined_df.to_csv(master_csv_path, mode='a', header=write_header, index=False)
+
+
+
+
+
+
+
