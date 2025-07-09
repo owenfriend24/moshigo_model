@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import subprocess
 
-from bin.pca_cluster_model import warp_path
-
 subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/rsa/bin/activate'])
 ### import python libraries needed for the analysis ###
 import numpy as np
