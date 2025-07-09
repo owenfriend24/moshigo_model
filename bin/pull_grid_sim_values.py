@@ -189,7 +189,7 @@ if __name__ == "__main__":
     img = meta["img"].to_numpy()
 
     all_results = []
-
+    masks = ['erc']
     for mask in masks:
         slmask = f'{maskdir}/func/{sbj}_b_erc.nii.gz'
         ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
