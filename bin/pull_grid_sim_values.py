@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import subprocess
 
+from bin.pca_cluster_model import warp_path
+
 subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/rsa/bin/activate'])
 ### import python libraries needed for the analysis ###
 import numpy as np
@@ -70,7 +72,24 @@ def combine_lateral_masks(sbj):
     cmd_merge = ["fslmaths", r, "-add", l, out_path]
     subprocess.run(cmd_merge, check=True)
 
-
+def coronal_to_func(sbj):
+    base = "/scratch/09123/ofriend/moshi/erc_masks/"
+    input_mask =  f"{base}/b_masks/{sbj}_b_erc.nii.gz"
+    output_mask = f"{base}/b_masks/func/{sbj}_b_erc.nii.gz"
+    reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
+    warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_coronal_to_func_Warp.nii.gz"
+    affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_coronal_to_func_Affine.txt"
+    cmd_cor = [
+        "antsApplyTransforms",
+        "-d", "3",
+        "-i", input_mask,
+        "-o", output_mask,
+        "-r", reference,
+        "-t", warp,
+        "-t", f"[{affine},1]",
+        "-n", "NearestNeighbor"
+    ]
+    subprocess.run(cmd_cor, check=True)
 
 def back_project_to_func_space(sbj, masks):
     ref_func = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
@@ -161,8 +180,9 @@ if __name__ == "__main__":
 
     #back_project_to_func_space(sbj, masks)
     combine_lateral_masks(sbj)
+    coronal_to_func(sbj)
 
-    # Load trial metadata
+    # Load trial metadata; can come back and restrict by condition
     meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
                        sep='\t', header=None, names=["run", "img", "trial_angle"])
 
@@ -173,7 +193,7 @@ if __name__ == "__main__":
     all_results = []
 
     for mask in masks:
-        slmask = f'{maskdir}/{sbj}_b_erc.nii.gz'
+        slmask = f'{maskdir}/func/{sbj}_b_erc.nii.gz'
         ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
         ds.sa['run'] = run
