@@ -29,4 +29,4 @@ ANTS 3 -m CC[/home1/09123/ofriend/analysis/moshigo_model/bin/MNI152_T1_2mm_brain
 
 #antsApplyTransforms -d 3 -i /corral-repl/utexas/prestonlab/moshiGO1/moshiGO_208/anatomy/L_ERC.nii.gz -o L_ERC_test.nii.gz \
 #-r /corral-repl/utexas/prestonlab/moshiGO1/moshiGO_208/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz \
-#-n NearestNeighbor -t NEW_coronal_to_func_Warp.nii.gz -t NEW_coronal_to_func_Affine.txt
+#-n NearestNeighbor -t NEW_coronal_to_func_Warp.nii.gz -t NEW_coronal_to_func_Affine.txt -t refvol2brain_Affine.txt
