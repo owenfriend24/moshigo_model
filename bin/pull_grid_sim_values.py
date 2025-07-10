@@ -83,8 +83,8 @@ def coronal_to_func(sbj):
         "-i", input_mask,
         "-o", output_mask,
         "-r", reference,
-        "-t", warp,
-        "-t", f"[{affine},1]",
+      #  "-t", warp,
+       # "-t", f"[{affine},1]",
         "-n", "NearestNeighbor"
     ]
     subprocess.run(cmd_cor, check=True)
