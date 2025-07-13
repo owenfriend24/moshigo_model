@@ -82,12 +82,20 @@ def coronal_to_func(sbj):
         "-d", "3",
         "-i", input_mask,
         "-o", output_mask,
-        "-r", reference,
+        "-n", "Linear",
+        "-r", reference
       #  "-t", warp,
        # "-t", f"[{affine},1]",
-        "-n", "NearestNeighbor"
+        #"-n", "NearestNeighbor"
     ]
     subprocess.run(cmd_cor, check=True)
+    cmd_binarize = [
+        "fslmaths",
+        output_mask,
+        "-bin",
+        output_mask
+    ]
+    subprocess.run(cmd_binarize, check=True)
 
 def back_project_to_func_space(sbj, masks):
     ref_func = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
