@@ -185,8 +185,8 @@ if __name__ == "__main__":
     #masks = ['perf_ifg', 'perf_precuneus', 'perf_parietal', 'perf_phc']
 
     #back_project_to_func_space(sbj, masks)
-    combine_lateral_masks(sbj)
-    coronal_to_func(sbj)
+    #combine_lateral_masks(sbj)
+    #coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
 
