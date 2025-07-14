@@ -112,9 +112,9 @@ if __name__ == "__main__":
             print(f"No valid trials for this subject/run — skipping.")
             continue  # or return, or handle appropriately
 
-        # run_data = run_data.loc[kept_indices].reset_index(drop=True)
-        # trial_patterns = np.vstack(trial_patterns)
-        # print("extracted navigation TRs")
+        run_data = run_data.loc[kept_indices].reset_index(drop=True)
+        trial_patterns = np.vstack(trial_patterns)
+        print("extracted navigation TRs")
 
         # Save each trial as a NIfTI file and record metadata
         img_names = []
@@ -133,19 +133,19 @@ if __name__ == "__main__":
         grid_meta.to_csv(f'{outdir}/run{run}_meta{cond_flag}.txt', sep='\t', index=False, header=False)
         all_metas.append(grid_meta)
     #
-    # # Save full combined metadata
-    # combined_meta = pd.concat(all_metas).reset_index(drop=True)
-    # combined_meta.to_csv(f'{outdir}/all_runs_meta{cond_flag}.txt', sep='\t', index=False, header=False)
-    # print(f"Saved combined metadata to {outdir}/all_runs_meta{cond_flag}.txt")
-    #
-    # # combine all trials into a single 4d image
-    # merged_img_path = os.path.join(outdir, f"grid_trials{cond_flag}.nii.gz")
-    # img_list = [os.path.join(outdir, fname) for fname in combined_meta["img_name"]]
-    # fslmerge_cmd = ["fslmerge", "-t", merged_img_path] + img_list
-    # print("Merging trial images with fslmerge...")
-    # subprocess.run(fslmerge_cmd, check=True)
-    # print(f"Saved merged 4D image to {merged_img_path}")
-    #
+    # Save full combined metadata
+    combined_meta = pd.concat(all_metas).reset_index(drop=True)
+    combined_meta.to_csv(f'{outdir}/all_runs_meta{cond_flag}.txt', sep='\t', index=False, header=False)
+    print(f"Saved combined metadata to {outdir}/all_runs_meta{cond_flag}.txt")
+
+    # combine all trials into a single 4d image
+    merged_img_path = os.path.join(outdir, f"grid_trials{cond_flag}.nii.gz")
+    img_list = [os.path.join(outdir, fname) for fname in combined_meta["img_name"]]
+    fslmerge_cmd = ["fslmerge", "-t", merged_img_path] + img_list
+    print("Merging trial images with fslmerge...")
+    subprocess.run(fslmerge_cmd, check=True)
+    print(f"Saved merged 4D image to {merged_img_path}")
+
     non_empty_metas = [meta for meta in all_metas if not meta.empty]
 
     if non_empty_metas:
