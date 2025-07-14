@@ -189,7 +189,9 @@ if __name__ == "__main__":
     coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
-    meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
+
+
+    meta = pd.read_csv(f'{funcdir}/all_runs_meta_cone.txt',
                        sep='\t', header=None, names=["run", "img", "trial_angle"])
 
     run = meta["run"].to_numpy()
@@ -200,7 +202,10 @@ if __name__ == "__main__":
     masks = ['erc']
     for mask in masks:
         slmask = f'{maskdir}/func/{sbj}_b_erc.nii.gz'
-        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
+
+        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials_cone.nii.gz'), mask=slmask)
+
+        #ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
         ds.sa['run'] = run
         ds.sa['trial_angle'] = trial_angle
