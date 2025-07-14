@@ -191,7 +191,7 @@ if __name__ == "__main__":
     # Load trial metadata; can come back and restrict by condition
 
 
-    meta = pd.read_csv(f'{funcdir}/all_runs_meta_cone.txt',
+    meta = pd.read_csv(f'{funcdir}/all_runs_meta_mountain.txt',
                        sep='\t', header=None, names=["run", "img", "trial_angle"])
 
     run = meta["run"].to_numpy()
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     for mask in masks:
         slmask = f'{maskdir}/func/{sbj}_b_erc.nii.gz'
 
-        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials_cone.nii.gz'), mask=slmask)
+        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials_mountain.nii.gz'), mask=slmask)
 
         #ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
@@ -221,7 +221,7 @@ if __name__ == "__main__":
 
 
     combined_df = pd.concat(all_results, ignore_index=True)
-    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_CONE.csv'
+    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_MTN.csv'
     write_header = not os.path.exists(master_csv_path)
 
     # Append subject to master csv
