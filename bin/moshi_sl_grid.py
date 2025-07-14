@@ -100,11 +100,11 @@ if __name__ == "__main__":
         masks = ['erc']
 
 
-
-
     for mask in masks:
-        slmask = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
-
+        if mask in ['b_gray_dilated']:
+            slmask = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
+        else:
+            slmask = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/func/{sbj}_b_{mask}.nii.gz'
         ds = fmri_dataset(os.path.join(funcdir, func_data), mask=slmask)
         ds.sa['run'] = run
         ds.sa['trial_angle'] = trial_angle
