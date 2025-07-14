@@ -221,7 +221,7 @@ if __name__ == "__main__":
 
 
     combined_df = pd.concat(all_results, ignore_index=True)
-    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values.csv'
+    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_CONE.csv'
     write_header = not os.path.exists(master_csv_path)
 
     # Append subject to master csv
