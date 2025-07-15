@@ -75,38 +75,76 @@ def combine_subregion_masks(sbj):
 
     r = f"{base}/pmerc/{sbj}_R_pmERC.nii.gz"
     l = f"{base}/pmerc/{sbj}_L_pmERC.nii.gz"
-
     out_dir = f"{base}/b_masks/"
     out_path = f"{out_dir}/{sbj}_b_pmerc.nii.gz"
     cmd_merge = ["fslmaths", r, "-add", l, out_path]
     subprocess.run(cmd_merge, check=True)
 
+    r = f"{base}/alerc/{sbj}_R_alERC.nii.gz"
+    l = f"{base}/alerc/{sbj}_L_alERC.nii.gz"
+    out_dir = f"{base}/b_masks/"
+    out_path = f"{out_dir}/{sbj}_b_alerc.nii.gz"
+    cmd_merge = ["fslmaths", r, "-add", l, out_path]
+    subprocess.run(cmd_merge, check=True)
+
 def coronal_to_func(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
-    input_mask =  f"{base}/b_masks/{sbj}_b_erc.nii.gz"
-    output_mask = f"{base}/b_masks/func/{sbj}_b_erc.nii.gz"
-    reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
-    warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_coronal_to_func_Warp.nii.gz"
-    affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_coronal_to_func_Affine.txt"
-    cmd_cor = [
-        "antsApplyTransforms",
-        "-d", "3",
-        "-i", input_mask,
-        "-o", output_mask,
-        "-n", "Linear",
-        "-r", reference
-      #  "-t", warp,
-       # "-t", f"[{affine},1]",
-        #"-n", "NearestNeighbor"
-    ]
-    subprocess.run(cmd_cor, check=True)
-    cmd_binarize = [
-        "fslmaths",
-        output_mask,
-        "-bin",
-        output_mask
-    ]
-    subprocess.run(cmd_binarize, check=True)
+    for mask_name in ['b_erc', 'b_pmerc', 'b_alerc']:
+        input_mask =  f"{base}/b_masks/{sbj}_{mask_name}.nii.gz"
+        output_mask = f"{base}/b_masks/func/{sbj}_{mask_name}.nii.gz"
+
+        reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
+
+        if sbj in ['moshiGO_213', 'moshiGO_277', 'moshiGO_289', 'moshiGO_250']:
+            warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_FUNC_Warp.nii.gz"
+            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_FUNC_Affine.txt"
+            cmd_cor = [
+                "antsApplyTransforms",
+                "-d", "3",
+                "-i", input_mask,
+                "-o", output_mask,
+                "-n", "Linear",
+                "-r", reference,
+                "-t", warp,
+                "-t", f"[{affine}]"
+                #"-n", "NearestNeighbor"
+            ]
+            subprocess.run(cmd_cor, check=True)
+        elif sbj in ['moshiGO_285', 'moshiGO_315']:
+            warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_coronal_to_func_Warp.nii.gz"
+            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_coronal_to_func_Affine.txt"
+            cmd_cor = [
+                "antsApplyTransforms",
+                "-d", "3",
+                "-i", input_mask,
+                "-o", output_mask,
+                "-n", "Linear",
+                "-r", reference,
+                "-t", warp,
+                "-t", f"[{affine}]"
+                # "-n", "NearestNeighbor"
+            ]
+            subprocess.run(cmd_cor, check=True)
+        else:
+            cmd_cor = [
+                "antsApplyTransforms",
+                "-d", "3",
+                "-i", input_mask,
+                "-o", output_mask,
+                "-n", "Linear",
+                "-r", reference
+                #  "-t", warp,
+                # "-t", f"[{affine},1]",
+                # "-n", "NearestNeighbor"
+            ]
+            subprocess.run(cmd_cor, check=True)
+        cmd_binarize = [
+            "fslmaths",
+            output_mask,
+            "-bin",
+            output_mask
+        ]
+        subprocess.run(cmd_binarize, check=True)
 
 def back_project_to_func_space(sbj, masks):
     ref_func = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/grid_ref.nii.gz'
@@ -200,9 +238,10 @@ if __name__ == "__main__":
 
     masks = ['cluster_mask']
 
-    back_project_to_func_space(sbj, masks)
+    #back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
-    #coronal_to_func(sbj)
+
+    coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
 
