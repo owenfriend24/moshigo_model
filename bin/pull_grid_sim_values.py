@@ -127,10 +127,11 @@ def back_project_to_func_space(sbj, masks):
         #     "-n", "NearestNeighbor"
         # ]
 
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/erc/{mask}.nii.gz"
+        # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/erc/{mask}.nii.gz"
+        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/erc/smoothed/{mask}.nii.gz"
         #input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
 
-        output_mask = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/{sbj}_erc_cluster_{mask}.nii.gz'
+        output_mask = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/{sbj}_erc_{mask}.nii.gz'
         reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
 
         cmd2 = [
@@ -186,7 +187,7 @@ if __name__ == "__main__":
     funcdir = f'{subjdir}/grid_data/'
     out_dir = funcdir
 
-    #masks = ['perf_ifg', 'perf_precuneus', 'perf_parietal', 'perf_phc']
+    masks = ['cluster_mask']
 
     back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
