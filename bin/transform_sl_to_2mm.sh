@@ -9,11 +9,11 @@ fi
 
 sub=$1
 
-if sub in ['']:
-warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_ANAT_to_mni2mm_Warp.nii.gz"
-affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_ANAT_to_mni2mm_Affine.txt"
-
-else:
+#if sub in ['']:
+#warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_ANAT_to_mni2mm_Warp.nii.gz"
+#affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_ANAT_to_mni2mm_Affine.txt"
+#
+#else:
 warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_Warp.nii.gz"
 affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_Affine.txt"
 
