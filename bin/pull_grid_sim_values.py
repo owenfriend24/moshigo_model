@@ -105,8 +105,9 @@ def coronal_to_func(sbj):
                 "-o", output_mask,
                 "-n", "Linear",
                 "-r", reference,
-                "-t", warp,
-                "-t", f"[{affine}]"
+                "-t", f"[{affine}]",
+                "-t", warp
+
                 #"-n", "NearestNeighbor"
             ]
             subprocess.run(cmd_cor, check=True)
@@ -120,8 +121,8 @@ def coronal_to_func(sbj):
                 "-o", output_mask,
                 "-n", "Linear",
                 "-r", reference,
-                "-t", warp,
-                "-t", f"[{affine}]"
+                "-t", f"[{affine}]",
+                "-t", warp
                 # "-n", "NearestNeighbor"
             ]
             subprocess.run(cmd_cor, check=True)
