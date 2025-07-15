@@ -259,6 +259,7 @@ if __name__ == "__main__":
 
         all_results = []
         masks = ['erc', 'pmerc', 'alerc']
+        masks = ['erc']
         for mask in masks:
             slmask = f'{maskdir}/func/{sbj}_b_{mask}.nii.gz'
 
