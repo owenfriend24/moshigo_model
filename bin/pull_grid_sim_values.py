@@ -249,7 +249,7 @@ if __name__ == "__main__":
             meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
                                sep='\t', header=None, names=["run", "img", "trial_angle"])
         else:
-            meta = pd.read_csv(f'{funcdir}/all_runs_{condition}.txt',
+            meta = pd.read_csv(f'{funcdir}/all_runs_meta_{condition}.txt',
                                sep='\t', header=None, names=["run", "img", "trial_angle"])
 
         run = meta["run"].to_numpy()
