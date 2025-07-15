@@ -107,9 +107,13 @@ def back_project_to_func_space(sbj, masks):
     ]
     subprocess.run(cmd0, check=True)
 
-    for mask in masks: # 222 looks off
-        warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
-        affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Affine.txt"
+    for mask in masks:
+        if sbj in ["moshiGO_213", "moshiGO_250", "moshiGO_277", "moshiGO_289"]:
+            warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_mni2mm_InverseWarp.nii.gz"
+            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_mni2mm_Affine.txt"
+        else:
+            warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
+            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Affine.txt"
 
         # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new/smoothed/{mask}.nii.gz"
         # output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
@@ -123,10 +127,10 @@ def back_project_to_func_space(sbj, masks):
         #     "-n", "NearestNeighbor"
         # ]
 
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/{mask}.nii.gz"
+        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/erc/{mask}.nii.gz"
         #input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
 
-        output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/NEW_func_{mask}.nii.gz'
+        output_mask = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/{sbj}_erc_cluster_{mask}.nii.gz'
         reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
 
         cmd2 = [
@@ -184,14 +188,14 @@ if __name__ == "__main__":
 
     #masks = ['perf_ifg', 'perf_precuneus', 'perf_parietal', 'perf_phc']
 
-    #back_project_to_func_space(sbj, masks)
+    back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
     #coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
 
 
-    meta = pd.read_csv(f'{funcdir}/all_runs_meta_mountain.txt',
+    meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
                        sep='\t', header=None, names=["run", "img", "trial_angle"])
 
     run = meta["run"].to_numpy()
@@ -203,7 +207,7 @@ if __name__ == "__main__":
     for mask in masks:
         slmask = f'{maskdir}/func/{sbj}_b_erc.nii.gz'
 
-        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials_mountain.nii.gz'), mask=slmask)
+        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
         #ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
 
@@ -221,7 +225,7 @@ if __name__ == "__main__":
 
 
     combined_df = pd.concat(all_results, ignore_index=True)
-    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_MTN.csv'
+    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_randomise.csv'
     write_header = not os.path.exists(master_csv_path)
 
     # Append subject to master csv
