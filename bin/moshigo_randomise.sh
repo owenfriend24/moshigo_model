@@ -13,12 +13,12 @@ randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/erc/group_z.nii.gz \
 -o /scratch/09123/ofriend/moshi/grid_coding/mni/erc/age_param \
 -d /scratch/09123/ofriend/moshi/grid_coding/mni/erc/randomise_age.mat \
 -t /scratch/09123/ofriend/moshi/grid_coding/mni/erc/randomise_age.con \
--m /scratch/09123/ofriend/moshi/grid_coding/mni/erc/masks/group_half_mask.nii.gz \
+-m /scratch/09123/ofriend/moshi/grid_coding/mni/erc/masks/new_grp.nii.gz \
 -n 5000 -x --uncorrp
 
 randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/erc/group_z.nii.gz \
 -o /scratch/09123/ofriend/moshi/grid_coding/mni/erc/one_sample_new \
--m /scratch/09123/ofriend/moshi/grid_coding/mni/erc/masks/group_half_mask.nii.gz \
+-m /scratch/09123/ofriend/moshi/grid_coding/mni/erc/masks/new_grp.nii.gz \
 -1 \
 -n 5000 -x  --uncorrp
 
