@@ -241,8 +241,8 @@ if __name__ == "__main__":
 
     #back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
-    combine_subregion_masks(sbj)
-    coronal_to_func(sbj)
+    #combine_subregion_masks(sbj)
+    #coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
     for condition in ['all', 'cone', 'mountain']:
@@ -258,7 +258,7 @@ if __name__ == "__main__":
         img = meta["img"].to_numpy()
 
         all_results = []
-        masks = ['erc', 'pmerc', 'alerc']
+        #masks = ['erc', 'pmerc', 'alerc']
         masks = ['erc']
         for mask in masks:
             slmask = f'{maskdir}/func/{sbj}_b_{mask}.nii.gz'
