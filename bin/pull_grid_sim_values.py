@@ -240,47 +240,52 @@ if __name__ == "__main__":
 
     #back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
-
+    combine_subregion_masks(sbj)
     coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
+    for condition in ['all', 'cone', 'mountain']:
+        if condition == 'all':
+            meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
+                               sep='\t', header=None, names=["run", "img", "trial_angle"])
+        else:
+            meta = pd.read_csv(f'{funcdir}/all_runs_{condition}.txt',
+                               sep='\t', header=None, names=["run", "img", "trial_angle"])
+
+        run = meta["run"].to_numpy()
+        trial_angle = meta["trial_angle"].to_numpy()
+        img = meta["img"].to_numpy()
+
+        all_results = []
+        masks = ['erc', 'pmerc', 'alerc']
+        for mask in masks:
+            slmask = f'{maskdir}/func/{sbj}_b_{mask}.nii.gz'
+
+            if condition == 'all':
+                ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
+            else:
+                ds = fmri_dataset(os.path.join(funcdir, f'grid_trials_{condition}.nii.gz'), mask=slmask)
 
 
-    meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
-                       sep='\t', header=None, names=["run", "img", "trial_angle"])
+            ds.sa['run'] = run
+            ds.sa['trial_angle'] = trial_angle
 
-    run = meta["run"].to_numpy()
-    trial_angle = meta["trial_angle"].to_numpy()
-    img = meta["img"].to_numpy()
+            sl_func = grid_similarity_function('correlation')
+            result_df = sl_func(ds)
 
-    all_results = []
-    masks = ['erc']
-    for mask in masks:
-        slmask = f'{maskdir}/func/{sbj}_b_erc.nii.gz'
+            # Add subject and ROI info to result
+            result_df['subject'] = sbj
+            result_df['roi'] = mask
 
-        ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
-
-        #ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
-
-        ds.sa['run'] = run
-        ds.sa['trial_angle'] = trial_angle
-
-        sl_func = grid_similarity_function('correlation')
-        result_df = sl_func(ds)
-
-        # Add subject and ROI info to result
-        result_df['subject'] = sbj
-        result_df['roi'] = mask
-
-        all_results.append(result_df)
+            all_results.append(result_df)
 
 
-    combined_df = pd.concat(all_results, ignore_index=True)
-    master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_randomise.csv'
-    write_header = not os.path.exists(master_csv_path)
+        combined_df = pd.concat(all_results, ignore_index=True)
+        master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_{condition}.csv'
+        write_header = not os.path.exists(master_csv_path)
 
-    # Append subject to master csv
-    combined_df.to_csv(master_csv_path, mode='a', header=write_header, index=False)
+        # Append subject to master csv
+        combined_df.to_csv(master_csv_path, mode='a', header=write_header, index=False)
 
 
 
