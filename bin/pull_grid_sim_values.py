@@ -70,6 +70,17 @@ def combine_lateral_masks(sbj):
     cmd_merge = ["fslmaths", r, "-add", l, out_path]
     subprocess.run(cmd_merge, check=True)
 
+def combine_subregion_masks(sbj):
+    base = "/scratch/09123/ofriend/moshi/erc_masks/"
+
+    r = f"{base}/pmerc/{sbj}_R_pmERC.nii.gz"
+    l = f"{base}/pmerc/{sbj}_L_pmERC.nii.gz"
+
+    out_dir = f"{base}/b_masks/"
+    out_path = f"{out_dir}/{sbj}_b_pmerc.nii.gz"
+    cmd_merge = ["fslmaths", r, "-add", l, out_path]
+    subprocess.run(cmd_merge, check=True)
+
 def coronal_to_func(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
     input_mask =  f"{base}/b_masks/{sbj}_b_erc.nii.gz"
