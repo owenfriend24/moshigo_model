@@ -14,16 +14,23 @@ sub=$1
 #affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_ANAT_to_mni2mm_Affine.txt"
 #
 #else:
-warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_Warp.nii.gz"
-affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_Affine.txt"
+
+if [[ "$sbj" == "moshiGO_213" || "$sbj" == "moshiGO_250" || "$sbj" == "moshiGO_277" || "$sbj" == "moshiGO_289" ]]; then
+    warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sbj}/NEW_ANAT_to_mni2mm_InverseWarp.nii.gz"
+    affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sbj}/NEW_ANAT_to_mni2mm_Affine.txt"
+else
+    warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sbj}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
+    affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sbj}/NEW_func_to_mni2mm_Affine.txt"
+fi
+
 
 antsApplyTransforms -d 3 \
     -i /scratch/09123/ofriend/moshi/grid_coding/${sub}/grid_data/${sub}_60_ovr_30_erc_z.nii.gz \
     -o /scratch/09123/ofriend/moshi/grid_coding/mni/erc/${sub}_60_ovr_30_mni_2mm_erc.nii.gz \
     -r /home1/09123/ofriend/analysis/moshigo_model/bin/MNI152_T1_2mm_brain.nii.gz \
     -n NearestNeighbor \
-    -t ${warp_path} \
-    -t ${affine_path}
+    -t ${affine_path} \
+    -t ${warp_path}
 
 #antsApplyTransforms -d 3 \
 #    -i /scratch/09123/ofriend/moshi/grid_coding/${sub}/grid_data/${sub}_60_ovr_30_b_gray_dilated_cone_z.nii.gz \
