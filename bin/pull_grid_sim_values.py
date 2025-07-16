@@ -89,7 +89,7 @@ def combine_subregion_masks(sbj):
 
 def coronal_to_func(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
-    for mask_name in ['b_erc', 'b_pmerc', 'b_alerc']:
+    for mask_name in ['R_ERC', 'L_ERC']:
         input_mask =  f"{base}/b_masks/{sbj}_{mask_name}.nii.gz"
         output_mask = f"{base}/b_masks/func/{sbj}_{mask_name}.nii.gz"
 
@@ -105,8 +105,8 @@ def coronal_to_func(sbj):
                 "-o", output_mask,
                 "-n", "Linear",
                 "-r", reference,
-                "-t", f"[{affine}]",
-                "-t", warp
+                "-t", warp,
+                "-t", f"[{affine}]"
 
                 #"-n", "NearestNeighbor"
             ]
@@ -121,8 +121,8 @@ def coronal_to_func(sbj):
                 "-o", output_mask,
                 "-n", "Linear",
                 "-r", reference,
-                "-t", f"[{affine}]",
-                "-t", warp
+                "-t", warp,
+                "-t", f"[{affine}]"
                 # "-n", "NearestNeighbor"
             ]
             subprocess.run(cmd_cor, check=True)
@@ -237,12 +237,12 @@ if __name__ == "__main__":
     funcdir = f'{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['cluster_mask']
+    masks = ['R_ERC', 'L_ERC']
 
-    back_project_to_func_space(sbj, masks)
+    #back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
     #combine_subregion_masks(sbj)
-    #coronal_to_func(sbj)
+    coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
     for condition in ['all', 'cone', 'mountain']:
@@ -258,9 +258,6 @@ if __name__ == "__main__":
         img = meta["img"].to_numpy()
 
         all_results = []
-        #masks = ['erc', 'pmerc', 'alerc']
-        #masks = ['erc']
-        masks = ['cluster_mask']
         for mask in masks:
             slmask = f'{maskdir}/func/{sbj}_{mask}.nii.gz'
             #slmask = f'{maskdir}/func/{sbj}_b_{mask}.nii.gz'
