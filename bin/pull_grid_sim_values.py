@@ -90,7 +90,7 @@ def combine_subregion_masks(sbj):
 def coronal_to_func(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
     for mask_name in ['R_pmERC']:
-        input_mask =  f"{base}/{sbj}_{mask_name}.nii.gz"
+        input_mask =  f"{base}/pmerc/{sbj}_{mask_name}.nii.gz"
         output_mask = f"{base}/lat_masks/func/{sbj}_{mask_name}.nii.gz"
 
         reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
