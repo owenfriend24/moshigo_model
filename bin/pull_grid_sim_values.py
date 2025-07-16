@@ -90,8 +90,8 @@ def combine_subregion_masks(sbj):
 def coronal_to_func(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
     for mask_name in ['R_ERC', 'L_ERC']:
-        input_mask =  f"{base}/b_masks/{sbj}_{mask_name}.nii.gz"
-        output_mask = f"{base}/b_masks/func/{sbj}_{mask_name}.nii.gz"
+        input_mask =  f"{base}/{sbj}_{mask_name}.nii.gz"
+        output_mask = f"{base}/lat_masks/func/{sbj}_{mask_name}.nii.gz"
 
         reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
 
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     drop_run = args.drop_run
 
     expdir = f'/scratch/09123/ofriend/moshi/grid_coding'
-    maskdir = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/'
+    maskdir = f'/scratch/09123/ofriend/moshi/erc_masks/lat_masks/'
     subjdir = f'{expdir}/{sbj}/'
     funcdir = f'{subjdir}/grid_data/'
     out_dir = funcdir
