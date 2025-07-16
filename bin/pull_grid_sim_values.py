@@ -89,7 +89,7 @@ def combine_subregion_masks(sbj):
 
 def coronal_to_func(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
-    for mask_name in ['R_ERC', 'L_ERC']:
+    for mask_name in ['R_pmERC']:
         input_mask =  f"{base}/{sbj}_{mask_name}.nii.gz"
         output_mask = f"{base}/lat_masks/func/{sbj}_{mask_name}.nii.gz"
 
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     funcdir = f'{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['R_ERC', 'L_ERC']
+    masks = ['R_pmERC']
 
     #back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
@@ -282,7 +282,7 @@ if __name__ == "__main__":
 
 
         combined_df = pd.concat(all_results, ignore_index=True)
-        master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_lateral_{condition}.csv'
+        master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_RpmERC_{condition}.csv'
         write_header = not os.path.exists(master_csv_path)
 
         # Append subject to master csv
