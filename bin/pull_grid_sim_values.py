@@ -190,8 +190,8 @@ def back_project_to_func_space(sbj, masks):
             "-i", input_mask,
             "-o", output_mask,
             "-r", reference,
-            "-t", warp,
             "-t", f"[{affine},1]",
+            "-t", warp,
             "-n", "NearestNeighbor"
         ]
         ref_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/brain_mask.nii.gz'
