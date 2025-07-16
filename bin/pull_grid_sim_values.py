@@ -262,7 +262,8 @@ if __name__ == "__main__":
         #masks = ['erc']
         masks = ['cluster_mask']
         for mask in masks:
-            slmask = f'{maskdir}/func/{sbj}_b_{mask}.nii.gz'
+            slmask = f'{maskdir}/func/{sbj}_{mask}.nii.gz'
+            #slmask = f'{maskdir}/func/{sbj}_b_{mask}.nii.gz'
 
             if condition == 'all':
                 ds = fmri_dataset(os.path.join(funcdir, 'grid_trials.nii.gz'), mask=slmask)
