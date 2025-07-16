@@ -239,7 +239,7 @@ if __name__ == "__main__":
 
     masks = ['cluster_mask']
 
-    #back_project_to_func_space(sbj, masks)
+    back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
     #combine_subregion_masks(sbj)
     #coronal_to_func(sbj)
@@ -259,7 +259,8 @@ if __name__ == "__main__":
 
         all_results = []
         #masks = ['erc', 'pmerc', 'alerc']
-        masks = ['erc']
+        #masks = ['erc']
+        masks = ['cluster_mask']
         for mask in masks:
             slmask = f'{maskdir}/func/{sbj}_b_{mask}.nii.gz'
 
@@ -283,7 +284,7 @@ if __name__ == "__main__":
 
 
         combined_df = pd.concat(all_results, ignore_index=True)
-        master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_{condition}.csv'
+        master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_clust_{condition}.csv'
         write_header = not os.path.exists(master_csv_path)
 
         # Append subject to master csv
