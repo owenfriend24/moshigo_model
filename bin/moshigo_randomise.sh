@@ -9,13 +9,16 @@ fi
 
 cond=$1
 
-randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked/new_group_z.nii.gz \
+# /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked/new_group_z.nii.gz
+
+randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/smooth_group_z.nii.gz \
 -o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked/age_dec \
 -d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.mat \
 -t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.con \
--m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gz \
+-m /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz \
 -n 5000 -x --uncorrp
 
+#-m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gz
 
 #randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/erc/smoothed/group_z.nii.gz \
 #-o /scratch/09123/ofriend/moshi/grid_coding/mni/erc/smoothed/age_param \
