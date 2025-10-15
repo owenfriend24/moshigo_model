@@ -19,11 +19,11 @@ if [[ "$sub" == "moshiGO_213" || "$sub" == "moshiGO_250" || "$sub" == "moshiGO_2
     warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_ANAT_to_mni2mm_Warp.nii.gz"
     affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_ANAT_to_mni2mm_Affine.txt"
 else
-    warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
-    affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_Affine.txt"
+#    warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
+#    affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_Affine.txt"
 
-#    warp_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Warp.nii.gz"
-#    affine_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt"
+    warp_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_func_Warp.nii.gz"
+    affine_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_func_Affine.txt"
 fi
 
 
