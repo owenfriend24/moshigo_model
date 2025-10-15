@@ -12,24 +12,24 @@ sub=$2
 
 cd ${sl_dir}/
 
-smooth_susan \
-    "${sl_dir}/cone/${sub}_60_ovr_30_mni_2mm_cone.nii.gz" \
-     "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
-    4 \
-    "${sl_dir}/cone/smoothed_${sub}.nii.gz"
-echo "Finished smoothing run ${sub}!"
-
-smooth_susan \
-    "${sl_dir}/mountain/${sub}_60_ovr_30_mni_2mm_mountain.nii.gz" \
-     "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
-    4 \
-    "${sl_dir}/mountain/smoothed_${sub}.nii.gz"
-echo "Finished smoothing run ${sub}!"
-
-
 #smooth_susan \
-#    "${sl_dir}/late/${sub}_60_ovr_30_LATE_mni_2mm_last3.nii.gz" \
+#    "${sl_dir}/cone/${sub}_60_ovr_30_mni_2mm_cone.nii.gz" \
 #     "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
 #    4 \
-#    "${sl_dir}/late/smoothed_${sub}_LATE_last3.nii.gz"
+#    "${sl_dir}/cone/smoothed_${sub}.nii.gz"
 #echo "Finished smoothing run ${sub}!"
+#
+#smooth_susan \
+#    "${sl_dir}/mountain/${sub}_60_ovr_30_mni_2mm_mountain.nii.gz" \
+#     "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
+#    4 \
+#    "${sl_dir}/mountain/smoothed_${sub}.nii.gz"
+#echo "Finished smoothing run ${sub}!"
+
+
+smooth_susan \
+    "${sl_dir}/new3/${sub}_60_ovr_30_mni_2mm.nii.gz" \
+     "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
+    4 \
+    "${sl_dir}/late/smoothed_${sub}_LATE_last3.nii.gz"
+echo "Finished smoothing run ${sub}!"
