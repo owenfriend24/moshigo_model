@@ -32,8 +32,8 @@ antsApplyTransforms -d 3 \
     -o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/${sub}_60_ovr_30_mni_2mm.nii.gz \
     -r /home1/09123/ofriend/analysis/moshigo_model/bin/MNI152_T1_2mm_brain.nii.gz \
     -n NearestNeighbor \
-    -t ${affine_path} \
-    -t ${warp_path}
+    -t ${warp_path} \
+    -t ${affine_path}
 
 #antsApplyTransforms -d 3 \
 #    -i /scratch/09123/ofriend/moshi/grid_coding/${sub}/grid_data/${sub}_60_ovr_30_erc_z.nii.gz \
