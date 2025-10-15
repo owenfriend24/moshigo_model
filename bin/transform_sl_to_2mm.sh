@@ -22,8 +22,8 @@ else
 #    warp_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
 #    affine_path="/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/NEW_func_to_mni2mm_Affine.txt"
 
-    warp_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_func_Warp.nii.gz"
-    affine_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_func_Affine.txt"
+    warp_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Warp.nii.gz"
+    affine_path="/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt"
 fi
 
 
