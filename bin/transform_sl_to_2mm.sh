@@ -28,8 +28,8 @@ fi
 
 
 antsApplyTransforms -d 3 \
-    -i /scratch/09123/ofriend/moshi/grid_coding/${sub}/grid_data/${sub}_60_ovr_30_LATE_b_gray_dilated_z.nii.gz \
-    -o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/${sub}_60_ovr_30_LATE_mni_2mm.nii.gz \
+    -i /scratch/09123/ofriend/moshi/grid_coding/${sub}/grid_data/${sub}_60_ovr_30_b_gray_dilated_z.nii.gz \
+    -o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/${sub}_60_ovr_30_mni_2mm.nii.gz \
     -r /home1/09123/ofriend/analysis/moshigo_model/bin/MNI152_T1_2mm_brain.nii.gz \
     -n NearestNeighbor \
     -t ${warp_path} \
