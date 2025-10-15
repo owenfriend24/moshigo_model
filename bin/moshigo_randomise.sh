@@ -19,7 +19,7 @@ randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/smooth_g
 -n 5000 -x --uncorrp
 
 randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/smooth_group_z.nii.gz \
--o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/age_dec \
+-o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/age_dec2 \
 -d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.mat \
 -t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.con \
 -m /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz \
