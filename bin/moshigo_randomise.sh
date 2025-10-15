@@ -12,7 +12,7 @@ cond=$1
 # /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked/new_group_z.nii.gz
 
 randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/smooth_group_z.nii.gz \
--o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked/age_dec \
+-o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/age_dec \
 -d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.mat \
 -t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.con \
 -m /home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz \
