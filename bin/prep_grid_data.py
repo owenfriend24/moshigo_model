@@ -5,7 +5,7 @@ import argparse
 import subprocess
 import numpy as np
 import pandas as pd
-from nilearn.glm.first_level import FirstLevelModel
+from nilearn.glm.first_level import FirstLevelModel, make_first_level_design_matrix
 from nilearn.image import load_img, index_img, new_img_like
 from nilearn.masking import apply_mask, unmask
 
@@ -21,6 +21,21 @@ def get_args():
                         help="Run number to drop (1–6). Default: keep all runs.")
     return parser.parse_args()
 
+
+def add_hpf_128(motion_df, n_scans, TR, include_constant=True):
+    frame_times = np.arange(n_scans) * TR
+    dm = make_first_level_design_matrix(
+        frame_times,
+        hrf_model=None,
+        drift_model='cosine',
+        high_pass=1.0 / 128.0
+    )
+    # Pick constant (unless motion_df already has one) + cosine terms
+    cols = [c for c in dm.columns if c.startswith('cosine')]
+    if include_constant and 'constant' not in motion_df.columns:
+        cols = ['constant'] + cols
+    return pd.concat([motion_df.reset_index(drop=True),
+                      dm[cols].reset_index(drop=True)], axis=1)
 if __name__ == "__main__":
     args = get_args()
     sub = args.subject_id
@@ -72,14 +87,34 @@ if __name__ == "__main__":
         func_path = f'{subjdir}/BOLD/antsreg/data/task_run{run}_bold_mcf_brain.nii.gz'
         func_img = load_img(func_path)
 
+        # motion_path = f'{subjdir}/BOLD/task_run{run}/QA/confound.txt'
+        # motion_df = pd.read_csv(motion_path, delim_whitespace=True, header=None)
+        # motion_confounds = motion_df
+        # n_scans = func_img.shape[-1]
+        #
+        # # Fit GLM and get residuals
+        # model = FirstLevelModel(t_r=TR, noise_model='ols', standardize=False, minimize_memory=False)
+        # model = model.fit(func_img, design_matrices=motion_confounds)
+        # residuals_img = model.residuals[0]
+
+        # --- Your code ---
+
         motion_path = f'{subjdir}/BOLD/task_run{run}/QA/confound.txt'
         motion_df = pd.read_csv(motion_path, delim_whitespace=True, header=None)
         motion_confounds = motion_df
         n_scans = func_img.shape[-1]
 
-        # Fit GLM and get residuals
-        model = FirstLevelModel(t_r=TR, noise_model='ols', standardize=False, minimize_memory=False)
-        model = model.fit(func_img, design_matrices=motion_confounds)
+        motion_df = pd.read_csv(motion_path, delim_whitespace=True, header=None)
+        #motion_df.columns = [f'motion_{i:02d}' for i in range(motion_df.shape[1])]
+
+        X = add_hpf_128(motion_df, n_scans=n_scans, TR=TR)
+
+        model = FirstLevelModel(
+            t_r=TR, noise_model='ols',
+            standardize=False, drift_model=None,
+            minimize_memory=False
+        ).fit(func_img, design_matrices=X)
+
         residuals_img = model.residuals[0]
         print("created residuals image")
 
