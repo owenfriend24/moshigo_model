@@ -26,8 +26,6 @@ randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/smooth_g
 -n 5000 -x --uncorrp
 
 
-
-
 randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked_gm/group_z.nii.gz \
 -o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked_gm/age_dec \
 -d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.mat \

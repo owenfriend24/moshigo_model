@@ -158,12 +158,19 @@ def back_project_to_func_space(sbj, masks):
     subprocess.run(cmd0, check=True)
 
     for mask in masks:
-        if sbj in ["moshiGO_213", "moshiGO_250", "moshiGO_277", "moshiGO_289"]:
-            warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_mni2mm_InverseWarp.nii.gz"
-            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_mni2mm_Affine.txt"
+        # if sbj in ["moshiGO_213", "moshiGO_250", "moshiGO_277", "moshiGO_289"]:
+        #     warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_mni2mm_InverseWarp.nii.gz"
+        #     affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_ANAT_to_mni2mm_Affine.txt"
+        # else:
+        #     warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
+        #     affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Affine.txt"
+
+        if sbj in ["moshiGO_250", "moshiGO_230", "moshiGO_285",  "moshiGO_334", "moshiGO_277", "moshiGO_240", "moshiGO_247", "moshiGO_213", "moshiGO_350", "moshiGO_323"]:
+            warp = "/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/test_new_func_to_mni1mm_Warp.nii.gz"
+            affine = "/corral-repl/utexas/prestonlab/temple/moshigo/results/${sub}/test_new_func_to_mni1mm_Affine.txt"
         else:
-            warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
-            affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Affine.txt"
+            warp = "/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Warp.nii.gz"
+            affine = "/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt"
 
         # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new/smoothed/{mask}.nii.gz"
         # output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
@@ -178,10 +185,10 @@ def back_project_to_func_space(sbj, masks):
         # ]
 
         # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/erc/{mask}.nii.gz"
-        input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/erc/smoothed/{mask}.nii.gz"
+        input_mask = f"/home1/09123/ofriend/analysis/moshigo_model/erc_clust_NEW"
         #input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
 
-        output_mask = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/func/{sbj}_{mask}.nii.gz'
+        output_mask = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/func/{sbj}_erc_clust_NEW.nii.gz'
         reference = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/brain.nii.gz'
 
         cmd2 = [
@@ -232,17 +239,17 @@ if __name__ == "__main__":
     drop_run = args.drop_run
 
     expdir = f'/scratch/09123/ofriend/moshi/grid_coding'
-    maskdir = f'/scratch/09123/ofriend/moshi/erc_masks/lat_masks/'
+    maskdir = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/'
     subjdir = f'{expdir}/{sbj}/'
     funcdir = f'{subjdir}/grid_data/'
     out_dir = funcdir
 
-    masks = ['R_pmERC']
+    masks = ['erc_clust_NEW']
 
-    #back_project_to_func_space(sbj, masks)
+    back_project_to_func_space(sbj, masks)
     #combine_lateral_masks(sbj)
     #combine_subregion_masks(sbj)
-    coronal_to_func(sbj)
+    #coronal_to_func(sbj)
 
     # Load trial metadata; can come back and restrict by condition
     for condition in ['all', 'cone', 'mountain']:
@@ -282,7 +289,7 @@ if __name__ == "__main__":
 
 
         combined_df = pd.concat(all_results, ignore_index=True)
-        master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_RpmERC_{condition}.csv'
+        master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_NEWERC_CLUST_{condition}.csv'
         write_header = not os.path.exists(master_csv_path)
 
         # Append subject to master csv
