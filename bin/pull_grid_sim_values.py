@@ -185,7 +185,7 @@ def back_project_to_func_space(sbj, masks):
         # ]
 
         # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/erc/{mask}.nii.gz"
-        input_mask = f"/home1/09123/ofriend/analysis/moshigo_model/erc_clust_NEW"
+        input_mask = f"/home1/09123/ofriend/analysis/moshigo_model/erc_clust_NEW.nii.gz"
         #input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/mni_masks/func_masks/{mask}.nii.gz"
 
         output_mask = f'/scratch/09123/ofriend/moshi/erc_masks/b_masks/func/{sbj}_erc_clust_NEW.nii.gz'
