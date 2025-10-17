@@ -8,7 +8,7 @@ import sys
 
 def extract_mean_roi_zvals(run_type):
     expdir = '/scratch/09123/ofriend/moshi/grid_coding/'
-    csv_path = f'/scratch/09123/ofriend/moshi/grid_coding/grid_z_{run_type}.csv'
+    csv_path = f'/scratch/09123/ofriend/moshi/grid_coding/csvs/grid_z_{run_type}_NEW.csv'
     rows = []
 
     if run_type == 'full':
@@ -23,13 +23,13 @@ def extract_mean_roi_zvals(run_type):
     #         'AD_Olsen_LalERC', 'AD_Olsen_RalERC', 'b_Olsen_alERC',
     #         'AD_Olsen_LERC', 'AD_Olsen_RERC', 'b_Olsen_ERC',
     #         'AD_Olsen_LpmERC', 'AD_Olsen_RpmERC', 'b_Olsen_pmERC']
-    rois = ['mpfc_age_inc', 'pm_erc_age_dec']
-    roi_paths = {roi: f'{expdir}/mni/mni_masks/func_masks/{roi}.nii.gz' for roi in rois}
+    rois = ['ERC_CLUST_NEW']
+    roi_paths = {roi: f"/home1/09123/ofriend/analysis/moshigo_model/erc_clust_NEW.nii.gz" for roi in rois}
 
-    z_base = f'{expdir}/mni/late' if run_type == 'late' else f'{expdir}/mni'
+    z_base = f'{expdir}/mni/new3/smoothed/masked_gm'
 
     for sub in subs:
-        zmap_path = os.path.join(z_base, f"smoothed_{sub}.nii.gz")
+        zmap_path = os.path.join(z_base, f"{sub}_60_ovr_30_mni_2mm.nii.gz")
         zdata = nib.load(zmap_path).get_fdata()
 
         row = {'subject': sub}
