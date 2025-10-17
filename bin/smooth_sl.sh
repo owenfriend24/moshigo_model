@@ -28,7 +28,7 @@ cd ${sl_dir}/
 
 
 smooth_susan \
-    "${sl_dir}/new3/${sub}_60_ovr_30_mni_2mm.nii.gz" \
+    "${sl_dir}/new4/${sub}_60_ovr_30_mni_2mm.nii.gz" \
      "/home1/09123/ofriend/analysis/moshigo_model/mni_gm_2mm.nii.gz"\
     4 \
     "${sl_dir}/new3/smoothed/${sub}_60_ovr_30_mni_2mm.nii.gz"
