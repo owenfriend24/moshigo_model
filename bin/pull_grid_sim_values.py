@@ -169,8 +169,8 @@ def back_project_to_func_space(sbj, masks):
             warp = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_InverseWarp.nii.gz"
             affine = f"/corral-repl/utexas/prestonlab/temple/moshigo/results/{sbj}/NEW_func_to_mni2mm_Affine.txt"
         else:
-            warp = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_func_InverseWarp.nii.gz"
-            affine = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_func_Affine.txt"
+            warp = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_1mm_InverseWarp.nii.gz"
+            affine = f"/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/transforms/brain2MNI_1mm_Affine.txt"
 
         # input_mask = f"/scratch/09123/ofriend/moshi/grid_coding/mni/new/smoothed/{mask}.nii.gz"
         # output_mask = f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/1mm_{mask}_mni.nii.gz'
