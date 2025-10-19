@@ -26,10 +26,10 @@ cond=$1
 #-n 5000 -x --uncorrp
 
 
-randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new4/smoothed/masked_gm/group_z.nii.gz \
--o /scratch/09123/ofriend/moshi/grid_coding/mni/new4/smoothed/masked_gm/age_dec \
--d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.mat \
--t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_decreasing.con \
+randomise -i /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked_gm/group_z.nii.gz \
+-o /scratch/09123/ofriend/moshi/grid_coding/mni/new3/smoothed/masked_gm/age_inc_test \
+-d /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_increasing.mat \
+-t /scratch/09123/ofriend/moshi/grid_coding/randomise/new/age_increasing.con \
 -m /scratch/09123/ofriend/moshi/grid_coding/mni/new2/smoothed/masked/mni_gm_2mm_dil_masked.nii.gz \
 -n 5000 -x --uncorrp
 
