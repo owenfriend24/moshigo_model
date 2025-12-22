@@ -2,7 +2,7 @@
 * aka moshiGO
 
 ## Repo description:
-This repository details analyses reported in *Hippocampal development enhances spatial memory precision and generalization* ([preprint]()).
+This repository details three primary sets of analyses reported in *Hippocampal development enhances spatial memory precision and generalization* ([preprint]()).
 
 Markdown files detail three primary sections:
 1) PCA-based identification of low-dimensional cognitive maps in hippocampus ([pca analysis protocol]())
