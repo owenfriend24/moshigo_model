@@ -19,4 +19,4 @@ While adults form detailed representations of locations and landmarks in their e
 
 **add image here**
 
-Feel free to reach out to corresponding author Owen Friend at ofriend@utexas.edu with any questions!
+Feel free to reach out to ofriend@utexas.edu with any questions!
