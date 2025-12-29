@@ -5,9 +5,9 @@
 This repository details three primary sets of analyses reported in *Hippocampal development enhances spatial memory precision and generalization* ([preprint]()).
 
 Markdown files detail three primary sections:
-1) PCA-based identification of low-dimensional cognitive maps in hippocampus ([pca analysis protocol]())
-2) Multivariate signatures of grid-like coding in entorhinal cortex ([grid analysis protocol]())
-3) Age- and run-level differences in representational similarity and memory performance on spatial navigation task ([behavior and rsa analysis protocol]())
+1) PCA-based identification of low-dimensional cognitive maps in hippocampus ([pca analyses]())
+2) Multivariate signatures of grid-like coding in entorhinal cortex ([grid analyses]())
+3) Age- and run-level differences in representational similarity and memory performance on spatial navigation task ([behavior and rsa analyses]())
 
 ---
 
