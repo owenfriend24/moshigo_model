@@ -5,9 +5,9 @@
 This repository details three primary sets of analyses reported in *Hippocampal development enhances spatial memory precision and generalization* ([preprint]()).
 
 Markdown files detail three primary sections:
-1) PCA-based identification of low-dimensional cognitive maps in hippocampus ([pca analyses]())
+1) PCA-based identification of low-dimensional cognitive maps in hippocampus ([pca analyses](https://github.com/owenfriend24/moshigo_model/blob/main/README_pca_analyses.md))
 2) Multivariate signatures of grid-like coding in entorhinal cortex ([grid analyses]())
-3) Age- and run-level differences in representational similarity and memory performance on spatial navigation task ([behavior and rsa analyses]())
+3) Age- and run-level differences in representational similarity and memory performance on spatial navigation task ([behavior and rsa analyses](https://github.com/owenfriend24/moshigo_model/blob/main/R_mds/full_maintext_results.md))
 
 ---
 
@@ -18,5 +18,6 @@ While adults form detailed representations of locations and landmarks in their e
 ---
 <img width="2216" height="1396" alt="task_pc_space_fig" src="https://github.com/user-attachments/assets/5425d20b-814e-4bf1-8605-812b279ec9a0" />
 
+---
 
 Feel free to reach out to ofriend@utexas.edu with any questions!
