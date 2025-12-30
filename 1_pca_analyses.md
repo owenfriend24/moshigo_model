@@ -18,7 +18,7 @@
 ```
 pca_sl.py $subject $brain_mask
 ```
-see (link)[]
+see (link)[https://github.com/owenfriend24/moshigo_model/blob/main/bin/pca_sl.py]
 
 or use below to perform searchlight and transformation in same step
 ```
@@ -36,8 +36,11 @@ run_sl_transform.sh
 ```
 voxelwise_parallel_6run_acc.py
 ```
-see (link)[]
+see (link)[https://github.com/owenfriend24/moshigo_model/blob/main/bin/voxelwise_parallel_6run_acc.py]
 * finally, perform cluster correction identically to other RSA results (see manuscript), refine by taking intersection with anatomical hippocampus, and reverse-normalize cluster into each participant's native space for following analyses
+
+---
+<img width="2224" height="1430" alt="pca_approach_wpoints" src="https://github.com/user-attachments/assets/8362155d-bbcd-47ca-95c8-a1938fd8f62f" />
 
 ---
 
@@ -46,20 +49,20 @@ see (link)[]
 ```
 extract_pc_embedding.py
 ```
-see (link)[]
+see (link)[https://github.com/owenfriend24/moshigo_model/blob/main/bin/extract_pc_embedding.py]
 
 ---
 
 ### 4) assess correlation between neural space and task space to quantify distance-based coding/compressed cognitive mapping
 * for each run within each subject, create distance matrix for how far each target item is from each other target item within the spatial environment
 * create distance matrix with identical comparisons for distances between target items in neural space (hippocampal representations)
-see (pca_analyses_jupyter)[]
+see (pca_analyses_jupyter)[https://github.com/owenfriend24/moshigo_model/blob/main/jupyter/corr_pca_dist_behav_dist.ipynb]
   
 * correlate matrices to assess distance-based coding, compare to age group and performance
-see (pca_analyses_R)[]
-
+see (pca_analyses_R)[https://github.com/owenfriend24/moshigo_model/blob/main/R_mds/pca_analyses.md]
+* (extra plotting)[https://github.com/owenfriend24/moshigo_model/blob/main/jupyter/plot_neural_behavioral_correlation.ipynb]
 
 ---
 
+<img width="2216" height="1396" alt="task_pc_space_fig" src="https://github.com/user-attachments/assets/39cb290e-01d5-41bb-9b6e-027d3e181ae7" />
 
-# add full fig here
