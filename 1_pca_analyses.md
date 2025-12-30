@@ -39,12 +39,16 @@ voxelwise_parallel_6run_acc.py
 see (link)[]
 * finally, perform cluster correction identically to other RSA results (see manuscript), refine by taking intersection with anatomical hippocampus, and reverse-normalize cluster into each participant's native space for following analyses
 
+---
+
 ### 3) from the identified compression cluster, project item locations in neural space and compare to spatial layout of behavioral task
 * project items into 2D PCA space, extract X and Y coordinates (neural space)
 ```
 extract_pc_embedding.py
 ```
 see (link)[]
+
+---
 
 ### 4) assess correlation between neural space and task space to quantify distance-based coding/compressed cognitive mapping
 * for each run within each subject, create distance matrix for how far each target item is from each other target item within the spatial environment
@@ -55,3 +59,7 @@ see (pca_analyses_jupyter)[]
 see (pca_analyses_R)[]
 
 
+---
+
+
+# add full fig here
