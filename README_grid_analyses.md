@@ -16,7 +16,7 @@
 ```
 prep_grid_data.py $subject $condition
 ```
-see [link]()
+see [link](https://github.com/owenfriend24/moshigo_model/blob/main/bin/prep_grid_data.py)
 
 ### 2. run searchlight to identify regions demonstrating grid-like activity
 * using organized neural data and metadata above, compute similarity of aligned trials vs misaligned trials within each searchlight sphere
@@ -26,7 +26,7 @@ see [link]()
 ```
 moshi_sl_grid.py $subject $condition $mask
 ```
-see [main implementation]() and [similarity function]()
+see [main implementation](https://github.com/owenfriend24/moshigo_model/blob/main/bin/moshi_sl_grid.py) and [similarity function](https://github.com/owenfriend24/moshigo_model/blob/main/bin/grid_function_modulo60.py)
 
 ### 3. use permutation testing to identify regions in which grid-like activity varies parametrically with age; cluster correct resulting cluster
 * before implementing Randomise, mask and smooth z-maps with 4mm kernel
