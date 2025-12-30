@@ -10,7 +10,7 @@ sub=$1
 
 #python $HOME/analysis/moshigo_model/bin/pca_cluster_model.py
 #python $HOME/analysis/moshigo_model/bin/plot_pc_space.py
-#python $HOME/analysis/moshigo_model/bin/plot_ssm_traj.py
+#python $HOME/analysis/moshigo_model/bin/extract_pc_embedding.py
 
 ## create new warp/affine files for T1 to T2 transformation
 #ANTS 3 -m CC[/home1/09123/ofriend/analysis/temple/bin/templates/MNI152_T1_1mm_brain.nii.gz, \

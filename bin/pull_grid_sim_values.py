@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-import subprocess
 
-subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/rsa/bin/activate'])
-### import python libraries needed for the analysis ###
 import numpy as np
 import pandas as pd
 import nibabel
@@ -38,20 +35,21 @@ import sys
 import subprocess
 import argparse
 
-### import custom searchlight function ###
+subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/rsa/bin/activate'])
+
+# import custom function to extract grid-like coding (Z)
 from grid_similarity_function import *
 
-### use argument parser to set up experiment/subject info and drop runs if necessary
 def get_args():
     parser = argparse.ArgumentParser(description="Process fMRI data for pre/post comparison.")
-    # Required arguments
     parser.add_argument("subject_id", help="Subject identifier (e.g., temple016)")
-    # Optional argument: drop a specific run
+    # optional argument: drop a specific run
     parser.add_argument("--drop_run", type=int, choices=[1, 2, 3, 4, 5, 6], default=None,
                         help="Run number to drop (1 through 6). Default is None (keep all runs).")
 
     return parser.parse_args()
 
+# if using lateralized anatomical masks
 def combine_lateral_masks(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
 
@@ -70,6 +68,7 @@ def combine_lateral_masks(sbj):
     cmd_merge = ["fslmaths", r, "-add", l, out_path]
     subprocess.run(cmd_merge, check=True)
 
+# if using anatomical masks
 def combine_subregion_masks(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
 
@@ -87,6 +86,7 @@ def combine_subregion_masks(sbj):
     cmd_merge = ["fslmaths", r, "-add", l, out_path]
     subprocess.run(cmd_merge, check=True)
 
+# if transforming from T2 to T1
 def coronal_to_func(sbj):
     base = "/scratch/09123/ofriend/moshi/erc_masks/"
     for mask_name in ['R_pmERC']:
@@ -232,8 +232,6 @@ def back_project_to_func_space(sbj, masks):
         # ]
         # subprocess.run(cmd3, check=True)
 
-### Main script execution ###
-
 if __name__ == "__main__":
     args = get_args()
     sbj = args.subject_id
@@ -252,7 +250,7 @@ if __name__ == "__main__":
     #combine_subregion_masks(sbj)
     #coronal_to_func(sbj)
 
-    # Load trial metadata; can come back and restrict by condition
+    # load trial metadata; restrict by condition if necessary
     for condition in ['all', 'cone', 'mountain']:
         if condition == 'all':
             meta = pd.read_csv(f'{funcdir}/all_runs_meta.txt',
@@ -281,8 +279,6 @@ if __name__ == "__main__":
 
             sl_func = grid_similarity_function('correlation')
             result_df = sl_func(ds)
-
-            # Add subject and ROI info to result
             result_df['subject'] = sbj
             result_df['roi'] = mask
 
@@ -293,7 +289,7 @@ if __name__ == "__main__":
         master_csv_path = f'{expdir}/csvs/sub_roi_similarity_values_NEWERC_CLUST_{condition}.csv'
         write_header = not os.path.exists(master_csv_path)
 
-        # Append subject to master csv
+        # append subject to master csv
         combined_df.to_csv(master_csv_path, mode='a', header=write_header, index=False)
 
 

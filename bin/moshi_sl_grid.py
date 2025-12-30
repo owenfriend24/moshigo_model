@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-import subprocess
 
-subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/rsa/bin/activate'])
-### import python libraries needed for the analysis ###
+import subprocess
 import numpy as np
 import pandas as pd
 import nibabel
@@ -35,19 +33,17 @@ from mvpa2.mappers.fx import *
 from mvpa2.measures.anova import *
 from mvpa2.base.dataset import *
 import sys
-import subprocess
 import argparse
 
-### import custom searchlight function ###
-from grid_function_prepost import *
+subprocess.run(['/bin/bash', '-c', 'source /home1/09123/ofriend/analysis/temple/rsa/bin/activate'])
 
-### use argument parser to set up experiment/subject info and drop runs if necessary
+# custom grid function
+from grid_function_modulo60 import *
+
 def get_args():
     parser = argparse.ArgumentParser(description="Process fMRI data for pre/post comparison.")
-
-    # Required arguments
     parser.add_argument("subject_id", help="Subject identifier (e.g., temple016)")
-    # Optional argument: drop a specific run
+    # optional argument: drop a specific run
     parser.add_argument("condition", type=str, choices=["both", "mountain", "cone"], default="both",
                         help="both, mountain, or cone")
     parser.add_argument("mask", type=str, choices=["gm", "erc"], default="gm",
@@ -56,7 +52,6 @@ def get_args():
                         help="Run number to drop (1 through 6). Default is None (keep all runs).")
     return parser.parse_args()
 
-### Main script execution ###
 if __name__ == "__main__":
     args = get_args()
     sbj = args.subject_id
@@ -64,6 +59,7 @@ if __name__ == "__main__":
     drop_run = args.drop_run
     mask = args.mask
 
+    # run within specific conditions if necessary
     if condition == 'cone':
         cond_flag = '_cone'
     elif condition == 'mountain':
@@ -80,6 +76,7 @@ if __name__ == "__main__":
     niter= 1000
 
 
+    # load metadata
     if condition == 'both':
         meta = pd.read_csv(f'/scratch/09123/ofriend/moshi/grid_coding/{sbj}/grid_data/all_runs_meta.txt',
                            sep='\t', header=None, names=["run", "img", "trial_angle"])
@@ -99,7 +96,7 @@ if __name__ == "__main__":
     elif mask == 'erc':
         masks = ['erc']
 
-
+    # mask to run searchlight in
     for mask in masks:
         if mask in ['b_gray_dilated']:
             slmask = f'/corral-repl/utexas/prestonlab/moshiGO1/{sbj}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/{mask}.nii.gz'
@@ -114,9 +111,7 @@ if __name__ == "__main__":
         sl = sphere_searchlight(sl_func, radius=3)
         sl_result = sl(ds)
         sl_map_60_ovr_30 = sl_result
-        #sl_map_30_ovr_60 = sl_result[:, 1]
         outfile_60 = f'{out_dir}/{sbj}_60_ovr_30_{mask}{cond_flag}_z.nii.gz'
-        #outfile_30 = f'{out_dir}/{sbj}_30_ovr_60_{mask}_z.nii.gz'
         map2nifti(ds, sl_map_60_ovr_30.samples).to_filename(outfile_60)
 
 

@@ -6,8 +6,8 @@ import random
 class grid_function_modulo60(Measure):
     """
     Searchlight function to compare representational similarity
-    between trial pairs with angular difference % 60 ≈ 0 vs. ≈ 30 (±5° tolerance),
-    across runs only.
+    between trial pairs with angular difference % 60 ≈ 0 vs. ≈ 30 (±5° default tolerance),
+    (i.e., grid-like representation) across runs.
     """
 
     def __init__(self, metric="correlation", niter=1000, tolerance=5):
@@ -21,7 +21,7 @@ class grid_function_modulo60(Measure):
         def is_modulo_match(remainder, target, tol):
             return min(abs(remainder - target), 60 - abs(remainder - target)) <= tol
 
-        # Compute similarity matrix (Fisher z-transformed)
+        # compute similarity matrix (Fisher z-transformed)
         dsm = rsa.PDist(square=True, pairwise_metric=self.metric, center_data=False)
         dsm_matrix = 1 - dsm(dataset).samples
         # dsm_matrix = np.clip(dsm_matrix, -0.999999, 0.999999)
@@ -29,7 +29,6 @@ class grid_function_modulo60(Measure):
 
         # print(f"len dsm_matrix - {len(dsm_matrix)}")
         angles = dataset.sa['trial_angle']
-        # print(f"trial angles: {angles}")
         runs = dataset.sa['run']
         n = len(dataset)
 
@@ -60,7 +59,7 @@ class grid_function_modulo60(Measure):
         sim_mod30 = np.array(sim_mod30)
         obsstat = np.mean(sim_mod0) - np.mean(sim_mod30)
 
-        # Permutation test
+        # permutation test
         combined = np.concatenate([sim_mod0, sim_mod30])
         n_mod0 = len(sim_mod0)
         randstat = []
@@ -73,6 +72,5 @@ class grid_function_modulo60(Measure):
 
         randstat = np.array(randstat)
         z_stat_60_ovr_30 = (obsstat - np.mean(randstat)) / np.std(randstat)
-        #z_stat_30_ovr_60 = - z_stat_60_ovr_30
         # print(f"valid angels: {valid_angles}")
         return z_stat_60_ovr_30

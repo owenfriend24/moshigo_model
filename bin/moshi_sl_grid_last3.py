@@ -39,7 +39,7 @@ import subprocess
 import argparse
 
 ### import custom searchlight function ###
-from grid_function_prepost import *
+from grid_function_modulo60 import *
 from grid_function_late import *
 
 ### use argument parser to set up experiment/subject info and drop runs if necessary

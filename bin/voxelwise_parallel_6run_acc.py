@@ -9,33 +9,33 @@ from joblib import Parallel, delayed
 import argparse
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
-# Suppress excessive warnings
+
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
-# Parse chunk ID
+# parse chunk ID for parallelization - this takes a lot of time and is very computationally intensive without parallelizing
 parser = argparse.ArgumentParser()
 parser.add_argument("--chunk", type=int, default=0, help="Chunk ID (0, 1, 2, 3)")
 args = parser.parse_args()
 chunk_id = args.chunk
 
-# Load metadata
+# load metadata
 df = pd.read_csv("/home1/09123/ofriend/analysis/moshigo_model/pca_sl_meta_6run_acc.csv")
 
-# Set '6-9yo' as reference level for age_group
+# set child as reference level for age_group
 df['age_group'] = pd.Categorical(
     df['age_group'],
     categories=['6-9yo', '10-12yo', 'Adults'],
     ordered=True
 )
 
-# Load brain mask
+# load probablistic brain mask - anywhere >= 75% of subjects have functional voxels in gray matter
 mask_img = nib.load('/scratch/09123/ofriend/moshi/pca_sl/results/group_75_mask.nii.gz')
 mask = mask_img.get_fdata() != 0
 mask_img = nib.Nifti1Image(mask.astype(np.uint8), affine=mask_img.affine)
 
-# Extract voxelwise data
+# extract voxelwise data
 voxel_data = []
 for _, row in df.iterrows():
     img = nib.load(row['path'])
@@ -44,7 +44,7 @@ for _, row in df.iterrows():
 
 voxel_array = np.array(voxel_data)  # shape: (n_obs, n_voxels)
 
-# Split voxels into chunks
+# split all voxels into chunks
 n_voxels = voxel_array.shape[1]
 n_chunks = 4
 chunk_size = n_voxels // n_chunks
@@ -56,7 +56,7 @@ print(f"Running chunk {chunk_id}: voxels {start_idx} to {end_idx} out of {n_voxe
 
 voxel_subset = voxel_array[:, start_idx:end_idx]
 
-# Define interaction and main effect terms
+# define interaction and main effect terms
 interaction_terms = {
     "10-12yo:run6": "C(age_group)[T.10-12yo]:C(run)[T.6]",
     "Adults:run6": "C(age_group)[T.Adults]:C(run)[T.6]",
@@ -67,14 +67,14 @@ main_effects = {
     "Adults_main": "C(age_group)[T.Adults]",
     "run6_main": "C(run)[T.6]",
 }
-# Combine all terms
+# combine all terms
 all_terms = {**interaction_terms, **main_effects}
 
-# Progress tracking setup
+# progress tracking setup
 progress_counter = [0]
 start_time = time.time()
 
-# Define a function to fit one voxel
+# run the mixed-effects model at each voxel with by-subject effect
 def fit_voxel(v):
     df_model = df.copy()
     df_model['var_expl'] = voxel_subset[:, v]
@@ -88,7 +88,7 @@ def fit_voxel(v):
 
     return result
 
-# Run in parallel
+# run in parallel
 n_jobs = 12
 results = Parallel(n_jobs=n_jobs, verbose=10)(
     delayed(fit_voxel)(v) for v in range(voxel_subset.shape[1])
@@ -112,6 +112,7 @@ terms = [
     "10-12yo_main", "Adults_main", "run6_main"
 ]
 
+# save chunked results for each term
 for term in terms:
     chunks = []
     for chunk_id in range(4):
@@ -120,6 +121,8 @@ for term in terms:
     full_data = np.concatenate(chunks)
     final_img = unmask(full_data, mask_img)
     final_img.to_filename(f"{output_dir}/group_{term}_1minuspmap_FULL_6rfactor_acc.nii.gz")
-# for key, inv_p_vals in results_dict.items():
-#     img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
-#     img.to_filename(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.nii.gz")
+
+# save out stat maps
+for key, inv_p_vals in results_dict.items():
+    img = unmask(np.array(inv_p_vals, dtype=np.float32), mask_img)
+    img.to_filename(f"{output_dir}/group_{key}_chunk{chunk_id}_1minuspmap.nii.gz")

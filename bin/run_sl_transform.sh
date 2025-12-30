@@ -14,14 +14,6 @@ source /home1/09123/ofriend/analysis/temple/profile_rsa
 
 beta_dir=/corral-repl/utexas/prestonlab/moshiGO1/${sub}/RSAmodel/betaseries
 
-#fslmaths /corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/b_gray.nii.gz \
-#-dilM \
-#/corral-repl/utexas/prestonlab/moshiGO1/${sub}/anatomy/antsreg/data/funcunwarpspace/rois/freesurfer/b_gray_dilated.nii.gz
-##
-#fslmerge -t ${beta_dir}/phase_1.nii.gz ${beta_dir}/moshiGO_1_all.nii.gz ${beta_dir}/moshiGO_2_all.nii.gz ${beta_dir}/moshiGO_3_all.nii.gz
-#echo "merged betaseries"
-#
-
 python /home1/09123/ofriend/analysis/moshigo_model/bin/pca_sl.py ${sub} ${mask}
 echo "ran pca searchlight"
 
@@ -35,4 +27,4 @@ for run in 1 2 3; do
 
 done
 
-#echo "transformed searchlight images to MNI"
+echo "transformed searchlight images to MNI"

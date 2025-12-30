@@ -1,4 +1,4 @@
-"""Dissimilarity measure"""
+# simple pca function formatted for adapted pymvpa
 
 __docformat__ = 'restructuredtext'
 
@@ -14,7 +14,6 @@ from mvpa2.measures.base import Measure
 from mvpa2.measures import rsa
 from sklearn.decomposition import PCA
 
-
 class searchlight_function_pca(Measure):
     def __init__(self, n_components=4):
         Measure.__init__(self)
@@ -27,7 +26,6 @@ class searchlight_function_pca(Measure):
         #print("Correlation matrix:")
         #print(np.round(np.corrcoef(data), 2))
 
-        # # don't run if contains nans? or will pymvpa automatically deal with this?
         # if data.shape[1] < 10 or np.any(np.isnan(data)):
         #     return np.nan
 
