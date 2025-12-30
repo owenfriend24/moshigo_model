@@ -55,6 +55,7 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
     sbj = args.subject_id
+
     condition = args.condition
     drop_run = args.drop_run
     mask = args.mask
