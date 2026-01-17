@@ -16,6 +16,8 @@
 ---
 
 <img width="2224" height="1430" alt="pca_approach_wpoints" src="https://github.com/user-attachments/assets/46688623-d6db-4f2b-aaba-421dd97391c4" />
+
+---
 <img width="2216" height="1396" alt="task_pc_space_fig" src="https://github.com/user-attachments/assets/5425d20b-814e-4bf1-8605-812b279ec9a0" />
 
 ---
